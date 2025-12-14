@@ -1,28 +1,33 @@
 #include "Memory.h"
 
-Minipage::Minipage() : Minipage(nullptr), IsAllocated(false) {}
+RAMControllerUnit::RAMControllerUnit(std::unique_ptr<RAMUnit> &&RAMModule) 
+    : RAM(std::move(RAMModule)) {}
 
-void *Minipage::getMinipageCellAddress(uint32_t Offset) {
+RAMControllerUnit::RAMControllerUnit(const RAMController &Other)
+    : RAM(Other.get()) {}
 
-    if (!isMinipageAllocated)
-        AllocateNewMinipage();
+RAMControllerUnit::RAMControllerUnit &operator=(const RAMController &Other) {
 
-    return MinipageContent.get() + Offset;
+    RAM.release();
+    RAM.reset(Other.get());
+
+    return *this;
+}
+    
+RAMControllerUnit::~RAMControllerUnit() {
+
+    RAM.release();
 }
 
-void Minipage::AllocateNewMinipage() {
+void *RAMUnit::Minipage::getMinipageCellAddress(uint32_t Offset) {
 
-    if (!MinipageContent)
-        MinipageContent = std::make_shared<char>(MINIPAGE_DEFAULT_SIZE);
-    else
-        return;
-        // Trying to allocate already allocated minipage!
+    if (!MinipageContent.has_value())
+        MinipageContent.emplace(MINIPAGE_DEFAULT_SIZE);
 
-    IsAllocated = true;
-    IsResponsibleForDestruction = true;
+    return MinipageContent->get() + Offset;
 }
 
-void* RAM::getMemoryLocation(uint32_t Address) {
+void *RAMUnit::getMemoryLocation(uint32_t Address) {
 
     const shared_ptr<Minipage> FoundMinipage = findMinipage(Address);
 
@@ -35,8 +40,8 @@ void* RAM::getMemoryLocation(uint32_t Address) {
 }
 
 template <class MemoryHashMapT>
-MemoryHashMapT &findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMapT> CurrMemoryLevelHashMap,
-                                      uint32_t CurrMemoryLevelOffset) {
+MemoryHashMapT &RAMUnit::findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMapT> CurrMemoryLevelHashMap,
+                                               uint32_t CurrMemoryLevelOffset) {
 
     auto NextMemoryLevelHashMapIt = CurrMemoryLevelHashMap.find(CurrMemoryLevelOffset);
 
@@ -54,7 +59,7 @@ MemoryHashMapT &findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMap
     return *NextMemoryLevelHashMapIt;
 }
 
-Minipage &RAM::findMinipage(uint32_t Address) {
+Minipage &RAMUnit::findMinipage(uint32_t Address) {
 
     MemoryLevel1 &CurrentMemoryLevel1HashMap = 
             findNextMemoryHashMap<MemoryLevel1>(Memory, 
@@ -73,12 +78,22 @@ Minipage &RAM::findMinipage(uint32_t Address) {
     return *MinipageIt;
 }
 
-uint32_t RAM::getOffsetInMinipage(uint32_t Address) {
+uint32_t RAMUnit::getOffsetInMinipage(uint32_t Address) {
 
     return Address % MINIPAGE_DEFAULT_SIZE;
 }
 
-uint8_t RAM::getByte(uint32_t Address) {
+uint32_t getMemoryLevel1Offset(uint32_t Address) {
+
+    return Address % MEMORY_LEVEL_1_SIZE;
+}
+
+uint32_t getMemoryLevel2Offset(uint32_t Address) {
+
+    return Address % MEMORY_LEVEL_2_SIZE;
+}
+
+uint8_t RAMControllerUnit::getByte(uint32_t Address) {
     
     void *MemoryLocation = getMemoryLocation(Address);
     assert(MemoryLocation);
@@ -86,7 +101,7 @@ uint8_t RAM::getByte(uint32_t Address) {
     return *(static_cast<uint8_t *>(MemoryLocation));
 }
 
-uint16_t RAM::getHalfword(uint32_t Address) {
+uint16_t RAMControllerUnit::getHalfword(uint32_t Address) {
     
     void *MemoryLocation = getMemoryLocation(Address);
     assert(MemoryLocation);
@@ -94,7 +109,7 @@ uint16_t RAM::getHalfword(uint32_t Address) {
     return *(static_cast<uint16_t *>(MemoryLocation));
 }
 
-uint32_t RAM::getWord(uint32_t Address) {
+uint32_t RAMControllerUnit::getWord(uint32_t Address) {
     
     void *MemoryLocation = getMemoryLocation(Address);
     assert(MemoryLocation);
@@ -102,7 +117,7 @@ uint32_t RAM::getWord(uint32_t Address) {
     return *(static_cast<uint32_t *>(MemoryLocation));
 }
     
-void RAM::storeByte(uint32_t Address, uint8_t ByteToStore) {
+void RAMControllerUnit::storeByte(uint32_t Address, uint8_t ByteToStore) {
 
     void *MemoryLocation = getMemoryLocation(Address);
     assert(MemoryLocation);
@@ -110,7 +125,7 @@ void RAM::storeByte(uint32_t Address, uint8_t ByteToStore) {
     *(static_cast<uint8_t *>(MemoryLocation)) = ByteToStore;
 }
 
-void RAM::storeHalfword(uint32_t Address, uint16_t HalfwordToStore) {
+void RAMControllerUnit::storeHalfword(uint32_t Address, uint16_t HalfwordToStore) {
 
     void *MemoryLocation = getMemoryLocation(Address);
     assert(MemoryLocation);
@@ -118,7 +133,7 @@ void RAM::storeHalfword(uint32_t Address, uint16_t HalfwordToStore) {
     *(static_cast<uint16_t *>(MemoryLocation)) = HalfwordToStore;
 }
 
-void RAM::storeWord(uint32_t Address, uint32_t WordToStore) {
+void RAMControllerUnit::storeWord(uint32_t Address, uint32_t WordToStore) {
 
     void *MemoryLocation = getMemoryLocation(Address);
     assert(MemoryLocation);

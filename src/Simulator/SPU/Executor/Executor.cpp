@@ -1,65 +1,16 @@
 #include "Executor.h"
 
 ExecutorUnit::ExecutorUnit(std::unique_ptr<RAMControllerUnit> &&RAMControllerModule)
-    : RAMController(std::move(RAMControllerModule)) {}
+    : RAMController(std::move(RAMControllerModule)), ISA(TargetISA), Visitor(this),
+      CurrentInstr(0) {}
 
-ExecutorUnit::ExecutorUnit(const &ExecutorUnit Other)
-    : RAMController(Other.get()) {}
+void ExecutorUnit::executeInstr(uint32_t Instr) {
 
-ExecutorUnit::ExecutorUnit &operator=(const &ExecutorUnit Other) {
-    
-    RAMController.release();
-    RAMController.reset(Other.get());
-
-    return *this;
+    ISA.executeInstr(*this);
 }
 
-ExecutorUnit::~ExecutorUnit() {
+uint32_t ExecutorUnit::getCurrentInstr() {
 
-    RAMController.release();
+    return CurrentInstr;
 }
 
-void ExecutorUnit::executeInstr(uint32_t CurrentInstr) {
-
-    std::visit(InstrTypeVisitor(), getTypeOfInstr(CurrentInstr));
-}
-
-void ExecutorUnit::InstrTypeVisitor::operator()(IType &Instr) {
-
-    ITypeInstrs[Instr.getId()](Instr.getImm(), 
-                               Registers.getReg(Instr.getRdNum()), 
-                               Registers.getReg(Instr.getRs1Num()));
-}
-
-void ExecutorUnit::InstrTypeVisitor::operator()(MemIType &Instr) {
-
-    MemITypeInstrs[Instr.getId()](Instr.getImm(), 
-                                  Registers.getReg(Instr.getRdNum()), 
-                                  Registers.getReg(Instr.getRs1Num()),
-                                  RAMController.get);
-}
-
-void ExecutorUnit::InstrTypeVisitor::operator()(RType &Instr) {
-
-
-}
-
-void ExecutorUnit::InstrTypeVisitor::operator()(SType &Instr) {
-
-
-}
-
-void ExecutorUnit::InstrTypeVisitor::operator()(BType &Instr) {
-
-
-}
-
-void ExecutorUnit::InstrTypeVisitor::operator()(UType &Instr) {
-
-
-}
-
-void ExecutorUnit::InstrTypeVisitor::operator()(JType &Instr) {
-
-
-}

@@ -1,12 +1,6 @@
 #ifndef SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 #define SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 
-template <typename E>
-class Extension {
-
-
-}
-
 class Instruction {
 private:
     uint32_t Instr;
@@ -25,7 +19,7 @@ public:
     virtual void operator(Register_t &Rs1, Register_t &Rd) = 0;
 
 private:
-    uint16_t getImm()   { return extractBits(20, 31); }
+    uint16_t getImm() { return extractBits(20, 31); }
 
     uint16_t CraftSignExtImm(uint32_t Imm, int ImmSizeInBits) {
         
@@ -71,7 +65,7 @@ public:
 class BTypeInstruction : public Instruction {
 public:
     uint8_t getRs2Num() { return extractBits(20, 24); }
-    uint8_t getRs1Num()  { return extractBits(15, 19); }
+    uint8_t getRs1Num() { return extractBits(15, 19); }
 
     uint8_t getMergedImm();
 
@@ -99,7 +93,7 @@ public:
     uint8_t getFs3Num() { return extractBits(27, 31); }
     uint8_t getFs2Num() { return extractBits(20, 24); }
     uint8_t getFs1Num() { return extractBits(15, 19); }
-    uint8_t getFdNum() { return extractBits(7, 11); }
+    uint8_t getFdNum()  { return extractBits(7, 11); }
 
     virtual void operator(Register_t &Fs3, Register_t &Fs2,
                           Register_t &Fs1, Register_t &Fd) = 0;

@@ -1,7 +1,10 @@
 #include "ISA.h"
 
 
-RISCVISA::registerExtension()
+RISCVISA::registerExtension() {
+
+    ExtensionManager().
+}
 
 RISCVISA::executeInstr(ExecutorUnit &TargetExecutor) {
 

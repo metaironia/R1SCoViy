@@ -11,13 +11,17 @@ private:
     std::shared_ptr<ExtensionManager> Extensions;
 
 public:
-    registerExtension();
+    template<typename T,
+             typename = std::enable_if_t<std::is_constructible_v<std::vector<std::string>, T>>>
+    explicit MyClass(T&& arg) 
+        : data_(std::forward<T>(arg)) {}
 
     executeInstr(ExecutorUnit &TargetExecutor);
 
 private:
-    std::variant<IType, MemIType, Rtype, SType,
-                 BType, UType, JType, R4Type> getTypeOfInstr(uint32_t Instr);
+    using InstructionVariant = std::variant<IType, MemIType, Rtype, SType, BType, UType, JType, R4Type>;
+
+    InstructionVariant getTypeOfInstr(uint32_t Instr);
 }
 
 class RISCVISA::InstrTypeVisitor {

@@ -14,8 +14,7 @@ RISCVISA::executeInstr(ExecutorUnit &TargetExecutor) {
     std::visit(Visitor, getTypeOfInstr(CurrentInstr));
 }
 
-std::variant<IType, MemIType, Rtype, SType,
-             BType, UType, JType, R4Type> RISCVISA::getTypeOfInstr(uint32_t Instr) {
+InstructionVariant RISCVISA::getTypeOfInstr(uint32_t Instr) {
 
 
     

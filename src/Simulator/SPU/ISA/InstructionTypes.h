@@ -1,18 +1,25 @@
 #ifndef SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 #define SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 
+using Instruction_t = uint32_t;
+
 class Instruction {
 private:
-    uint32_t Instr;
+    Instruction_t Instr;
 
 public:
-    Instruction(uint32_t TargetInstr);
-
     extractBits(int StartBit, int EndBit);
+    
+protected:
+    Instruction(Instruction_t TargetInstr);
+  
+    virtual ~Instruction() = default;
 };
 
 class ITypeInstruction : public Instruction {
 public:
+    ITypeInstruction(Instruction_t TargetInstr) : Instruction(TargetInstr) {}
+
     uint8_t getRs1Num() { return extractBits(15, 19); }
     uint8_t getRdNum()  { return extractBits(7, 11); }
 
@@ -30,7 +37,9 @@ private:
 }
 
 class MemITypeInstruction : public Instruction {
-public:    
+public:
+    MemITypeInstruction(Instruction_t TargetInstr) : Instruction(TargetInstr) {}
+
     uint16_t getImm()   { return extractBits(20, 31); }
     uint8_t getRs1Num() { return extractBits(15, 19); }
     uint8_t getRdNum()  { return extractBits(7, 11); }
@@ -44,6 +53,8 @@ private:
 
 class RTypeInstruction : public Instruction {
 public:
+    RTypeInstruction(Instruction_t TargetInstr) : Instruction(TargetInstr) {}
+
     uint8_t getRs2Num() { return extractBits(20, 24); }
     uint8_t getRs1Num() { return extractBits(15, 19); }
     uint8_t getRdNum()  { return extractBits(7, 11); }
@@ -53,6 +64,8 @@ public:
 
 class STypeInstruction : public Instruction {
 public:
+    STypeInstruction(Instruction_t TargetInstr) : Instruction(TargetInstr) {}
+
     uint8_t getRs1Num() { return extractBits(15, 19); }
     uint8_t getRdNum()  { return extractBits(7, 11); }
 
@@ -64,6 +77,8 @@ public:
 
 class BTypeInstruction : public Instruction {
 public:
+    BTypeInstruction(Instruction_t TargetInstr) : Instruction(TargetInstr) {}
+
     uint8_t getRs2Num() { return extractBits(20, 24); }
     uint8_t getRs1Num() { return extractBits(15, 19); }
 
@@ -74,6 +89,8 @@ public:
 
 class UTypeInstruction : public Instruction {
 public:
+    BTypeInstruction(Instruction_t TargetInstr) : Instruction(TargetInstr) {}
+
     uint32_t getImm()  { return extractBits(12, 31); }
     uint8_t getRdNum() { return extractBits(7, 11); }
 
@@ -82,6 +99,8 @@ public:
 
 class JTypeInstruction : public Instruction {
 public:
+    JTypeInstruction(Instruction_t TargetInstr) : Instruction(TargetInstr) {}
+
     uint32_t getMergedImm();
     uint8_t getRdNum() { return extractBits(7, 11); }
 
@@ -90,6 +109,8 @@ public:
 
 class R4TypeInstruction : public Instruction {
 public:
+    R4TypeInstruction(Instruction_t TargetInstr) : Instruction(TargetInstr) {}
+
     uint8_t getFs3Num() { return extractBits(27, 31); }
     uint8_t getFs2Num() { return extractBits(20, 24); }
     uint8_t getFs1Num() { return extractBits(15, 19); }

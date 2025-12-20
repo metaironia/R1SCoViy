@@ -6,5 +6,5 @@ const Extension ExtensionRegistry::*getExtensionByName(const std::string &Extens
 
     return (ExtensionIt != RegisteredExtension.end())
                ? ExtensionIt->second.get()
-               : nullptr ;
+               : nullptr;
 }

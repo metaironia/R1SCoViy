@@ -3,14 +3,14 @@
 
 class Extension {
 private:
-    using InstructionPtrVariant = std::variant<std::unique_ptr<IType>,
-                                               std::unique_ptr<MemIType>,
-                                               std::unique_ptr<Rtype>,
-                                               std::unique_ptr<SType>,
-                                               std::unique_ptr<BType>,
-                                               std::unique_ptr<UType>,
-                                               std::unique_ptr<JType>, 
-                                               std::unique_ptr<R4Type>>;
+    using InstructionPtrVariant = std::variant<std::shared_ptr<IType>,
+                                               std::shared_ptr<MemIType>,
+                                               std::shared_ptr<Rtype>,
+                                               std::shared_ptr<SType>,
+                                               std::shared_ptr<BType>,
+                                               std::shared_ptr<UType>,
+                                               std::shared_ptr<JType>, 
+                                               std::shared_ptr<R4Type>>;
 
     std::vector<InstructionPtrVariant> ExtensionRelatedInstrs;
 

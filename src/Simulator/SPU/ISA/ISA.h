@@ -26,15 +26,12 @@ private:
 
 class RISCVISA::InstrTypeVisitor {
 private:
-    std::unique_ptr<ExecutorUnit> Executor;
+    ExecutorUnit *Executor;
 
     friend ExecutorUnit;
 
 public:
-    InstrTypeVisitor(const InstrTypeVisitor &Other);
-    InstrTypeVisitor &operator=(const InstrTypeVisitor &Other) = delete;
-
-    ~InstrTypeVisitor();
+    InstrTypeVisitor(ExecutorUnit &TargetExecutor);
     
     SetVisitorExecutor(ExecutorUnit &TargetExecutor);
 

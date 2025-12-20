@@ -20,20 +20,15 @@ InstructionVariant RISCVISA::getTypeOfInstr(uint32_t Instr) {
     
 }
 
-RISCVISA::InstrTypeVisitor::InstrTypeVisitor(const InstrTypeVisitor &Other)
-    : Executor() {}
+RISCVISA::InstrTypeVisitor::InstrTypeVisitor(ExecutorUnit &TargetExecutor)
+    : Executor(&TargetExecutor) {}
 
-RISCVISA::InstrTypeVisitor::~InstrTypeVisitor() {
-
-    Executor.release();
-}
 
 RISCVISA::InstrTypeVisitor::SetVisitorExecutor(ExecutorUnit &TargetExecutor) {
 
     if (!Executor && Executor != &TargetExecutor) {
 
-        Executor.release();
-        Executor = std::unique_ptr<ExecutorUnit>(&TargetExecutor);
+        Executor = &TargetExecutor;
     }
 }
 

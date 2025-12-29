@@ -1,8 +1,10 @@
+#include <memory>
+
+#include "src/Simulator/SPU/ISA/ISA.h"
 #include "Executor.h"
 
-ExecutorUnit::ExecutorUnit(std::unique_ptr<RAMControllerUnit> &&RAMControllerModule)
-    : RAMController(std::move(RAMControllerModule)), ISA(TargetISA), Visitor(this),
-      CurrentInstr(0) {}
+ExecutorUnit::ExecutorUnit(RAMUnit &RAM, ExtensionRegistry &TargetExtensionRegistry)
+    : RAMController(RAM), ISA(TargetExtensionRegistry), CurrentInstr(0), Registers() {}
 
 void ExecutorUnit::executeInstr(uint32_t Instr) {
 

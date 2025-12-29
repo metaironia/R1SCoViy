@@ -1,10 +1,18 @@
+#include <string_view>
+
 #include "ExtensionRegistry.h"
 
-const Extension ExtensionRegistry::*getExtensionByName(const std::string &ExtensionName) {
+const Extension *ExtensionRegistry::getExtensionByName(const std::string_view ExtensionName) const {
 
-    auto ExtensionIt = RegisteredExtension.find(ExtensionName);
+    auto ExtensionIt = RegisteredExtensions.find(ExtensionName);
 
-    return (ExtensionIt != RegisteredExtension.end())
+    return (ExtensionIt != RegisteredExtensions.end())
                ? ExtensionIt->second.get()
                : nullptr;
 }
+
+const std::vector<std::string_view> &ExtensionRegistry::getRegisteredExtensionsNames() const {
+
+    return RegisteredExtensionsNames;
+}
+

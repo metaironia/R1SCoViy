@@ -1,43 +1,50 @@
 #ifndef SRC_SIMULATOR_SPU_ISA_INSTRUCTIONREGISTRY_H
 #define SRC_SIMULATOR_SPU_ISA_INSTRUCTIONREGISTRY_H
 
+#include <unordered_map>
+#include <memory>
+#include <string_view>
+
+#include "InstructionTypes.h"
+#include "ExtensionRegistry.h"
+#include "ISA.h"
+
 class InstructionRegistry {
 private:
-    std::unordered_map<InstrID, std::shared_ptr<ITypeInstruction>> ITypeInstrs;
-    std::unordered_map<InstrID, std::shared_ptr<MemITypeInstruction>> MemITypeInstrs;
-    std::unordered_map<InstrID, std::shared_ptr<RTypeInstruction>> RTypeInstrs;
-    std::unordered_map<InstrID, std::shared_ptr<STypeInstruction>> STypeInstrs;
-    std::unordered_map<InstrID, std::shared_ptr<BTypeInstruction>> BTypeInstrs;
-    std::unordered_map<InstrID, std::shared_ptr<UTypeInstruction>> UTypeInstrs;
-    std::unordered_map<InstrID, std::shared_ptr<JTypeInstruction>> JTypeInstrs;
-    std::unordered_map<InstrID, std::shared_ptr<R4TypeInstruction>> R4TypeInstrs;
+    template <typename InstructionType>
+    class InstructionTypeHashMap {
+    private:
+        using InstructionsHashMap = std::unordered_map<InstructionID_t, std::shared_ptr<InstructionType>>;
 
-    class InstrTypeVisitor;
+        InstructionsHashMap Instrs;
+    
+    public:
+        InstructionsHashMap &getInstrs() { return Instrs; }
+    };
+
+    InstructionTypeHashMap<MemoryTypeInstruction> MemoryInstrs;
+    InstructionTypeHashMap<NotMemoryTypeInstruction> NotMemoryInstrs;
+
+    friend RISCVISA::InstrTypeVisitor;
+
+    class InstrTypeVisitor {
+    private:
+        InstructionRegistry *RelatedInstrRegistry;
+
+    public:
+        InstrTypeVisitor(InstructionRegistry *TargetInstrRegistry);
+
+        void operator()(const std::shared_ptr<MemoryTypeInstruction> &Instr);
+        void operator()(const std::shared_ptr<NotMemoryTypeInstruction> &Instr);
+    };
+
     InstrTypeVisitor Visitor;
 
 public:
     InstructionRegistry();
 
-    void registerInstrs(ExtensionRegistry &CurrentExtensionRegistry);
-};
-
-class InstructionRegistry::InstrTypeVisitor {
-private:
-    InstructionRegistry *RelatedInstrRegistry;
-
-public:
-    InstrTypeVisitor(InstructionRegistry &TargetInstrRegistry);
-
-private:
-    void operator()(std::shared_ptr<ITypeInstruction> &Instr);
-    void operator()(std::shared_ptr<MemITypeInstruction> &Instr);
-    void operator()(std::shared_ptr<RTypeInstruction> &Instr);
-    void operator()(std::shared_ptr<STypeInstruction> &Instr);
-    void operator()(std::shared_ptr<BTypeInstruction> &Instr);
-    void operator()(std::shared_ptr<UTypeInstruction> &Instr);
-    void operator()(std::shared_ptr<JTypeInstruction> &Instr);
-    void operator()(std::shared_ptr<R4TypeInstruction> &Instr);
-    
+    void registerInstrs(ExtensionRegistry &CurrentExtensionRegistry,
+                        std::initializer_list<std::string_view> ExtensionsNames);
 };
 
 #endif

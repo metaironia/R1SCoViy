@@ -2,30 +2,36 @@
 #define SRC_SIMULATOR_MEMORY_H
 
 #include <unordered_map>
-#include <array>
+#include <memory>
+#include <optional>
 
 const int LEVELS_OF_MEMORY = 2;
 
-const int MINIPAGE_DEFAULT_SIZE = 256;
-const int MEMORY_LEVEL_1_SIZE = 8;
-const int MEMORY_LEVEL_2_SIZE = 8;
+const int MINIPAGE_BITS_IN_OFFSET = 8;
+const int MEMORY_LEVEL_0_BITS_IN_OFFSET = 8;
+const int MEMORY_LEVEL_1_BITS_IN_OFFSET = 8;
+const int MEMORY_LEVEL_2_BITS_IN_OFFSET = 8;
+
+const int MINIPAGE_MAX_OFFSET = 2 << MINIPAGE_BITS_IN_OFFSET;
 
 class RAMUnit {
 private:
     static_assert(LEVELS_OF_MEMORY == 2,
                   "There should be 32 levels of memory!");
-    
-    static_assert(MEMORY_LEVEL_1_SIZE == 8,
-                  "Memory level 1 size should be equal to 8!");
-    static_assert(MEMORY_LEVEL_2_SIZE == 8,
-                  "Memory level 2 size should be equal to 8!");
+
+    static_assert(MEMORY_LEVEL_0_BITS_IN_OFFSET == 8,
+                  "Bit width of offset in memory level 0 should be equal to 8!");
+    static_assert(MEMORY_LEVEL_1_BITS_IN_OFFSET == 8,
+                  "Bit width of offset in memory level 1 should be equal to 8!");
+    static_assert(MEMORY_LEVEL_2_BITS_IN_OFFSET == 8,
+                  "Bit width of offset in memory level 2 should be equal to 8!");
 
     class Minipage;
 
     // 32-bit address is splitted to 8-bit on each level
-    using std::unordered_map<uint8_t, Minipage> MemoryLevel0;
-    using std::unordered_map<uint8_t, MemoryLevel0> MemoryLevel1;
-    using std::unordered_map<uint8_t, MemoryLevel1> MemoryLevel2;
+    using MemoryLevel0 = std::unordered_map<uint32_t, Minipage>;
+    using MemoryLevel1 = std::unordered_map<uint32_t, MemoryLevel0>;
+    using MemoryLevel2 = std::unordered_map<uint32_t, MemoryLevel1>;
     
     MemoryLevel2 Memory;
 
@@ -34,19 +40,26 @@ public:
 
     uint32_t getMemoryLevel2Offset(uint32_t Address);
     uint32_t getMemoryLevel1Offset(uint32_t Address);
+    uint32_t getMemoryLevel0Offset(uint32_t Address);
 
-    uint32_t getOffsetInMinipage();
+    uint32_t getOffsetInMinipage(uint32_t Address);
 
 private:
+    uint32_t extractBitsFromAddress(uint32_t Address, int StartBit, int EndBit);
+
     Minipage &findMinipage(uint32_t Address);
+
+    template <class MemoryHashMapT>
+    MemoryHashMapT &findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMapT> CurrMemoryLevelHashMap,
+                                          uint32_t CurrMemoryLevelOffset);
 };
 
 class RAMUnit::Minipage {
 private:
-    static_assert(MINIPAGE_DEFAULT_SIZE == 256,
-                  "Minipage default size should be 256!");
+    static_assert(MINIPAGE_BITS_IN_OFFSET == 8,
+                  "Bit width of offset in minipage should be 256!");
 
-    std::optional<std::shared_ptr<char>> MinipageContent;
+    std::optional<std::shared_ptr<char[]>> MinipageContent;
 
 public:
     void *getMinipageCellAddress(uint32_t Offset);
@@ -54,15 +67,10 @@ public:
 
 class RAMControllerUnit {
 private:    
-    std::unique_ptr<RAMUnit> RAM;
+    RAMUnit *RAM;
 
 public:
-    RAMControllerUnit(std::unique_ptr<RAMUnit> &&RAMModule);
-
-    RAMControllerUnit(const RAMController &Other);
-    RAMControllerUnit &operator=(const RAMController &Other);
-
-    ~RAMControllerUnit();
+    RAMControllerUnit(RAMUnit &RAMModule);
 
     uint8_t  getByte    (uint32_t Address);
     uint16_t getHalfword(uint32_t Address);
@@ -72,5 +80,25 @@ public:
     void storeHalfword(uint32_t Address, uint16_t HalfwordToStore);
     void storeWord    (uint32_t Address, uint32_t WordToStore);
 };
+
+template <class MemoryHashMapT>
+MemoryHashMapT &RAMUnit::findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMapT> CurrMemoryLevelHashMap,
+                                               uint32_t CurrMemoryLevelOffset) {
+
+    auto NextMemoryLevelHashMapIt = CurrMemoryLevelHashMap.find(CurrMemoryLevelOffset);
+
+    if (NextMemoryLevelHashMapIt == CurrMemoryLevelHashMap.end()) {
+
+        auto InsertResult = CurrMemoryLevelHashMap.insert(CurrMemoryLevelOffset,
+                                                          std::unordered_map<uint32_t, MemoryHashMapT>());
+        
+        NextMemoryLevelHashMapIt = InsertResult.first;
+
+        bool IsNewHashMapInserted = InsertResult.second;
+        assert(IsNewHashMapInserted);
+    }
+
+    return *NextMemoryLevelHashMapIt;
+}
 
 #endif

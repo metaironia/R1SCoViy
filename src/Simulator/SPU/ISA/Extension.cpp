@@ -1,6 +1,15 @@
+#include <vector>
+
+#include "src/Simulator/SPU/RegisterFile/RegisterFile.h"
 #include "Extension.h"
 
-void Extension::addNewInstr(std::unique_ptr<Instruction> NewInstruction) {
+const std::vector<Extension::InstructionPtrVariant> &Extension::getExtensionRelatedInstrs() const {
 
-    ExtensionRelatedInstrs.push_back(std::move(NewInstruction));
+    return ExtensionRelatedInstrs;
 }
+
+RegistersType Extension::getExtensionRegistersType() const {
+
+    return ExtensionRegistersType;
+}
+

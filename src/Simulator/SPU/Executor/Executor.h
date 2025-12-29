@@ -1,21 +1,30 @@
-#ifndef SRC_SIMULATOR_SPU_EXECUTOR_H
-#define SRC_SIMULATOR_SPU_EXECUTOR_H
+#ifndef SRC_SIMULATOR_SPU_EXECUTOR_EXECUTOR_H
+#define SRC_SIMULATOR_SPU_EXECUTOR_EXECUTOR_H
+
+#include <memory>
+
+#include "src/Simulator/Memory/Memory.h"
+#include "src/Simulator/SPU/ISA/ISA.h"
+#include "src/Simulator/SPU/RegisterFile/RegisterFile.h"
+#include "src/Simulator/SPU/ISA/InstructionTypes.h"
 
 class ExecutorUnit {
 private:
     RISCVISA ISA;
 
-    std::shared_ptr<RAMControllerUnit> RAMController;
+    RAMControllerUnit RAMController;
     RegisterFileUnit Registers;
 
-    uint32_t CurrentInstr;
+    Instruction_t CurrentInstr;
+    
+    friend RISCVISA::InstrTypeVisitor;
 
 public:
-    ExecutorUnit(std::shared_ptr<RAMControllerUnit> &&RAMControllerModule, RISCVISA TargetISA);
+    ExecutorUnit(RAMUnit &RAM, ExtensionRegistry &TargetExtensionRegistry);
 
-    void executeInstr(uint32_t Instr);
+    void executeInstr(Instruction_t Instr);
 
-    uint32_t getCurrentInstr();
-}
+    Instruction_t getCurrentInstr();
+};
 
 #endif

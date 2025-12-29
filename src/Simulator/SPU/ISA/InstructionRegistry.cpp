@@ -1,57 +1,45 @@
+#include <variant>
+#include <string_view>
+#include <cassert>
+#include <unordered_map>
+#include <memory>
+
 #include "InstructionRegistry.h"
+#include "InstructionTypes.h"
 
 InstructionRegistry::InstructionRegistry()
-    : InstrTypeVisitor(this) {}
+    : Visitor(this) {}
 
+void InstructionRegistry::registerInstrs(ExtensionRegistry &CurrentExtensionRegistry,
+                                         std::initializer_list<std::string_view> ExtensionsNames) {
 
-void InstructionRegistry::registerInstrs(ExtensionRegistry &CurrentExtensionRegistry) {
+    for (const auto &CurrentExtensionName: ExtensionsNames) {
 
-    for (const auto &CurrExtension: CurrentExtensionRegistry)
-        for (const auto &CurrInstr: CurrExtension) {
-
-            std::visit(Visitor(), CurrInstr);
+        const Extension *CurrentExtension = CurrentExtensionRegistry.getExtensionByName(CurrentExtensionName);
+        if (!CurrentExtension) {
+            continue; // TODO: log this
         }
+
+        for (const auto &CurrInstr: CurrentExtension->getExtensionRelatedInstrs()) {
+
+            std::visit(Visitor, CurrInstr);
+        }
+    }
 }
 
-InstructionRegistry::InstrTypeVisitor::InstrTypeVisitor(InstructionRegistry &TargetInstrRegistry)
-    : RelatedInstrRegistry(&TargetInstrRegistry) {}
+InstructionRegistry::InstrTypeVisitor::InstrTypeVisitor(InstructionRegistry *TargetInstrRegistry)
+    : RelatedInstrRegistry(TargetInstrRegistry) {}
 
-void operator()(std::shared_ptr<ITypeInstruction> &Instr) {
+void InstructionRegistry::InstrTypeVisitor::operator()(const std::shared_ptr<MemoryTypeInstruction> &Instr) {
 
-    ITypeInstrs[Instr->getInstrID()] = Instr;
+    assert(RelatedInstrRegistry);
+
+    RelatedInstrRegistry->MemoryInstrs.getInstrs()[Instr->getID()] = Instr;
 }
 
-void operator()(std::shared_ptr<MemITypeInstruction> &Instr) {
+void InstructionRegistry::InstrTypeVisitor::operator()(const std::shared_ptr<NotMemoryTypeInstruction> &Instr) {
 
-    MemITypeInstrs[Instr->getInstrID()] = Instr;
-}
+    assert(RelatedInstrRegistry);
 
-void operator()(std::shared_ptr<RTypeInstruction> &Instr) {
-
-    RTypeInstrs[Instr->getInstrID()] = Instr;
-}
-
-void operator()(std::shared_ptr<STypeInstruction> &Instr) {
-
-    STypeInstrs[Instr->getInstrID()] = Instr;
-}
-
-void operator()(std::shared_ptr<BTypeInstruction> &Instr) {
-
-    BTypeInstrs[Instr->getInstrID()] = Instr;
-}
-
-void operator()(std::shared_ptr<UTypeInstruction> &Instr) {
-
-    UTypeInstrs[Instr->getInstrID()] = Instr;
-}
-
-void operator()(std::shared_ptr<JTypeInstruction> &Instr) {
-
-    JTypeInstrs[Instr->getInstrID()] = Instr;
-}
-
-void operator()(std::shared_ptr<R4TypeInstruction> &Instr) {
-
-    R4TypeInstrs[Instr->getInstrID()] = Instr;
+    RelatedInstrRegistry->NotMemoryInstrs.getInstrs()[Instr->getID()] = Instr;
 }

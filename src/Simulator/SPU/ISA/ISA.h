@@ -1,47 +1,38 @@
 #ifndef SRC_SIMULATOR_SPU_ISA_ISA_H
 #define SRC_SIMULATOR_SPU_ISA_ISA_H
 
+#include "src/Simulator/SPU/Executor/Executor.h"
+
+#include "InstructionRegistry.h"
+#include "ExtensionRegistry.h"
+#include "InstructionTypes.h"
+
 class RISCVISA {
 private:
     InstructionRegistry RegisteredInstr;
 
-    class InstrTypeVisitor;
+public:
+    class InstrTypeVisitor {
+    private:
+        ExecutorUnit *Executor;
+
+    public:
+        InstrTypeVisitor(ExecutorUnit &TargetExecutor);
+        
+        void setVisitorExecutor(ExecutorUnit &TargetExecutor);
+
+        void operator()(const NotMemoryTypeInstruction &Instr);
+        void operator()(const MemoryTypeInstruction &Instr);
+    };
+
+    void executeInstr(ExecutorUnit &TargetExecutor);
+
+private:
     InstrTypeVisitor Visitor;
 
-    std::shared_ptr<ExtensionManager> Extensions;
-
-public:
-    template<typename T,
-             typename = std::enable_if_t<std::is_constructible_v<std::vector<std::string>, T>>>
-    explicit MyClass(T&& arg) 
-        : data_(std::forward<T>(arg)) {}
-
-    executeInstr(ExecutorUnit &TargetExecutor);
-
-private:
-    using InstructionVariant = std::variant<IType, MemIType, Rtype, SType, BType, UType, JType, R4Type>;
+    using InstructionVariant = std::variant<NotMemoryTypeInstruction, MemoryTypeInstruction>;
 
     InstructionVariant getTypeOfInstr(uint32_t Instr);
-}
-
-class RISCVISA::InstrTypeVisitor {
-private:
-    ExecutorUnit *Executor;
-
-    friend ExecutorUnit;
-
-public:
-    InstrTypeVisitor(ExecutorUnit &TargetExecutor);
-    
-    SetVisitorExecutor(ExecutorUnit &TargetExecutor);
-
-    void operator()(IType &Instr);
-    void operator()(MemIType &Instr);
-    void operator()(RType &Instr);
-    void operator()(SType &Instr);
-    void operator()(BType &Instr);
-    void operator()(UType &Instr);
-    void operator()(JType &Instr);
-}
+};
 
 #endif

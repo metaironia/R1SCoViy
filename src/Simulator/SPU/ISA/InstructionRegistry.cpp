@@ -7,8 +7,7 @@
 #include "InstructionRegistry.h"
 #include "InstructionTypes.h"
 
-InstructionRegistry::InstructionRegistry()
-    : Visitor(this) {}
+namespace r1scoviy {
 
 void InstructionRegistry::registerInstrs(ExtensionRegistry &CurrentExtensionRegistry,
                                          std::initializer_list<std::string_view> ExtensionsNames) {
@@ -19,27 +18,7 @@ void InstructionRegistry::registerInstrs(ExtensionRegistry &CurrentExtensionRegi
         if (!CurrentExtension) {
             continue; // TODO: log this
         }
-
-        for (const auto &CurrInstr: CurrentExtension->getExtensionRelatedInstrs()) {
-
-            std::visit(Visitor, CurrInstr);
-        }
     }
 }
 
-InstructionRegistry::InstrTypeVisitor::InstrTypeVisitor(InstructionRegistry *TargetInstrRegistry)
-    : RelatedInstrRegistry(TargetInstrRegistry) {}
-
-void InstructionRegistry::InstrTypeVisitor::operator()(const std::shared_ptr<MemoryTypeInstruction> &Instr) {
-
-    assert(RelatedInstrRegistry);
-
-    RelatedInstrRegistry->MemoryInstrs.getInstrs()[Instr->getID()] = Instr;
-}
-
-void InstructionRegistry::InstrTypeVisitor::operator()(const std::shared_ptr<NotMemoryTypeInstruction> &Instr) {
-
-    assert(RelatedInstrRegistry);
-
-    RelatedInstrRegistry->NotMemoryInstrs.getInstrs()[Instr->getID()] = Instr;
-}
+} // namespace r1scoviy

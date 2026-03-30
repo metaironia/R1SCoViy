@@ -45,7 +45,7 @@ public:
     uint32_t getOffsetInMinipage(uint32_t Address);
 
 private:
-    uint32_t extractBitsFromAddress(uint32_t Address, int StartBit, int EndBit);
+    uint32_t extractBitsFromAddress(uint32_t Address, unsigned StartBit, unsigned EndBit);
 
     Minipage &findMinipage(uint32_t Address);
 

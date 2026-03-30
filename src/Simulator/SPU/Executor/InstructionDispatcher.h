@@ -1,70 +1,75 @@
 #ifndef SRC_SIMULATOR_SPU_EXECUTOR_INSTRUCTIONDISPATCHER_H 
 #define SRC_SIMULATOR_SPU_EXECUTOR_INSTRUCTIONDISPATCHER_H 
 
-#include "src/Simulator/SPU/ISA/InstructionTypes.h"
+#include <cstdint>
 
 class InstructionDispatcher {
 public:
-    virtual InstructionID_t getInstrID(uint32_t Instr) const = 0;
+    virtual uint32_t getInstrID(uint32_t Instr) const = 0;
     
+    uint32_t getOpcode() const { return extractBits(0, 6); }
+
 protected:
     virtual ~InstructionDispatcher() = default;
     
     uint32_t extractBits(int StartBit, int EndBit) const;
 };
 
-class ITypeInstructionDispatcher: public InstructionDispatcher {
-public:
-    uint32_t getRs1Num() const { return extractBits(15, 19); }
-    uint32_t getRdNum() const  { return extractBits(7, 11); }
-
-protected:
-    uint32_t getImm() const { return extractBits(20, 31); }
-
-    uint32_t CraftSignExtImm(uint32_t Imm, int ImmSizeInBits) {
-        
-        int Mask = 1U << (ImmSizeInBits - 1);  
-
-        return (Imm ^ Mask) - Mask;   
-    }
-};
-
-class MemITypeInstructionDispatcher: public InstructionDispatcher {
-protected:
-    uint32_t getImm() const  { return extractBits(20, 31); }
-    uint32_t getRs1Num() const { return extractBits(15, 19); }
-    uint32_t getRdNum() const  { return extractBits(7, 11); }
-
-    uint32_t getSignExtImm(uint32_t Imm);
-};
-
 class RTypeInstructionDispatcher: public InstructionDispatcher {
 public:
-    uint32_t getRs2Num() const { return extractBits(20, 24); }
+    uint32_t getInstrID(uint32_t Instr) const override;
+
+    uint32_t getRdNum()  const { return extractBits(7, 11); }
+    uint32_t getFunct3() const { return extractBits(25, 31); }    
     uint32_t getRs1Num() const { return extractBits(15, 19); }
-    uint32_t getRdNum() const  { return extractBits(7, 11); }
+    uint32_t getRs2Num() const { return extractBits(20, 24); }
+    uint32_t getFunct7() const { return extractBits(25, 31); }    
+};
+
+class ITypeInstructionDispatcher: public InstructionDispatcher {
+public:
+    uint32_t getInstrID(uint32_t Instr) const override;    
+
+    uint32_t getRdNum()  const { return extractBits(7, 11); }
+    uint32_t getFunct3() const { return extractBits(25, 31); }    
+    uint32_t getRs1Num() const { return extractBits(15, 19); }
+    uint32_t getImm()    const { return extractBits(20, 31); }
+
+    // uint32_t CraftSignExtImm(uint32_t Imm, unsigned ImmSizeInBits) {
+        
+    //     uint32_t Mask = 1U << (ImmSizeInBits - 1);  
+
+    //     return (Imm ^ Mask) - Mask;   
+    // }
 };
 
 class STypeInstructionDispatcher : public InstructionDispatcher {
 public:
+    uint32_t getInstrID(uint32_t Instr) const override;    
+
+    uint32_t getFunct3() const { return extractBits(25, 31); }
+    uint32_t getRs2Num() const { return extractBits(20, 24); }   
     uint32_t getRs1Num() const { return extractBits(15, 19); }
-    uint32_t getRdNum() const  { return extractBits(7, 11); }
 
     uint32_t getMergedImm() const;
 };
 
 class BTypeInstructionDispatcher : public InstructionDispatcher {
 public:
-    uint32_t getRs2Num() const { return extractBits(20, 24); }
+    uint32_t getInstrID(uint32_t Instr) const override;    
+
+    uint32_t getFunct3() const { return extractBits(25, 31); }
+    uint32_t getRs2Num() const { return extractBits(20, 24); }   
     uint32_t getRs1Num() const { return extractBits(15, 19); }
 
     uint32_t getMergedImm() const;
-
 };
 
 class UTypeInstructionDispatcher : public InstructionDispatcher {
 public:
-    uint32_t getImm() const { return extractBits(12, 31); }
+    uint32_t getInstrID(uint32_t Instr) const override;
+
+    uint32_t getImm()   const { return extractBits(12, 31); }
     uint32_t getRdNum() const { return extractBits(7, 11); }
 };
 

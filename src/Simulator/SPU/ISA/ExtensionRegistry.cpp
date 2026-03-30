@@ -2,6 +2,8 @@
 
 #include "ExtensionRegistry.h"
 
+namespace r1scoviy {
+
 const Extension *ExtensionRegistry::getExtensionByName(const std::string_view ExtensionName) const {
 
     auto ExtensionIt = RegisteredExtensions.find(ExtensionName);
@@ -15,4 +17,6 @@ const std::vector<std::string_view> &ExtensionRegistry::getRegisteredExtensionsN
 
     return RegisteredExtensionsNames;
 }
+
+} // namespace r1scoviy
 

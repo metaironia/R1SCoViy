@@ -45,34 +45,34 @@ RAMUnit::Minipage &RAMUnit::findMinipage(uint32_t Address) {
     return MinipageIt->second;
 }
 
-uint32_t RAMUnit::extractBitsFromAddress(uint32_t Address, int StartBit, int EndBit) {
+uint32_t RAMUnit::extractBitsFromAddress(uint32_t Address, unsigned StartBit, unsigned EndBit) {
 
-    int LeftShift = sizeof(Address) * 8 - (EndBit + 1);
-    int RightShift = StartBit + LeftShift;
+    unsigned LeftShift = sizeof(Address) * 8 - (EndBit + 1);
+    unsigned RightShift = StartBit + LeftShift;
 
     return ((Address << LeftShift) >> RightShift);
 }
 
 uint32_t RAMUnit::getOffsetInMinipage(uint32_t Address) {
 
-    int StartBit = 0;
-    int EndBit = MINIPAGE_BITS_IN_OFFSET - 1;
+    unsigned StartBit = 0;
+    unsigned EndBit = MINIPAGE_BITS_IN_OFFSET - 1;
 
     return extractBitsFromAddress(Address, StartBit, EndBit);
 }
 
 uint32_t RAMUnit::getMemoryLevel1Offset(uint32_t Address) {
 
-    int StartBit = MINIPAGE_BITS_IN_OFFSET;
-    int EndBit = StartBit + MEMORY_LEVEL_0_BITS_IN_OFFSET - 1;
+    unsigned StartBit = MINIPAGE_BITS_IN_OFFSET;
+    unsigned EndBit = StartBit + MEMORY_LEVEL_0_BITS_IN_OFFSET - 1;
 
     return extractBitsFromAddress(Address, StartBit, EndBit);
 }
 
 uint32_t RAMUnit::getMemoryLevel2Offset(uint32_t Address) {
   
-    int StartBit = MINIPAGE_BITS_IN_OFFSET + MEMORY_LEVEL_0_BITS_IN_OFFSET + MEMORY_LEVEL_1_BITS_IN_OFFSET;
-    int EndBit = StartBit + MEMORY_LEVEL_2_BITS_IN_OFFSET - 1;
+    unsigned StartBit = MINIPAGE_BITS_IN_OFFSET + MEMORY_LEVEL_0_BITS_IN_OFFSET + MEMORY_LEVEL_1_BITS_IN_OFFSET;
+    unsigned EndBit = StartBit + MEMORY_LEVEL_2_BITS_IN_OFFSET - 1;
 
     return extractBitsFromAddress(Address, StartBit, EndBit);
 }

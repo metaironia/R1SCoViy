@@ -1,22 +1,22 @@
 #ifndef SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 #define SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 
-#include "src/Simulator/Memory/Memory.h"
+#include "src/Simulator/SPU/Executor/Executor.h"
 
-using Instruction_t = uint32_t;
-using InstructionID_t = int;
+namespace r1scoviy {
 
-class InstructionImpl {
+class Instruction {
+private:
+    uint32_t Opcode;
+
 public:
-    virtual void executeInstr(ExecutorUnit &Executor) const = 0;   
+    virtual void executeInstr(ExecutorUnit &TargetExecutor) const = 0;
+
+    uint32_t getOpcode() { return Opcode; }
+
+    virtual ~Instruction() = default;
 };
 
-class NotMemoryTypeInstruction: public Instruction {
-public:
-    NotMemoryTypeInstruction(Instruction_t TargetInstr) : Instruction(TargetInstr) {}
-
-    virtual void operator()(RegisterFileUnit &RegisterFile) const = 0;
-};
-
+} // namespace r1scoviy
 
 #endif

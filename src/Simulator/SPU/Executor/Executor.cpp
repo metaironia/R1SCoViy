@@ -1,10 +1,12 @@
-#include <memory>
-
-#include "src/Simulator/SPU/ISA/ISA.h"
 #include "Executor.h"
 
+namespace r1scoviy {
+
 ExecutorUnit::ExecutorUnit(RAMUnit &RAM, ExtensionRegistry &TargetExtensionRegistry)
-    : RAMController(RAM), ISA(TargetExtensionRegistry), CurrentInstr(0), Registers() {}
+    : RAMController(RAM), Registers(), CurrInstructionParams{}, PC(0) {
+
+    
+}
 
 void ExecutorUnit::executeInstr(uint32_t Instr) {
 
@@ -16,3 +18,4 @@ uint32_t ExecutorUnit::getCurrentInstr() {
     return CurrentInstr;
 }
 
+} // namespace r1scoviy

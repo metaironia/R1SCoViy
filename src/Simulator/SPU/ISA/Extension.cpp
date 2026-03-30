@@ -1,11 +1,13 @@
-#include <vector>
+#include <cstdio>
 
 #include "src/Simulator/SPU/RegisterFile/RegisterFile.h"
 #include "Extension.h"
 
-const std::vector<Extension::InstructionPtrVariant> &Extension::getExtensionRelatedInstrs() const {
+namespace r1scoviy {
 
-    return ExtensionRelatedInstrs;
+void Extension::addNewInstr(std::shared_ptr<Instruction> &NewInstruction) {
+
+    Instructions[NewInstruction.getOpcode()] = NewInstruction;
 }
 
 RegistersType Extension::getExtensionRegistersType() const {
@@ -13,3 +15,12 @@ RegistersType Extension::getExtensionRegistersType() const {
     return ExtensionRegistersType;
 }
 
+void Extension::dump() const {
+
+    for (const auto &Instr: Instructions) {
+
+        fprintf(stderr, "Instruction id: %d\n", Instr.first);
+    }
+}
+
+} // namespace r1scoviy

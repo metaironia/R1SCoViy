@@ -8,6 +8,8 @@
 
 #include "Extension.h"
 
+namespace r1scoviy {
+
 class ExtensionRegistry {
 private:
     std::unordered_map<std::string_view, std::unique_ptr<Extension>> RegisteredExtensions;
@@ -22,7 +24,7 @@ public:
 };
 
 template <typename ExtensionClassName>
-void registerExtension() {
+void ExtensionRegistry::registerExtension() {
 
     std::unique_ptr<ExtensionClassName> NewExtension = std::make_unique<ExtensionClassName>();
     std::string_view NewExtensionName = NewExtension.getName(); 
@@ -30,5 +32,7 @@ void registerExtension() {
     RegisteredExtensionsNames.push_back(NewExtensionName);
     RegisteredExtensions[NewExtensionName] = std::move(NewExtension);
 }
+
+} // namespace r1scoviy
 
 #endif

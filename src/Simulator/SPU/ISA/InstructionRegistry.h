@@ -9,36 +9,11 @@
 #include "ExtensionRegistry.h"
 #include "ISA.h"
 
+namespace r1scoviy {
+
 class InstructionRegistry {
 private:
-    template <typename InstructionType>
-    class InstructionTypeHashMap {
-    private:
-        using InstructionsHashMap = std::unordered_map<InstructionID_t, std::shared_ptr<InstructionType>>;
-
-        InstructionsHashMap Instrs;
-    
-    public:
-        InstructionsHashMap &getInstrs() { return Instrs; }
-    };
-
-    InstructionTypeHashMap<MemoryTypeInstruction> MemoryInstrs;
-    InstructionTypeHashMap<NotMemoryTypeInstruction> NotMemoryInstrs;
-
-    friend RISCVISA::InstrTypeVisitor;
-
-    class InstrTypeVisitor {
-    private:
-        InstructionRegistry *RelatedInstrRegistry;
-
-    public:
-        InstrTypeVisitor(InstructionRegistry *TargetInstrRegistry);
-
-        void operator()(const std::shared_ptr<MemoryTypeInstruction> &Instr);
-        void operator()(const std::shared_ptr<NotMemoryTypeInstruction> &Instr);
-    };
-
-    InstrTypeVisitor Visitor;
+    std::unordered_map<int, std::shared_ptr<Instruction>> Instructions;
 
 public:
     InstructionRegistry();
@@ -46,5 +21,7 @@ public:
     void registerInstrs(ExtensionRegistry &CurrentExtensionRegistry,
                         std::initializer_list<std::string_view> ExtensionsNames);
 };
+
+} // namespace r1scoviy
 
 #endif

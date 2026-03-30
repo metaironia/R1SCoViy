@@ -4,27 +4,33 @@
 #include <memory>
 
 #include "src/Simulator/Memory/Memory.h"
-#include "src/Simulator/SPU/ISA/ISA.h"
+#include "src/Simulator/SPU/ISA/InstructionRegistry.h"
 #include "src/Simulator/SPU/RegisterFile/RegisterFile.h"
-#include "src/Simulator/SPU/ISA/InstructionTypes.h"
+
+namespace r1scoviy {
 
 class ExecutorUnit {
 private:
-    RISCVISA ISA;
+    InstructionRegistry Instructions;
 
     RAMControllerUnit RAMController;
     RegisterFileUnit Registers;
 
-    Instruction_t CurrentInstr;
-    
-    friend RISCVISA::InstrTypeVisitor;
+    struct {
+        uint32_t Imm;
+        int Rs1;
+        int Rs2;
+        int Rd;
+    } CurrInstructionParams;
+
+    uint32_t PC;
 
 public:
     ExecutorUnit(RAMUnit &RAM, ExtensionRegistry &TargetExtensionRegistry);
 
-    void executeInstr(Instruction_t Instr);
-
-    Instruction_t getCurrentInstr();
+    void executeInstr(uint32_t Instr);
 };
+
+} // namespace r1scoviy
 
 #endif

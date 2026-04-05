@@ -1,7 +1,5 @@
 set(LIB_NAME QuillLogHelper)
 
-find_package(quill REQUIRED)
-
 include(CommonOptions)
 
 add_library(${LIB_NAME} STATIC

@@ -31,4 +31,4 @@ target_include_directories(${EXECUTABLE_NAME}
 
 set_common_compile_options(${EXECUTABLE_NAME})
 
-target_link_libraries(${EXECUTABLE_NAME} PRIVATE QuillLogHelper)
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE QuillLogHelper quill::quill)

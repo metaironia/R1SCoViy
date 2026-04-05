@@ -1,6 +1,13 @@
 set(LIB_NAME QuillLogHelper)
 
-find_package(quill REQUIRED)
+include(FetchContent)
+FetchContent_Declare(
+    quill
+    GIT_REPOSITORY https://github.com/odygrd/quill.git
+    GIT_TAG v11.1.0
+    GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(quill)
 
 include(CommonOptions)
 

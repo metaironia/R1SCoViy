@@ -6,7 +6,9 @@
 #include <cstdint>
 #include <array>
 
-#include "src/Simulator/SPU/ISA/ExtensionRegistry.h"
+namespace r1scoviy {
+class ExtensionRegistry;
+}
 
 using Register_t = uint32_t;
 using RegisterID_t = int;
@@ -26,7 +28,7 @@ private:
     std::unordered_map<RegistersType, Registers> RegistersGroups;
 
 public:
-    RegisterFileUnit(ExtensionRegistry &TargetExtesionRegistry);
+    RegisterFileUnit(r1scoviy::ExtensionRegistry &TargetExtesionRegistry);
 
     Register_t &getReg(RegistersType CurrentRegistersType, RegisterID_t RegisterID);
 };

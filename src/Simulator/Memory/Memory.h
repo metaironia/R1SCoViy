@@ -1,9 +1,11 @@
 #ifndef SRC_SIMULATOR_MEMORY_H
 #define SRC_SIMULATOR_MEMORY_H
 
+#include <cstdint>
 #include <unordered_map>
 #include <memory>
 #include <optional>
+#include <cassert>
 
 const int LEVELS_OF_MEMORY = 2;
 
@@ -50,7 +52,7 @@ private:
     Minipage &findMinipage(uint32_t Address);
 
     template <class MemoryHashMapT>
-    MemoryHashMapT &findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMapT> CurrMemoryLevelHashMap,
+    MemoryHashMapT &findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMapT>& CurrMemoryLevelHashMap,
                                           uint32_t CurrMemoryLevelOffset);
 };
 
@@ -62,6 +64,8 @@ private:
     std::optional<std::shared_ptr<char[]>> MinipageContent;
 
 public:
+    Minipage() = default;
+
     void *getMinipageCellAddress(uint32_t Offset);
 };
 
@@ -82,23 +86,19 @@ public:
 };
 
 template <class MemoryHashMapT>
-MemoryHashMapT &RAMUnit::findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMapT> CurrMemoryLevelHashMap,
+MemoryHashMapT &RAMUnit::findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMapT>& CurrMemoryLevelHashMap,
                                                uint32_t CurrMemoryLevelOffset) {
 
     auto NextMemoryLevelHashMapIt = CurrMemoryLevelHashMap.find(CurrMemoryLevelOffset);
 
     if (NextMemoryLevelHashMapIt == CurrMemoryLevelHashMap.end()) {
 
-        auto InsertResult = CurrMemoryLevelHashMap.insert(CurrMemoryLevelOffset,
-                                                          std::unordered_map<uint32_t, MemoryHashMapT>());
+        auto InsertResult = CurrMemoryLevelHashMap.try_emplace(CurrMemoryLevelOffset);
         
         NextMemoryLevelHashMapIt = InsertResult.first;
-
-        bool IsNewHashMapInserted = InsertResult.second;
-        assert(IsNewHashMapInserted);
     }
 
-    return *NextMemoryLevelHashMapIt;
+    return NextMemoryLevelHashMapIt->second;
 }
 
 #endif

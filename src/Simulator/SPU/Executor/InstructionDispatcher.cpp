@@ -1,5 +1,7 @@
 #include "InstructionDispatcher.h"
 
+namespace r1scoviy {
+
 uint32_t InstructionDispatcher::extractBits(uint32_t Instruction, int StartBit, int EndBit) {
    
     if (StartBit > EndBit || EndBit > 31)
@@ -83,3 +85,5 @@ uint32_t BTypeInstructionDispatcher::getMergedImm(uint32_t Instr) const {
 
     return (Bit12 << 12) | (Bits10to5 << 5) | (Bits4to1 << 1) | (Bit11 << 11);
 }
+
+} // namespace r1scoviy

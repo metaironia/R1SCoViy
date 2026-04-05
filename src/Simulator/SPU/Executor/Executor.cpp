@@ -1,4 +1,5 @@
 #include "Executor.h"
+#include "src/Simulator/SPU/Executor/InstructionDispatcher.h"
 
 namespace r1scoviy {
 
@@ -10,7 +11,7 @@ ExecutorUnit::ExecutorUnit(RAMUnit &RAM, ExtensionRegistry &TargetExtensionRegis
 
 void ExecutorUnit::executeInstr(uint32_t Instr) {
 
-    ISA.executeInstr(*this);
+    Instructions. InstructionDispatcher::getOpcode(Instr);
 }
 
 uint32_t ExecutorUnit::getCurrentInstr() {

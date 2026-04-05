@@ -7,13 +7,15 @@
 
 #include "InstructionTypes.h"
 #include "ExtensionRegistry.h"
-#include "ISA.h"
+#include "src/Simulator/SPU/Executor/InstructionDispatcher.h"
 
 namespace r1scoviy {
 
 class InstructionRegistry {
 private:
-    std::unordered_map<int, std::shared_ptr<Instruction>> Instructions;
+    std::unordered_map<uint32_t, std::shared_ptr<Instruction>> Instructions;
+
+    std::unordered_map<uint32_t, std::shared_ptr<InstructionDispatcher>> OpcodesDispatchers;
 
 public:
     InstructionRegistry();

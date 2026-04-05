@@ -3,6 +3,8 @@
 
 #include <cstdint>
 
+namespace r1scoviy {
+
 class InstructionDispatcher {
 public:
     virtual uint32_t getInstrID(uint32_t Instr) const = 0;
@@ -10,9 +12,10 @@ public:
 protected:
     virtual ~InstructionDispatcher() = default;
 
+public:
     static uint32_t extractBits(uint32_t Instruction, int StartBit, int EndBit);
 
-    uint32_t getOpcode(uint32_t Instr) const { return extractBits(Instr, 0, 6); }
+    static uint32_t getOpcode(uint32_t Instr) { return extractBits(Instr, 0, 6); }
 };
 
 class RTypeInstructionDispatcher: public InstructionDispatcher {
@@ -79,5 +82,7 @@ public:
     uint32_t getFs1Num(uint32_t Instr) const { return extractBits(Instr, 15, 19); }
     uint32_t getFdNum(uint32_t Instr) const { return extractBits(Instr, 7, 11); }
 };
+
+} // namespace r1scoviy
 
 #endif

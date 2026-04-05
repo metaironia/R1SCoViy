@@ -11,7 +11,25 @@ ExecutorUnit::ExecutorUnit(RAMUnit &RAM, ExtensionRegistry &TargetExtensionRegis
 
 void ExecutorUnit::executeInstr(uint32_t Instr) {
 
-    Instructions. InstructionDispatcher::getOpcode(Instr);
+    const uint32_t Opcode = InstructionDispatcher::getOpcode(Instr);
+
+    const auto &OpcodesDispatchers = Instructions.getOpcodesDispatchers();
+    
+    auto DispatcherIt = OpcodesDispatchers.find(Opcode);
+    if (DispatcherIt == OpcodesDispatchers.end()) {
+        return;
+    }
+    const auto &Dispatcher = DispatcherIt->second;
+
+    const uint32_t InstructionID = Dispatcher->getInstrID(Instr);
+
+    const auto &AllInstructions = Instructions.getInstructions();
+    auto InstructionIt = AllInstructions.find(InstructionID);
+    if (InstructionIt == AllInstructions.end()) {
+        return;
+    }
+
+    InstructionIt->second->executeInstr(*this);
 }
 
 uint32_t ExecutorUnit::getCurrentInstr() {

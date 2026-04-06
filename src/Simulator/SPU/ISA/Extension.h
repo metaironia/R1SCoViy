@@ -24,9 +24,9 @@ public:
 protected:
     Extension() = default;
     
+public:
     virtual ~Extension() = default;
 
-public:
     void addNewInstr(std::shared_ptr<Instruction> &NewInstruction);
 };
 

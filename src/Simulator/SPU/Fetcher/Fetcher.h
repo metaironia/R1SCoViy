@@ -1,13 +1,15 @@
 #ifndef SRC_SIMULATOR_SPU_FETCHER_H
 #define SRC_SIMULATOR_SPU_FETCHER_H
 
-class Fetcher {
+#include <cstdint>
+
+namespace r1scoviy {
+
+class FetcherUnit {
 public:
-    void fetchNextInstruction();
+    uint32_t fetchNextInstruction();
+};
 
-
-
-}
-
+} // namespace r1scoviy
 
 #endif

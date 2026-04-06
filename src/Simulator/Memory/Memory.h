@@ -16,6 +16,8 @@ const int MEMORY_LEVEL_2_BITS_IN_OFFSET = 8;
 
 const int MINIPAGE_MAX_OFFSET = 2 << MINIPAGE_BITS_IN_OFFSET;
 
+namespace r1scoviy {
+
 class RAMUnit {
 private:
     static_assert(LEVELS_OF_MEMORY == 2,
@@ -76,6 +78,8 @@ private:
 public:
     RAMControllerUnit(RAMUnit &RAMModule);
 
+    RAMUnit* getRAM() const { return RAM; }
+
     uint8_t  getByte    (uint32_t Address);
     uint16_t getHalfword(uint32_t Address);
     uint32_t getWord    (uint32_t Address);
@@ -100,5 +104,7 @@ MemoryHashMapT &RAMUnit::findNextMemoryHashMap(std::unordered_map<uint32_t, Memo
 
     return NextMemoryLevelHashMapIt->second;
 }
+
+} // namespace r1scoviy
 
 #endif

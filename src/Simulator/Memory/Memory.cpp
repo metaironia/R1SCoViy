@@ -3,6 +3,8 @@
 
 #include "Memory.h"
 
+namespace r1scoviy {
+
 RAMControllerUnit::RAMControllerUnit(RAMUnit &RAMModule) 
     : RAM(&RAMModule) {}
 
@@ -36,7 +38,7 @@ RAMUnit::Minipage &RAMUnit::findMinipage(uint32_t Address) {
             findNextMemoryHashMap<MemoryLevel0>(MemoryLevel1HashMap, 
                                                 getMemoryLevel1Offset(Address));  
 
-    uint8_t MemoryLevel0Offset = getMemoryLevel0Offset(Address);
+    uint32_t MemoryLevel0Offset = getMemoryLevel0Offset(Address);
 
     auto MinipageIt = MemoryLevel0HashMap.find(MemoryLevel0Offset);
     if (MinipageIt == MemoryLevel0HashMap.end())
@@ -57,6 +59,14 @@ uint32_t RAMUnit::getOffsetInMinipage(uint32_t Address) {
 
     unsigned StartBit = 0;
     unsigned EndBit = MINIPAGE_BITS_IN_OFFSET - 1;
+
+    return extractBitsFromAddress(Address, StartBit, EndBit);
+}
+
+uint32_t RAMUnit::getMemoryLevel0Offset(uint32_t Address) {
+
+    unsigned StartBit = MINIPAGE_BITS_IN_OFFSET + MEMORY_LEVEL_0_BITS_IN_OFFSET;
+    unsigned EndBit = StartBit + MEMORY_LEVEL_1_BITS_IN_OFFSET - 1;
 
     return extractBitsFromAddress(Address, StartBit, EndBit);
 }
@@ -136,3 +146,5 @@ void RAMControllerUnit::storeWord(uint32_t Address, uint32_t WordToStore) {
 
     *(static_cast<uint32_t *>(MemoryLocation)) = WordToStore;
 }
+
+} // namespace r1scoviy

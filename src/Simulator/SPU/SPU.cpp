@@ -1,23 +1,11 @@
 #include "SPU.h"
 
-SPU::SPU(std::unique_ptr<RAMControllerUnit> &&RAMControllerModule)
-    : ExecutorUnit(std::move(RAMControllerModule)), CurrentInstructionAddress(0) {}
+namespace r1scoviy {
 
-SPU::SPU(const &SPU Other)
-    : RAM(Other.get()) {}
+SPU::SPU(std::unique_ptr<RAMControllerUnit>&& RAMControllerModule, ExtensionRegistry& extensionRegistry)
+    : Executor(*RAMControllerModule->getRAM(), extensionRegistry), CurrentInstructionAddress(0) {}
 
-SPU::SPU &operator=(const &SPU Other) {
-    
-    RAMController.release();
-    RAMController.reset(Other.get());
-
-    return *this;
-}
-
-SPU::~SPU() {
-
-    RAMController.release();
-}
+SPU::~SPU() = default;
 
 void SPU::start(uint32_t StartInstructionAddress) {
 
@@ -30,3 +18,5 @@ void SPU::start(uint32_t StartInstructionAddress) {
         Executor.executeInstr(CurrInstr);
     }
 }
+
+} // namespace r1scoviy

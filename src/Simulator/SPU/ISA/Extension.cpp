@@ -7,7 +7,7 @@ namespace r1scoviy {
 
 void Extension::addNewInstr(std::shared_ptr<Instruction> &NewInstruction) {
 
-    Instructions[NewInstruction.getOpcode()] = NewInstruction;
+    Instructions[NewInstruction->getOpcode()] = NewInstruction;
 }
 
 RegistersType Extension::getExtensionRegistersType() const {

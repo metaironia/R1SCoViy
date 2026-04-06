@@ -4,14 +4,15 @@
 #include <array>
 
 #include "RegisterFile.h"
+#include "src/Simulator/SPU/ISA/ExtensionRegistry.h"
 
-RegisterFileUnit::RegisterFileUnit(ExtensionRegistry &TargetExtesionRegistry) {
+RegisterFileUnit::RegisterFileUnit(r1scoviy::ExtensionRegistry &TargetExtesionRegistry) {
 
     const std::vector<std::string_view> &ExtensionNames = TargetExtesionRegistry.getRegisteredExtensionsNames();
 
     for (const auto &CurrentExtensionName: ExtensionNames) {
 
-        const Extension *CurrentExtension = TargetExtesionRegistry.getExtensionByName(CurrentExtensionName);
+        const r1scoviy::Extension *CurrentExtension = TargetExtesionRegistry.getExtensionByName(CurrentExtensionName);
         assert(CurrentExtension);
         
         RegistersType CurrentExtensionRegisterTypes = CurrentExtension->getExtensionRegistersType();

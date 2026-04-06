@@ -1,0 +1,2 @@
+/usr/bin/ar qc libQuillLogHelper.a CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o
+/usr/bin/ranlib libQuillLogHelper.a

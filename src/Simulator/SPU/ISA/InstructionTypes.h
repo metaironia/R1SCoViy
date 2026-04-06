@@ -1,9 +1,11 @@
 #ifndef SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 #define SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 
-#include "src/Simulator/SPU/Executor/Executor.h"
+#include <cstdint>
 
 namespace r1scoviy {
+
+class ExecutorUnit;
 
 class Instruction {
 private:

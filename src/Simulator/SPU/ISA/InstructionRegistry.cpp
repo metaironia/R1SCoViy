@@ -9,6 +9,8 @@
 
 namespace r1scoviy {
 
+InstructionRegistry::InstructionRegistry() = default;
+
 void InstructionRegistry::registerInstrs(ExtensionRegistry &CurrentExtensionRegistry,
                                          std::initializer_list<std::string_view> ExtensionsNames) {
 

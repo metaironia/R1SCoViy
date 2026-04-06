@@ -1,9 +1,11 @@
 #ifndef SRC_SIMULATOR_MEMORY_H
 #define SRC_SIMULATOR_MEMORY_H
 
+#include <cstdint>
 #include <unordered_map>
 #include <memory>
 #include <optional>
+#include <cassert>
 
 const int LEVELS_OF_MEMORY = 2;
 
@@ -13,6 +15,8 @@ const int MEMORY_LEVEL_1_BITS_IN_OFFSET = 8;
 const int MEMORY_LEVEL_2_BITS_IN_OFFSET = 8;
 
 const int MINIPAGE_MAX_OFFSET = 2 << MINIPAGE_BITS_IN_OFFSET;
+
+namespace r1scoviy {
 
 class RAMUnit {
 private:
@@ -50,7 +54,7 @@ private:
     Minipage &findMinipage(uint32_t Address);
 
     template <class MemoryHashMapT>
-    MemoryHashMapT &findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMapT> CurrMemoryLevelHashMap,
+    MemoryHashMapT &findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMapT>& CurrMemoryLevelHashMap,
                                           uint32_t CurrMemoryLevelOffset);
 };
 
@@ -62,6 +66,8 @@ private:
     std::optional<std::shared_ptr<char[]>> MinipageContent;
 
 public:
+    Minipage() = default;
+
     void *getMinipageCellAddress(uint32_t Offset);
 };
 
@@ -71,6 +77,8 @@ private:
 
 public:
     RAMControllerUnit(RAMUnit &RAMModule);
+
+    RAMUnit* getRAM() const { return RAM; }
 
     uint8_t  getByte    (uint32_t Address);
     uint16_t getHalfword(uint32_t Address);
@@ -82,23 +90,21 @@ public:
 };
 
 template <class MemoryHashMapT>
-MemoryHashMapT &RAMUnit::findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMapT> CurrMemoryLevelHashMap,
+MemoryHashMapT &RAMUnit::findNextMemoryHashMap(std::unordered_map<uint32_t, MemoryHashMapT>& CurrMemoryLevelHashMap,
                                                uint32_t CurrMemoryLevelOffset) {
 
     auto NextMemoryLevelHashMapIt = CurrMemoryLevelHashMap.find(CurrMemoryLevelOffset);
 
     if (NextMemoryLevelHashMapIt == CurrMemoryLevelHashMap.end()) {
 
-        auto InsertResult = CurrMemoryLevelHashMap.insert(CurrMemoryLevelOffset,
-                                                          std::unordered_map<uint32_t, MemoryHashMapT>());
+        auto InsertResult = CurrMemoryLevelHashMap.try_emplace(CurrMemoryLevelOffset);
         
         NextMemoryLevelHashMapIt = InsertResult.first;
-
-        bool IsNewHashMapInserted = InsertResult.second;
-        assert(IsNewHashMapInserted);
     }
 
-    return *NextMemoryLevelHashMapIt;
+    return NextMemoryLevelHashMapIt->second;
 }
+
+} // namespace r1scoviy
 
 #endif

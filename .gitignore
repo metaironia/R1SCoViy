@@ -1,36 +1,19 @@
-# CMake
-CMakeCache.txt
+```
+# CMake build artifacts
 CMakeFiles/
-cmake_install.cmake
 Makefile
-compile_commands.json
-.ninja_deps
-.ninja_log
-.cache
+cmake_install.cmake
+CMakeCache.txt
+*.cmake
+*.o
+*.d
+*.dir/
 
 # Build directories
 build/
-Build/
-out/
+dist/
 
-# Compiled files
-*.o
-*.so
-*.a
-*.exe
-*.pdb
-*~
-
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Test executables
-test
-tests/
-
-# OS files
-.DS_Store
-Thumbs.db
+# Compiled objects
+*.obj
+*.out
+```

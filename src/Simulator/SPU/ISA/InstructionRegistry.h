@@ -20,9 +20,9 @@ private:
 public:
     InstructionRegistry();
 
-    const std::unordered_map<uint32_t, std::shared_ptr<Instruction>>& getInstructions() const { return Instructions; }
+    const std::unordered_map<uint32_t, std::shared_ptr<Instruction>> &getInstructions() const { return Instructions; }
     
-    const std::unordered_map<uint32_t, std::shared_ptr<InstructionDispatcher>>& getOpcodesDispatchers() const { return OpcodesDispatchers; }
+    const std::unordered_map<uint32_t, std::shared_ptr<InstructionDispatcher>> &getOpcodesDispatchers() const { return OpcodesDispatchers; }
 
     void registerInstrs(ExtensionRegistry &CurrentExtensionRegistry,
                         std::initializer_list<std::string_view> ExtensionsNames);

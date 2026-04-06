@@ -4,6 +4,14 @@
 
 namespace r1scoviy {
 
+void ExtensionRegistry::registerExtension(std::shared_ptr<Extension> NewExtension) {
+
+    std::string_view NewExtensionName = NewExtension.getName(); 
+
+    RegisteredExtensionsNames.push_back(NewExtensionName);
+    RegisteredExtensions[NewExtensionName] = NewExtension;
+}
+
 const Extension *ExtensionRegistry::getExtensionByName(const std::string_view ExtensionName) const {
 
     auto ExtensionIt = RegisteredExtensions.find(ExtensionName);

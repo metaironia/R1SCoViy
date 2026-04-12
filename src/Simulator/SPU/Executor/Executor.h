@@ -16,7 +16,7 @@ private:
     RAMControllerUnit RAMController;
     RegisterFileUnit Registers;
 
-    struct {
+    struct InstrParams {
         uint32_t Imm;
         int Rs1;
         int Rs2;
@@ -27,6 +27,12 @@ private:
 
 public:
     ExecutorUnit(RAMUnit &RAM, ExtensionRegistry &TargetExtensionRegistry);
+
+    RegisterFileUnit &getRegisterFile() { return Registers; }
+
+    const InstrParams &getInstructionParams() { return CurrInstructionParams; }
+
+    uint32_t &getPC() { return PC; }
 
     void executeInstr(uint32_t Instr);
 };

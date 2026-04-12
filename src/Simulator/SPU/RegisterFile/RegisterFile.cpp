@@ -6,6 +6,8 @@
 #include "RegisterFile.h"
 #include "src/Simulator/SPU/ISA/ExtensionRegistry.h"
 
+namespace r1scoviy {
+
 RegisterFileUnit::RegisterFileUnit(r1scoviy::ExtensionRegistry &TargetExtesionRegistry) {
 
     const std::vector<std::string_view> &ExtensionNames = TargetExtesionRegistry.getRegisteredExtensionsNames();
@@ -22,9 +24,20 @@ RegisterFileUnit::RegisterFileUnit(r1scoviy::ExtensionRegistry &TargetExtesionRe
     }
 }
 
-Register_t &RegisterFileUnit::getReg(RegistersType CurrentRegistersType, RegisterID_t RegisterID) {
+void RegisterFileUnit::writeRegister(RegistersType CurrentRegistersType, uint32_t RegisterID, uint32_t Value) {
 
     assert(RegisterID < REGISTERS_NUMBER);
 
+    if (RegisterID == 0)
+        return;
+
+    RegistersGroups[CurrentRegistersType][RegisterID] = Value;
+}
+
+uint32_t RegisterFileUnit::readRegister(RegistersType CurrentRegistersType, uint32_t RegisterID) {
+
     return RegistersGroups[CurrentRegistersType][RegisterID];
 }
+
+
+} // namespace r1scoviy

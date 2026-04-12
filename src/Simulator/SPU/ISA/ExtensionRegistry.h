@@ -16,22 +16,13 @@ private:
     std::vector<std::string_view> RegisteredExtensionsNames;
 
 public:
-    template <typename ExtensionName>
-    void registerExtension();
+    ExtensionRegistry();
+
+    void registerExtension(std::shared_ptr<Extension> NewExtension);
 
     const std::vector<std::string_view> &getRegisteredExtensionsNames() const;
     const Extension *getExtensionByName(const std::string_view ExtensionName) const;
 };
-
-template <typename ExtensionClassName>
-void ExtensionRegistry::registerExtension() {
-
-    std::unique_ptr<ExtensionClassName> NewExtension = std::make_unique<ExtensionClassName>();
-    std::string_view NewExtensionName = NewExtension.getName(); 
-
-    RegisteredExtensionsNames.push_back(NewExtensionName);
-    RegisteredExtensions[NewExtensionName] = std::move(NewExtension);
-}
 
 } // namespace r1scoviy
 

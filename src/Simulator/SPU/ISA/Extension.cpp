@@ -5,7 +5,7 @@
 
 namespace r1scoviy {
 
-void Extension::addNewInstr(std::shared_ptr<Instruction> &NewInstruction) {
+void Extension::addNewInstr(std::shared_ptr<Instruction> NewInstruction) {
 
     Instructions[NewInstruction->getOpcode()] = NewInstruction;
 }

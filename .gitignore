@@ -1,20 +1,33 @@
 ```
 # CMake build artifacts
-_deps/
-*.cmake
-CMakeFiles/
 CMakeCache.txt
-cmake_install.cmake
+CMakeFiles/
 Makefile
+cmake_install.cmake
+*_subbuild/
+_deps/
 
-# Build directories
-build/
-dist/
+# Compiled objects
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
 
-# Temporary files
-*.tmp
-*.log
+# Executables
+*.exe
+*.out
 
-# Generated files
-r1scoviy
+# Dependencies downloaded by CMake
+_deps/
+
+# Progress and temporary files
+CMakeFiles/*/CMakeDetermineCompilerABI_*.bin
+CMakeFiles/*/CompilerId*/a.out
+CMakeFiles/*/compiler_depend.internal
+CMakeFiles/*/*.o
+CMakeFiles/*/*.o.d
+CMakeFiles/*/quill-populate-prefix/
 ```

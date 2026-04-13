@@ -30,6 +30,8 @@ public:
 
     RegisterFileUnit &getRegisterFile() { return Registers; }
 
+    RAMControllerUnit &getRAMController() { return RAMController; }
+
     const InstrParams &getInstructionParams() { return CurrInstructionParams; }
 
     uint32_t &getPC() { return PC; }

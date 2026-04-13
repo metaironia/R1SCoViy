@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/workspace/_deps/quill-subbuild/CMakeFiles/quill-populate"
+		},
+		{
+			"file" : "/workspace/_deps/quill-subbuild/CMakeFiles/quill-populate.rule"
+		},
+		{
+			"file" : "/workspace/_deps/quill-subbuild/CMakeFiles/quill-populate-complete.rule"
+		},
+		{
+			"file" : "/workspace/_deps/quill-subbuild/quill-populate-prefix/src/quill-populate-stamp/quill-populate-build.rule"
+		},
+		{
+			"file" : "/workspace/_deps/quill-subbuild/quill-populate-prefix/src/quill-populate-stamp/quill-populate-configure.rule"
+		},
+		{
+			"file" : "/workspace/_deps/quill-subbuild/quill-populate-prefix/src/quill-populate-stamp/quill-populate-download.rule"
+		},
+		{
+			"file" : "/workspace/_deps/quill-subbuild/quill-populate-prefix/src/quill-populate-stamp/quill-populate-install.rule"
+		},
+		{
+			"file" : "/workspace/_deps/quill-subbuild/quill-populate-prefix/src/quill-populate-stamp/quill-populate-mkdir.rule"
+		},
+		{
+			"file" : "/workspace/_deps/quill-subbuild/quill-populate-prefix/src/quill-populate-stamp/quill-populate-patch.rule"
+		},
+		{
+			"file" : "/workspace/_deps/quill-subbuild/quill-populate-prefix/src/quill-populate-stamp/quill-populate-test.rule"
+		},
+		{
+			"file" : "/workspace/_deps/quill-subbuild/quill-populate-prefix/src/quill-populate-stamp/quill-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"quill-populate"
+		],
+		"name" : "quill-populate"
+	}
+}

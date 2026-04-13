@@ -12,7 +12,7 @@ namespace r1scoviy {
 
 class ExtensionRegistry {
 private:
-    std::unordered_map<std::string_view, std::unique_ptr<Extension>> RegisteredExtensions;
+    std::unordered_map<std::string_view, std::shared_ptr<Extension>> RegisteredExtensions;
     std::vector<std::string_view> RegisteredExtensionsNames;
 
 public:

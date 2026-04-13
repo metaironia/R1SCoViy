@@ -27,7 +27,7 @@ protected:
 public:
     virtual ~Extension() = default;
 
-    void addNewInstr(std::shared_ptr<Instruction> &NewInstruction);
+    void addNewInstr(std::shared_ptr<Instruction> NewInstruction);
 };
 
 } // namespace r1scoviy

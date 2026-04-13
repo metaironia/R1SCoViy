@@ -5,18 +5,12 @@
 #include "src/Simulator/SPU/ISA/ExtensionRegistry.h"
 
 int main() {
-    r1scoviy::RAMUnit Ram;
-    r1scoviy::RAMControllerUnit ramController(Ram);
-    
     r1scoviy::ExtensionRegistry ExtensionRegistry;
     
-    auto spu = std::make_unique<r1scoviy::SPU>(
-        std::make_unique<r1scoviy::RAMControllerUnit>(std::move(ramController)),
-        ExtensionRegistry
-    );
+    auto Spu = std::make_unique<r1scoviy::SPU>(ExtensionRegistry);
     
     // Start execution from address 0
-    spu->start(0);
+    Spu->start(0);
     
     return 0;
 }

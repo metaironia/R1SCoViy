@@ -7,6 +7,7 @@
 #include <string_view>
 
 #include "Extension.h"
+#include "src/Simulator/SPU/RegisterFile/RegisterFile.h"
 
 namespace r1scoviy {
 
@@ -16,7 +17,8 @@ private:
     std::vector<std::string_view> RegisteredExtensionsNames;
 
 public:
-    ExtensionRegistry();
+    ExtensionRegistry()
+        : RegisteredExtensions(), RegisteredExtensionsNames() {};
 
     void registerExtension(std::shared_ptr<Extension> NewExtension);
 

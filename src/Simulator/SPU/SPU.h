@@ -18,7 +18,7 @@ private:
     ExecutorUnit Executor;
 
 public:
-    SPU(std::unique_ptr<RAMControllerUnit> &&RAMControllerModule, ExtensionRegistry &ExtensionRegistry);
+    SPU(ExtensionRegistry &ExtensionRegistry);
 
     ~SPU();
 

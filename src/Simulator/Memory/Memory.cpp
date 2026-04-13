@@ -5,9 +5,6 @@
 
 namespace r1scoviy {
 
-RAMControllerUnit::RAMControllerUnit(RAMUnit &RAMModule) 
-    : RAM(&RAMModule) {}
-
 void *RAMUnit::Minipage::getMinipageCellAddress(uint32_t Offset) {
 
     if (!MinipageContent.has_value())

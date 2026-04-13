@@ -1,12 +1,22 @@
 #ifndef SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 #define SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 
-#include "src/Simulator/SPU/Executor/InstructionDispatcher.h"
 #include <cstdint>
 
 namespace r1scoviy {
 
 class ExecutorUnit;
+
+const int FUNCT3_STARTBIT = 12;
+const int FUNCT7_STARTBIT = 25;
+const int BITWISE_FIXED_IMM = 25;
+
+struct InstrParams {
+    uint32_t Imm;
+    uint32_t Rs1;
+    uint32_t Rs2;
+    uint32_t Rd;
+};
 
 class Instruction {
 protected:

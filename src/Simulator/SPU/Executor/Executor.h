@@ -6,6 +6,7 @@
 #include "src/Simulator/Memory/Memory.h"
 #include "src/Simulator/SPU/ISA/InstructionRegistry.h"
 #include "src/Simulator/SPU/RegisterFile/RegisterFile.h"
+#include "src/Simulator/SPU/ISA/InstructionTypes.h"
 
 namespace r1scoviy {
 
@@ -16,12 +17,7 @@ private:
     RAMControllerUnit RAMController;
     RegisterFileUnit Registers;
 
-    struct InstrParams {
-        uint32_t Imm;
-        int Rs1;
-        int Rs2;
-        int Rd;
-    } CurrInstructionParams;
+    InstrParams CurrInstructionParams;
 
     uint32_t &PC;
 

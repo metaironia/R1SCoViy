@@ -3,15 +3,15 @@
 
 #include <cstdint>
 
-namespace r1scoviy {
+#include "src/Simulator/SPU/ISA/InstructionTypes.h"
 
-const int FUNCT3_STARTBIT = 12;
-const int FUNCT7_STARTBIT = 25;
-const int BITWISE_FIXED_IMM = 25;
+namespace r1scoviy {
 
 class InstructionDispatcher {
 public:
     virtual uint32_t getInstrID(uint32_t Instr) const = 0;
+
+    virtual void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const = 0;
 
 protected:
     virtual ~InstructionDispatcher() = default;
@@ -25,6 +25,7 @@ public:
 class RTypeInstructionDispatcher: public InstructionDispatcher {
 public:
     uint32_t getInstrID(uint32_t Instr) const override;
+    void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
 
     uint32_t getRdNum(uint32_t Instr) const { return extractBits(Instr, 7, 11); }
     uint32_t getFunct3(uint32_t Instr) const { return extractBits(Instr, 12, 14); }
@@ -36,6 +37,7 @@ public:
 class ITypeInstructionDispatcher: public InstructionDispatcher {
 public:
     uint32_t getInstrID(uint32_t Instr) const override;
+    void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
 
     uint32_t getRdNum(uint32_t Instr) const { return extractBits(Instr, 7, 11); }
     uint32_t getFunct3(uint32_t Instr) const { return extractBits(Instr, 12, 14); }
@@ -46,6 +48,7 @@ public:
 class BitwiseITypeInstructionDispatcher: public InstructionDispatcher {
 public:
     uint32_t getInstrID(uint32_t Instr) const override;
+    void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
 
     uint32_t getRdNum(uint32_t Instr) const { return extractBits(Instr, 7, 11); }
     uint32_t getFunct3(uint32_t Instr) const { return extractBits(Instr, 12, 14); }
@@ -57,6 +60,7 @@ public:
 class STypeInstructionDispatcher : public InstructionDispatcher {
 public:
     uint32_t getInstrID(uint32_t Instr) const override;
+    void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
 
     uint32_t getFunct3(uint32_t Instr) const { return extractBits(Instr, 12, 14); }
     uint32_t getRs2Num(uint32_t Instr) const { return extractBits(Instr, 20, 24); }
@@ -68,6 +72,7 @@ public:
 class BTypeInstructionDispatcher : public InstructionDispatcher {
 public:
     uint32_t getInstrID(uint32_t Instr) const override;
+    void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
 
     uint32_t getFunct3(uint32_t Instr) const { return extractBits(Instr, 12, 14); }
     uint32_t getRs2Num(uint32_t Instr) const { return extractBits(Instr, 20, 24); }
@@ -79,6 +84,7 @@ public:
 class UTypeInstructionDispatcher : public InstructionDispatcher {
 public:
     uint32_t getInstrID(uint32_t Instr) const override;
+    void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
 
     uint32_t getImm(uint32_t Instr) const { return extractBits(Instr, 12, 31); }
     uint32_t getRdNum(uint32_t Instr) const { return extractBits(Instr, 7, 11); }
@@ -86,6 +92,9 @@ public:
 
 class JTypeInstructionDispatcher : public InstructionDispatcher {
 public:
+    uint32_t getInstrID(uint32_t Instr) const override;
+    void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
+
     uint32_t getMergedImm(uint32_t Instr) const;
     uint32_t getRdNum(uint32_t Instr) const { return extractBits(Instr, 7, 11); }
 };

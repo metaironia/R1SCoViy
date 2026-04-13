@@ -23,12 +23,26 @@ uint32_t RTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
     return (Funct7 << FUNCT7_STARTBIT) | (Funct3 << FUNCT3_STARTBIT) | Opcode;
 }
 
+void RTypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
+
+    CurrInstrParams.Rd = getRdNum(Instr);
+    CurrInstrParams.Rs1 = getRs1Num(Instr);
+    CurrInstrParams.Rs2 = getRs2Num(Instr);
+}
+
 uint32_t ITypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
    
     const uint32_t Opcode = getOpcode(Instr);
     const uint32_t Funct3 = getFunct3(Instr);
 
     return (Funct3 << FUNCT3_STARTBIT) | Opcode;
+}
+
+void ITypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
+
+    CurrInstrParams.Rd = getRdNum(Instr);
+    CurrInstrParams.Rs1 = getRs1Num(Instr);
+    CurrInstrParams.Imm = getImm(Instr);
 }
 
 uint32_t BitwiseITypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
@@ -40,12 +54,26 @@ uint32_t BitwiseITypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
     return (FixedImm << BITWISE_FIXED_IMM) | (Funct3 << FUNCT3_STARTBIT) | Opcode;
 }
 
+void BitwiseITypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
+
+    CurrInstrParams.Rd = getRdNum(Instr);
+    CurrInstrParams.Rs1 = getRs1Num(Instr);
+    CurrInstrParams.Imm = getImm(Instr);
+}
+
 uint32_t STypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
     
     const uint32_t Opcode = getOpcode(Instr);
     const uint32_t Funct3 = getFunct3(Instr);
 
     return (Funct3 << FUNCT3_STARTBIT) | Opcode;
+}
+
+void STypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
+
+    CurrInstrParams.Rs1 = getRs1Num(Instr);
+    CurrInstrParams.Rs2 = getRs2Num(Instr);
+    CurrInstrParams.Imm = getMergedImm(Instr);
 }
 
 uint32_t BTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
@@ -56,11 +84,37 @@ uint32_t BTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
     return (Funct3 << FUNCT3_STARTBIT) | Opcode;
 }
 
+void BTypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
+
+    CurrInstrParams.Rs1 = getRs1Num(Instr);
+    CurrInstrParams.Rs2 = getRs2Num(Instr);
+    CurrInstrParams.Imm = getMergedImm(Instr);
+}
+
 uint32_t UTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
     
     const uint32_t Opcode = getOpcode(Instr);
 
     return Opcode;
+}
+
+void UTypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
+
+    CurrInstrParams.Rd = getRdNum(Instr);
+    CurrInstrParams.Imm = getImm(Instr);
+}
+
+uint32_t JTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
+    
+    const uint32_t Opcode = getOpcode(Instr);
+
+    return Opcode;
+}
+
+void JTypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
+
+    CurrInstrParams.Rd = getRdNum(Instr);
+    CurrInstrParams.Imm = getMergedImm(Instr);
 }
 
 uint32_t JTypeInstructionDispatcher::getMergedImm(uint32_t Instr) const {

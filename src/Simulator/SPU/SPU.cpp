@@ -3,9 +3,8 @@
 
 namespace r1scoviy {
 
-SPU::SPU(std::unique_ptr<RAMControllerUnit>&& RAMControllerModule, ExtensionRegistry& ExtensionRegistry)
-    : Executor(*RAMControllerModule->getRAM(), ExtensionRegistry, &PC),
-      Fetcher(&PC), PC(0) {}
+SPU::SPU(std::unique_ptr<RAMControllerUnit> &&RAMControllerModule, ExtensionRegistry &ExtensionRegistry)
+    :  PC(0), Fetcher(PC), Executor(*RAMControllerModule->getRAM(), ExtensionRegistry, PC) {}
 
 SPU::~SPU() = default;
 

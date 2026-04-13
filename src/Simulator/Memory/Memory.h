@@ -40,6 +40,9 @@ private:
     MemoryLevel2 Memory;
 
 public:
+    RAMUnit()
+        : Memory() {};
+
     void *getMemoryLocation(uint32_t Address);
 
     uint32_t getMemoryLevel2Offset(uint32_t Address);
@@ -66,19 +69,19 @@ private:
     std::optional<std::shared_ptr<char[]>> MinipageContent;
 
 public:
-    Minipage() = default;
+    Minipage()
+        : MinipageContent() {};
 
     void *getMinipageCellAddress(uint32_t Offset);
 };
 
 class RAMControllerUnit {
 private:    
-    RAMUnit *RAM;
+    std::unique_ptr<RAMUnit> RAM;
 
 public:
-    RAMControllerUnit(RAMUnit &RAMModule);
-
-    RAMUnit* getRAM() const { return RAM; }
+    RAMControllerUnit()
+        : RAM(std::make_unique<RAMUnit>()) {};
 
     uint8_t  getByte    (uint32_t Address);
     uint16_t getHalfword(uint32_t Address);

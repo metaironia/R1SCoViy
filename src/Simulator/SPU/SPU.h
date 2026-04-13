@@ -12,13 +12,13 @@ namespace r1scoviy {
 
 class SPU {
 private:
+    uint32_t PC;    
+
     FetcherUnit Fetcher;
     ExecutorUnit Executor;
 
-    uint32_t PC;    
-
 public:
-    SPU(std::unique_ptr<RAMControllerUnit>&& RAMControllerModule, ExtensionRegistry& ExtensionRegistry);
+    SPU(std::unique_ptr<RAMControllerUnit> &&RAMControllerModule, ExtensionRegistry &ExtensionRegistry);
 
     ~SPU();
 

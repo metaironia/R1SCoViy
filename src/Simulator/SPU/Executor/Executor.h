@@ -26,7 +26,7 @@ private:
     uint32_t &PC;
 
 public:
-    ExecutorUnit(RAMUnit &RAM, ExtensionRegistry &TargetExtensionRegistry);
+    ExecutorUnit(ExtensionRegistry &TargetExtensionRegistry, uint32_t &PC);
 
     RegisterFileUnit &getRegisterFile() { return Registers; }
 

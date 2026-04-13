@@ -6,7 +6,13 @@
 namespace r1scoviy {
 
 class FetcherUnit {
+private:
+    const uint32_t &PC;
+
 public:
+    FetcherUnit(uint32_t &_PC)
+        : PC(_PC) {}
+
     uint32_t fetchNextInstruction();
 };
 

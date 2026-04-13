@@ -3,8 +3,8 @@
 
 namespace r1scoviy {
 
-ExecutorUnit::ExecutorUnit(RAMUnit &RAM, ExtensionRegistry &TargetExtensionRegistry)
-    : Instructions(), RAMController(RAM), Registers(TargetExtensionRegistry), CurrInstructionParams{}, PC(0) {}
+ExecutorUnit::ExecutorUnit(ExtensionRegistry &TargetExtensionRegistry, uint32_t &_PC)
+    : Instructions(), RAMController(), Registers(TargetExtensionRegistry), CurrInstructionParams{}, PC(_PC) {}
 
 void ExecutorUnit::executeInstr(uint32_t Instr) {
 

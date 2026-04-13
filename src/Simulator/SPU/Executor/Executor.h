@@ -23,7 +23,7 @@ private:
         int Rd;
     } CurrInstructionParams;
 
-    uint32_t PC;
+    uint32_t &PC;
 
 public:
     ExecutorUnit(RAMUnit &RAM, ExtensionRegistry &TargetExtensionRegistry);

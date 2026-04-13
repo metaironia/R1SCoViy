@@ -54,12 +54,11 @@ class JALInstruction;
 // RV32I Extension class
 class RV32IExtension : public Extension {
 public:
-    RV32IExtension();
+    RV32IExtension() = default;
     ~RV32IExtension() = default;
     
-    std::string_view getName() const override;
+    const std::string_view getName() const override { return "RV32I"; };
     
-    // Register all RV32I instructions
     void registerInstructions() override;
     
 private:
@@ -201,7 +200,7 @@ public:
     void executeInstr(ExecutorUnit& TargetExecutor) const override;
 };
 
-class SLLIInstruction : public ITypeInstruction {
+class SLLIInstruction : public BitwiseITypeInstruction {
 public:
     SLLIInstruction();
     ~SLLIInstruction() = default;
@@ -209,7 +208,7 @@ public:
     void executeInstr(ExecutorUnit& TargetExecutor) const override;
 };
 
-class SRLIInstruction : public ITypeInstruction {
+class SRLIInstruction : public BitwiseITypeInstruction {
 public:
     SRLIInstruction();
     ~SRLIInstruction() = default;
@@ -217,7 +216,7 @@ public:
     void executeInstr(ExecutorUnit& TargetExecutor) const override;
 };
 
-class SRAIInstruction : public ITypeInstruction {
+class SRAIInstruction : public BitwiseITypeInstruction {
 public:
     SRAIInstruction();
     ~SRAIInstruction() = default;

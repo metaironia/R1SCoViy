@@ -14,13 +14,11 @@ class SPU {
 private:
     FetcherUnit Fetcher;
     ExecutorUnit Executor;
-    uint32_t CurrentInstructionAddress;
-    
-public:
-    explicit SPU(std::unique_ptr<RAMControllerUnit>&& RAMControllerModule, ExtensionRegistry& extensionRegistry);
 
-    SPU(const SPU& Other) = delete;
-    SPU& operator=(const SPU& Other) = delete;
+    uint32_t PC;    
+
+public:
+    SPU(std::unique_ptr<RAMControllerUnit>&& RAMControllerModule, ExtensionRegistry& ExtensionRegistry);
 
     ~SPU();
 

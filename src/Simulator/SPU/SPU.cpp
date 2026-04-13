@@ -1,15 +1,17 @@
 #include "SPU.h"
+#include "src/Simulator/SPU/Fetcher/Fetcher.h"
 
 namespace r1scoviy {
 
-SPU::SPU(std::unique_ptr<RAMControllerUnit>&& RAMControllerModule, ExtensionRegistry& extensionRegistry)
-    : Executor(*RAMControllerModule->getRAM(), extensionRegistry), CurrentInstructionAddress(0) {}
+SPU::SPU(std::unique_ptr<RAMControllerUnit>&& RAMControllerModule, ExtensionRegistry& ExtensionRegistry)
+    : Executor(*RAMControllerModule->getRAM(), ExtensionRegistry, &PC),
+      Fetcher(&PC), PC(0) {}
 
 SPU::~SPU() = default;
 
 void SPU::start(uint32_t StartInstructionAddress) {
 
-    CurrentInstructionAddress = StartInstructionAddress;
+    PC = StartInstructionAddress;
 
     for (;;) {
 

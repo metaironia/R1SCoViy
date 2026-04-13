@@ -172,7 +172,7 @@ void ANDIInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), Result);
 }
 
-SLLIInstruction::SLLIInstruction() : ITypeInstruction(0x13, 0x1) {}
+SLLIInstruction::SLLIInstruction() : BitwiseITypeInstruction(0x13, 0x1, 0x0) {}
 
 void SLLIInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     const auto& Params = TargetExecutor.getInstructionParams();
@@ -182,7 +182,7 @@ void SLLIInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), Result);
 }
 
-SRLIInstruction::SRLIInstruction() : ITypeInstruction(0x13, 0x5) {}
+SRLIInstruction::SRLIInstruction() : BitwiseITypeInstruction(0x13, 0x5, 0x0) {}
 
 void SRLIInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     const auto& Params = TargetExecutor.getInstructionParams();
@@ -192,7 +192,7 @@ void SRLIInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), Result);
 }
 
-SRAIInstruction::SRAIInstruction() : ITypeInstruction(0x13, 0x5, 0x20) {}
+SRAIInstruction::SRAIInstruction() : BitwiseITypeInstruction(0x13, 0x5, 0x20) {}
 
 void SRAIInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     const auto& Params = TargetExecutor.getInstructionParams();
@@ -207,7 +207,7 @@ LBInstruction::LBInstruction() : ITypeInstruction(0x3, 0x0) {}
 void LBInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     const auto& Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs1)) + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
-    uint8_t Byte = TargetExecutor.getRegisterFile().getRAMController().getByte(Addr);
+    uint8_t Byte = TargetExecutor.getRAMController().getByte(Addr);
     int8_t SignExtended = static_cast<int8_t>(Byte);
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), static_cast<uint32_t>(SignExtended));
 }
@@ -217,7 +217,7 @@ LHInstruction::LHInstruction() : ITypeInstruction(0x3, 0x1) {}
 void LHInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     const auto& Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs1)) + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
-    uint16_t Halfword = TargetExecutor.getRegisterFile().getRAMController().getHalfword(Addr);
+    uint16_t Halfword = TargetExecutor.getRAMController().getHalfword(Addr);
     int16_t SignExtended = static_cast<int16_t>(Halfword);
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), static_cast<uint32_t>(SignExtended));
 }
@@ -227,7 +227,7 @@ LWInstruction::LWInstruction() : ITypeInstruction(0x3, 0x2) {}
 void LWInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     const auto& Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs1)) + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
-    uint32_t Word = TargetExecutor.getRegisterFile().getRAMController().getWord(Addr);
+    uint32_t Word = TargetExecutor.getRAMController().getWord(Addr);
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), Word);
 }
 
@@ -236,7 +236,7 @@ LBUInstruction::LBUInstruction() : ITypeInstruction(0x3, 0x4) {}
 void LBUInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     const auto& Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs1)) + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
-    uint8_t Byte = TargetExecutor.getRegisterFile().getRAMController().getByte(Addr);
+    uint8_t Byte = TargetExecutor.getRAMController().getByte(Addr);
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), static_cast<uint32_t>(Byte));
 }
 
@@ -245,7 +245,7 @@ LHUInstruction::LHUInstruction() : ITypeInstruction(0x3, 0x5) {}
 void LHUInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     const auto& Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs1)) + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
-    uint16_t Halfword = TargetExecutor.getRegisterFile().getRAMController().getHalfword(Addr);
+    uint16_t Halfword = TargetExecutor.getRAMController().getHalfword(Addr);
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), static_cast<uint32_t>(Halfword));
 }
 
@@ -271,7 +271,7 @@ void SBInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     uint32_t Rs2Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs2));
     uint32_t Addr = Rs1Val + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
     uint8_t Byte = static_cast<uint8_t>(Rs2Val & 0xFF);
-    TargetExecutor.getRegisterFile().getRAMController().storeByte(Addr, Byte);
+    TargetExecutor.getRAMController().storeByte(Addr, Byte);
 }
 
 SHInstruction::SHInstruction() : STypeInstruction(0x23, 0x1) {}
@@ -282,7 +282,7 @@ void SHInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     uint32_t Rs2Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs2));
     uint32_t Addr = Rs1Val + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
     uint16_t Halfword = static_cast<uint16_t>(Rs2Val & 0xFFFF);
-    TargetExecutor.getRegisterFile().getRAMController().storeHalfword(Addr, Halfword);
+    TargetExecutor.getRAMController().storeHalfword(Addr, Halfword);
 }
 
 SWInstruction::SWInstruction() : STypeInstruction(0x23, 0x2) {}
@@ -292,7 +292,7 @@ void SWInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
     uint32_t Rs1Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs1));
     uint32_t Rs2Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs2));
     uint32_t Addr = Rs1Val + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
-    TargetExecutor.getRegisterFile().getRAMController().storeWord(Addr, Rs2Val);
+    TargetExecutor.getRAMController().storeWord(Addr, Rs2Val);
 }
 
 // B-Type Instructions Implementation
@@ -423,14 +423,6 @@ void JALInstruction::executeInstr(ExecutorUnit& TargetExecutor) const {
 
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), Pc + 4);
     TargetExecutor.getPC() = TargetAddr;
-}
-
-// RV32IExtension Implementation
-
-RV32IExtension::RV32IExtension() = default;
-
-std::string_view RV32IExtension::getName() const {
-    return "RV32I";
 }
 
 void RV32IExtension::registerInstructions() {

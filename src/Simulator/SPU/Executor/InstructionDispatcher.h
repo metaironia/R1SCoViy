@@ -5,6 +5,10 @@
 
 namespace r1scoviy {
 
+const int FUNCT3_STARTBIT = 12;
+const int FUNCT7_STARTBIT = 25;
+const int BITWISE_FIXED_IMM = 25;
+
 class InstructionDispatcher {
 public:
     virtual uint32_t getInstrID(uint32_t Instr) const = 0;
@@ -37,6 +41,17 @@ public:
     uint32_t getFunct3(uint32_t Instr) const { return extractBits(Instr, 12, 14); }
     uint32_t getRs1Num(uint32_t Instr) const { return extractBits(Instr, 15, 19); }
     uint32_t getImm(uint32_t Instr) const { return extractBits(Instr, 20, 31); }
+};
+
+class BitwiseITypeInstructionDispatcher: public InstructionDispatcher {
+public:
+    uint32_t getInstrID(uint32_t Instr) const override;
+
+    uint32_t getRdNum(uint32_t Instr) const { return extractBits(Instr, 7, 11); }
+    uint32_t getFunct3(uint32_t Instr) const { return extractBits(Instr, 12, 14); }
+    uint32_t getRs1Num(uint32_t Instr) const { return extractBits(Instr, 15, 19); }
+    uint32_t getFixedImm(uint32_t Instr) const { return extractBits(Instr, 25, 31); }
+    uint32_t getImm(uint32_t Instr) const { return extractBits(Instr, 20, 24); }
 };
 
 class STypeInstructionDispatcher : public InstructionDispatcher {

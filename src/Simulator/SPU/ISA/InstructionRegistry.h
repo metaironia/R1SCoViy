@@ -18,7 +18,8 @@ private:
     std::unordered_map<uint32_t, std::shared_ptr<InstructionDispatcher>> OpcodesDispatchers;
 
 public:
-    InstructionRegistry();
+    InstructionRegistry() 
+        : Instructions(), OpcodesDispatchers() {};
 
     const std::unordered_map<uint32_t, std::shared_ptr<Instruction>> &getInstructions() const { return Instructions; }
     

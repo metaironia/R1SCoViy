@@ -1,6 +1,6 @@
 src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
- /workspace/src/LogHelper/QuillLogHelper.cpp /usr/include/stdc-predef.h \
- /usr/include/c++/12/cassert \
+ /home/parshigov/Github/R1SCoViy/src/LogHelper/QuillLogHelper.cpp \
+ /usr/include/stdc-predef.h /usr/include/c++/12/cassert \
  /usr/include/x86_64-linux-gnu/c++/12/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/12/bits/os_defines.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -12,11 +12,11 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
  /usr/include/x86_64-linux-gnu/c++/12/bits/cpu_defines.h \
  /usr/include/c++/12/pstl/pstl_config.h /usr/include/assert.h \
- /workspace/src/LogHelper/QuillLogHelper.h \
- /workspace/_deps/quill-src/include/quill/Backend.h \
- /workspace/_deps/quill-src/include/quill/backend/BackendManager.h \
- /workspace/_deps/quill-src/include/quill/backend/BackendOptions.h \
- /workspace/_deps/quill-src/include/quill/core/Attributes.h \
+ /home/parshigov/Github/R1SCoViy/src/LogHelper/QuillLogHelper.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/Backend.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/BackendManager.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/BackendOptions.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/Attributes.h \
  /usr/include/c++/12/array /usr/include/c++/12/compare \
  /usr/include/c++/12/initializer_list /usr/include/c++/12/type_traits \
  /usr/include/c++/12/bits/functexcept.h \
@@ -74,6 +74,7 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/floatn.h \
  /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
  /usr/include/x86_64-linux-gnu/bits/stdio.h \
+ /usr/include/x86_64-linux-gnu/bits/stdio2.h \
  /usr/include/c++/12/functional /usr/include/c++/12/bits/stl_function.h \
  /usr/include/c++/12/backward/binders.h /usr/include/c++/12/new \
  /usr/include/c++/12/bits/exception.h /usr/include/c++/12/tuple \
@@ -113,6 +114,7 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/select.h \
  /usr/include/x86_64-linux-gnu/bits/types/sigset_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h \
+ /usr/include/x86_64-linux-gnu/bits/select2.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h \
  /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
@@ -121,12 +123,14 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h /usr/include/alloca.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
+ /usr/include/x86_64-linux-gnu/bits/stdlib.h \
  /usr/include/c++/12/bits/std_abs.h /usr/include/c++/12/string \
  /usr/include/c++/12/bits/stringfwd.h \
  /usr/include/c++/12/bits/char_traits.h \
  /usr/include/c++/12/bits/postypes.h /usr/include/c++/12/cwchar \
  /usr/include/wchar.h /usr/include/x86_64-linux-gnu/bits/types/wint_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/mbstate_t.h \
+ /usr/include/x86_64-linux-gnu/bits/wchar2.h \
  /usr/include/c++/12/bits/localefwd.h \
  /usr/include/x86_64-linux-gnu/c++/12/bits/c++locale.h \
  /usr/include/c++/12/clocale /usr/include/locale.h \
@@ -143,15 +147,17 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
  /usr/include/c++/12/bits/charconv.h \
  /usr/include/c++/12/bits/basic_string.tcc \
- /workspace/_deps/quill-src/include/quill/backend/BackendWorker.h \
- /workspace/_deps/quill-src/include/quill/backend/BackendUtilities.h \
- /workspace/_deps/quill-src/include/quill/core/QuillError.h \
- /workspace/_deps/quill-src/include/quill/core/Common.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/BackendWorker.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/BackendUtilities.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/QuillError.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/Common.h \
  /usr/include/c++/12/cstddef /usr/include/c++/12/exception \
  /usr/include/c++/12/bits/exception_ptr.h \
  /usr/include/c++/12/bits/cxxabi_init_exception.h \
  /usr/include/c++/12/bits/nested_exception.h /usr/include/c++/12/cstring \
  /usr/include/string.h /usr/include/strings.h \
+ /usr/include/x86_64-linux-gnu/bits/strings_fortified.h \
+ /usr/include/x86_64-linux-gnu/bits/string_fortified.h \
  /usr/include/c++/12/system_error \
  /usr/include/x86_64-linux-gnu/c++/12/bits/error_constants.h \
  /usr/include/c++/12/stdexcept /usr/include/pthread.h \
@@ -166,19 +172,21 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/confname.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
+ /usr/include/x86_64-linux-gnu/bits/unistd.h \
  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
  /usr/include/linux/close_range.h \
- /workspace/_deps/quill-src/include/quill/backend/BackendWorkerLock.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/BackendWorkerLock.h \
  /usr/include/fcntl.h /usr/include/x86_64-linux-gnu/bits/fcntl.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
  /usr/include/linux/falloc.h /usr/include/x86_64-linux-gnu/bits/stat.h \
  /usr/include/x86_64-linux-gnu/bits/struct_stat.h \
- /usr/include/semaphore.h /usr/include/x86_64-linux-gnu/bits/semaphore.h \
- /workspace/_deps/quill-src/include/quill/backend/BacktraceStorage.h \
- /workspace/_deps/quill-src/include/quill/backend/TransitEvent.h \
- /workspace/_deps/quill-src/include/quill/core/Codec.h \
- /workspace/_deps/quill-src/include/quill/bundled/fmt/base.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl2.h /usr/include/semaphore.h \
+ /usr/include/x86_64-linux-gnu/bits/semaphore.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/BacktraceStorage.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/TransitEvent.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/Codec.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/bundled/fmt/base.h \
  /usr/lib/gcc/x86_64-linux-gnu/12/include/limits.h \
  /usr/lib/gcc/x86_64-linux-gnu/12/include/syslimits.h \
  /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
@@ -187,7 +195,7 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/posix2_lim.h \
  /usr/include/x86_64-linux-gnu/bits/xopen_lim.h \
  /usr/include/x86_64-linux-gnu/bits/uio_lim.h \
- /workspace/_deps/quill-src/include/quill/core/DynamicFormatArgStore.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/DynamicFormatArgStore.h \
  /usr/include/c++/12/memory \
  /usr/include/c++/12/bits/stl_raw_storage_iter.h \
  /usr/include/c++/12/bits/align.h /usr/include/c++/12/bit \
@@ -207,11 +215,11 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/include/c++/12/backward/auto_ptr.h \
  /usr/include/c++/12/pstl/glue_memory_defs.h \
  /usr/include/c++/12/pstl/execution_defs.h \
- /workspace/_deps/quill-src/include/quill/core/InlinedVector.h \
- /workspace/_deps/quill-src/include/quill/core/LogLevel.h \
- /workspace/_deps/quill-src/include/quill/core/MacroMetadata.h \
- /workspace/_deps/quill-src/include/quill/bundled/fmt/format.h \
- /workspace/_deps/quill-src/include/quill/bundled/fmt/base.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/InlinedVector.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/LogLevel.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/MacroMetadata.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/bundled/fmt/format.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/bundled/fmt/base.h \
  /usr/include/c++/12/stdlib.h /usr/include/c++/12/cmath \
  /usr/include/math.h /usr/include/x86_64-linux-gnu/bits/math-vector.h \
  /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
@@ -234,11 +242,11 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/include/c++/12/tr1/poly_hermite.tcc \
  /usr/include/c++/12/tr1/poly_laguerre.tcc \
  /usr/include/c++/12/tr1/riemann_zeta.tcc \
- /workspace/_deps/quill-src/include/quill/bundled/fmt/format-inl.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/bundled/fmt/format-inl.h \
  /usr/include/c++/12/algorithm \
  /usr/include/c++/12/pstl/glue_algorithm_defs.h \
  /usr/include/c++/12/climits \
- /workspace/_deps/quill-src/include/quill/bundled/fmt/format.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/bundled/fmt/format.h \
  /usr/include/c++/12/locale /usr/include/c++/12/bits/locale_classes.h \
  /usr/include/c++/12/bits/locale_classes.tcc \
  /usr/include/c++/12/bits/locale_facets.h /usr/include/c++/12/cwctype \
@@ -256,19 +264,19 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/include/c++/12/bits/locale_facets_nonio.tcc \
  /usr/include/c++/12/bits/locale_conv.h /usr/include/c++/12/atomic \
  /usr/include/c++/12/utility /usr/include/c++/12/bits/stl_relops.h \
- /workspace/_deps/quill-src/include/quill/backend/PatternFormatter.h \
- /workspace/_deps/quill-src/include/quill/backend/TimestampFormatter.h \
- /workspace/_deps/quill-src/include/quill/backend/StringFromTime.h \
- /workspace/_deps/quill-src/include/quill/core/TimeUtilities.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/PatternFormatter.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/TimestampFormatter.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/StringFromTime.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/TimeUtilities.h \
  /usr/include/c++/12/map /usr/include/c++/12/bits/stl_tree.h \
  /usr/include/c++/12/bits/stl_map.h \
  /usr/include/c++/12/bits/stl_multimap.h \
- /workspace/_deps/quill-src/include/quill/core/PatternFormatterOptions.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/PatternFormatterOptions.h \
  /usr/include/c++/12/bitset /usr/include/c++/12/iterator \
  /usr/include/c++/12/bits/stream_iterator.h \
- /workspace/_deps/quill-src/include/quill/backend/RdtscClock.h \
- /workspace/_deps/quill-src/include/quill/core/ChronoTimeUtils.h \
- /workspace/_deps/quill-src/include/quill/core/Rdtsc.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/RdtscClock.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/ChronoTimeUtils.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/Rdtsc.h \
  /usr/lib/gcc/x86_64-linux-gnu/12/include/x86gprintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/12/include/ia32intrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/12/include/adxintrin.h \
@@ -304,38 +312,37 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/lib/gcc/x86_64-linux-gnu/12/include/xsavesintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/12/include/xtestintrin.h \
  /usr/lib/gcc/x86_64-linux-gnu/12/include/hresetintrin.h \
- /workspace/_deps/quill-src/include/quill/backend/ThreadUtilities.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/ThreadUtilities.h \
  /usr/include/x86_64-linux-gnu/sys/syscall.h \
  /usr/include/x86_64-linux-gnu/asm/unistd.h \
  /usr/include/x86_64-linux-gnu/asm/unistd_64.h \
  /usr/include/x86_64-linux-gnu/bits/syscall.h \
- /workspace/_deps/quill-src/include/quill/backend/TransitEventBuffer.h \
- /workspace/_deps/quill-src/include/quill/core/MathUtilities.h \
- /workspace/_deps/quill-src/include/quill/core/BoundedSPSCQueue.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/TransitEventBuffer.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/MathUtilities.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/BoundedSPSCQueue.h \
  /usr/include/x86_64-linux-gnu/sys/mman.h \
  /usr/include/x86_64-linux-gnu/bits/mman.h \
  /usr/include/x86_64-linux-gnu/bits/mman-map-flags-generic.h \
  /usr/include/x86_64-linux-gnu/bits/mman-linux.h \
  /usr/include/x86_64-linux-gnu/bits/mman-shared.h \
- /usr/include/x86_64-linux-gnu/bits/mman_ext.h \
- /workspace/_deps/quill-src/include/quill/core/LoggerBase.h \
- /workspace/_deps/quill-src/include/quill/core/ThreadContextManager.h \
- /workspace/_deps/quill-src/include/quill/core/Spinlock.h \
- /workspace/_deps/quill-src/include/quill/core/UnboundedSPSCQueue.h \
- /workspace/_deps/quill-src/include/quill/core/LoggerManager.h \
- /workspace/_deps/quill-src/include/quill/core/SinkManager.h \
- /workspace/_deps/quill-src/include/quill/sinks/Sink.h \
- /workspace/_deps/quill-src/include/quill/filters/Filter.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/LoggerBase.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/ThreadContextManager.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/Spinlock.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/UnboundedSPSCQueue.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/LoggerManager.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/SinkManager.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/sinks/Sink.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/filters/Filter.h \
  /usr/include/c++/12/optional /usr/include/c++/12/condition_variable \
  /usr/include/c++/12/bits/std_mutex.h \
  /usr/include/c++/12/bits/unique_lock.h /usr/include/c++/12/mutex \
  /usr/include/c++/12/thread /usr/include/c++/12/bits/std_thread.h \
  /usr/include/c++/12/bits/this_thread_sleep.h \
- /workspace/_deps/quill-src/include/quill/backend/ManualBackendWorker.h \
- /workspace/_deps/quill-src/include/quill/backend/SignalHandler.h \
- /workspace/_deps/quill-src/include/quill/Logger.h \
- /workspace/_deps/quill-src/include/quill/UserClockSource.h \
- /workspace/_deps/quill-src/include/quill/core/FrontendOptions.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/ManualBackendWorker.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/backend/SignalHandler.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/Logger.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/UserClockSource.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/FrontendOptions.h \
  /usr/include/c++/12/csignal /usr/include/signal.h \
  /usr/include/x86_64-linux-gnu/bits/signum-generic.h \
  /usr/include/x86_64-linux-gnu/bits/signum-arch.h \
@@ -358,9 +365,9 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
  /usr/include/x86_64-linux-gnu/bits/sigthread.h \
  /usr/include/x86_64-linux-gnu/bits/signal_ext.h \
- /workspace/_deps/quill-src/include/quill/Frontend.h \
- /workspace/_deps/quill-src/include/quill/sinks/FileSink.h \
- /workspace/_deps/quill-src/include/quill/core/Filesystem.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/Frontend.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/sinks/FileSink.h \
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/core/Filesystem.h \
  /usr/include/c++/12/filesystem /usr/include/c++/12/bits/fs_fwd.h \
  /usr/include/c++/12/bits/fs_path.h /usr/include/c++/12/iomanip \
  /usr/include/c++/12/bits/quoted_string.h /usr/include/c++/12/sstream \
@@ -371,4 +378,4 @@ src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o: \
  /usr/include/c++/12/bits/istream.tcc \
  /usr/include/c++/12/bits/sstream.tcc /usr/include/c++/12/codecvt \
  /usr/include/c++/12/bits/fs_dir.h /usr/include/c++/12/bits/fs_ops.h \
- /workspace/_deps/quill-src/include/quill/sinks/StreamSink.h
+ /home/parshigov/Github/R1SCoViy/_deps/quill-src/include/quill/sinks/StreamSink.h

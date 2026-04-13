@@ -1,6 +1,7 @@
 #ifndef SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 #define SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 
+#include "src/Simulator/SPU/Executor/InstructionDispatcher.h"
 #include <cstdint>
 
 namespace r1scoviy {
@@ -8,7 +9,7 @@ namespace r1scoviy {
 class ExecutorUnit;
 
 class Instruction {
-private:
+protected:
     uint32_t Opcode;
 
 public:
@@ -30,21 +31,32 @@ private:
     uint32_t Funct7;
 
 public:
-    RTypeInstruction(uint32_t Opcode, uint32_t _Funct3, uint32_t _Funct7) 
-        : Instruction(Opcode), Funct3(_Funct3), Funct7(_Funct7) {}
+    RTypeInstruction(uint32_t _Opcode, uint32_t _Funct3, uint32_t _Funct7) 
+        : Instruction(_Opcode), Funct3(_Funct3), Funct7(_Funct7) {}
 
-    uint32_t getInstrID() const override { return (Funct7 << 10) | (Funct3 << 7) | getOpcode(); }
+    uint32_t getInstrID() const override { return (Funct7 << FUNCT7_STARTBIT) | (Funct3 << FUNCT3_STARTBIT) | Opcode; }
 };
 
 class ITypeInstruction : public Instruction {
-private:
+protected:
     uint32_t Funct3;
 
 public:
-    ITypeInstruction(uint32_t Opcode, uint32_t _Funct3) 
-        : Instruction(Opcode), Funct3(_Funct3) {}
+    ITypeInstruction(uint32_t _Opcode, uint32_t _Funct3) 
+        : Instruction(_Opcode), Funct3(_Funct3) {}
 
-    uint32_t getInstrID() const override { return (Funct3 << 7) | getOpcode(); }
+    uint32_t getInstrID() const override { return (Funct3 << FUNCT3_STARTBIT) | Opcode; }
+};
+
+class BitwiseITypeInstruction : public ITypeInstruction {
+private:
+    uint32_t Imm5_11;
+
+public:
+    BitwiseITypeInstruction(uint32_t _Opcode, uint32_t _Funct3, uint32_t _Imm5_11) 
+        : ITypeInstruction(_Opcode, _Funct3), Imm5_11(_Imm5_11) {}
+
+    uint32_t getInstrID() const override { return (Imm5_11 << BITWISE_FIXED_IMM) | (Funct3 << FUNCT3_STARTBIT) | Opcode; }
 };
 
 class STypeInstruction : public Instruction {
@@ -52,10 +64,10 @@ private:
     uint32_t Funct3;
 
 public:
-    STypeInstruction(uint32_t Opcode, uint32_t _Funct3) 
-        : Instruction(Opcode), Funct3(_Funct3) {}
+    STypeInstruction(uint32_t _Opcode, uint32_t _Funct3) 
+        : Instruction(_Opcode), Funct3(_Funct3) {}
 
-    uint32_t getInstrID() const override { return (Funct3 << 7) | getOpcode(); }
+    uint32_t getInstrID() const override { return (Funct3 << FUNCT3_STARTBIT) | Opcode; }
 };
 
 class BTypeInstruction : public Instruction {
@@ -63,26 +75,26 @@ private:
     uint32_t Funct3;
 
 public:
-    BTypeInstruction(uint32_t Opcode, uint32_t _Funct3) 
-        : Instruction(Opcode), Funct3(_Funct3) {}
+    BTypeInstruction(uint32_t _Opcode, uint32_t _Funct3) 
+        : Instruction(_Opcode), Funct3(_Funct3) {}
 
-    uint32_t getInstrID() const override { return (Funct3 << 7) | getOpcode(); }
+    uint32_t getInstrID() const override { return (Funct3 << FUNCT3_STARTBIT) | Opcode; }
 };
 
 class UTypeInstruction : public Instruction {
 public:
-    UTypeInstruction(uint32_t Opcode) 
-        : Instruction(Opcode) {}
+    UTypeInstruction(uint32_t _Opcode) 
+        : Instruction(_Opcode) {}
 
-    uint32_t getInstrID() const override { return getOpcode(); }
+    uint32_t getInstrID() const override { return Opcode; }
 };
 
 class JTypeInstruction : public Instruction {
 public:
-    JTypeInstruction(uint32_t Opcode) 
-        : Instruction(Opcode) {}
+    JTypeInstruction(uint32_t _Opcode) 
+        : Instruction(_Opcode) {}
 
-    uint32_t getInstrID() const override { return getOpcode(); }
+    uint32_t getInstrID() const override { return Opcode; }
 };
 
 } // namespace r1scoviy

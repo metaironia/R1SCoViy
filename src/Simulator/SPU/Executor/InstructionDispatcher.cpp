@@ -20,7 +20,7 @@ uint32_t RTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
     const uint32_t Funct3 = getFunct3(Instr);
     const uint32_t Funct7 = getFunct7(Instr);
 
-    return (Funct7 << 10) | (Funct3 << 7) | Opcode;
+    return (Funct7 << FUNCT7_STARTBIT) | (Funct3 << FUNCT3_STARTBIT) | Opcode;
 }
 
 uint32_t ITypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
@@ -28,7 +28,16 @@ uint32_t ITypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
     const uint32_t Opcode = getOpcode(Instr);
     const uint32_t Funct3 = getFunct3(Instr);
 
-    return (Funct3 << 7) | Opcode;
+    return (Funct3 << FUNCT3_STARTBIT) | Opcode;
+}
+
+uint32_t BitwiseITypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
+   
+    const uint32_t Opcode = getOpcode(Instr);
+    const uint32_t Funct3 = getFunct3(Instr);
+    const uint32_t FixedImm = getFixedImm(Instr);
+
+    return (FixedImm << BITWISE_FIXED_IMM) | (Funct3 << FUNCT3_STARTBIT) | Opcode;
 }
 
 uint32_t STypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
@@ -36,7 +45,7 @@ uint32_t STypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
     const uint32_t Opcode = getOpcode(Instr);
     const uint32_t Funct3 = getFunct3(Instr);
 
-    return (Funct3 << 7) | Opcode;
+    return (Funct3 << FUNCT3_STARTBIT) | Opcode;
 }
 
 uint32_t BTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
@@ -44,7 +53,7 @@ uint32_t BTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
     const uint32_t Opcode = getOpcode(Instr);
     const uint32_t Funct3 = getFunct3(Instr);
 
-    return (Funct3 << 7) | Opcode;
+    return (Funct3 << FUNCT3_STARTBIT) | Opcode;
 }
 
 uint32_t UTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {

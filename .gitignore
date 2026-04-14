@@ -3,6 +3,7 @@
 _deps/
 *.cmake
 */CMakeFiles/*
+src/LogHelper/CMakeFiles/*
 */CMakeCache.txt
 */cmake_install.cmake
 */Makefile

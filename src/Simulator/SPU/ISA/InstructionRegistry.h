@@ -7,7 +7,7 @@
 
 #include "InstructionTypes.h"
 #include "ExtensionRegistry.h"
-#include "src/Simulator/SPU/Executor/InstructionDispatcher.h"
+#include "Simulator/SPU/Executor/InstructionDispatcher.h"
 
 namespace r1scoviy {
 

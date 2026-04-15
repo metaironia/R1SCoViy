@@ -4,9 +4,9 @@
 #include <cstdint>
 #include <memory>
 
-#include "src/Simulator/Memory/Memory.h"
-#include "src/Simulator/SPU/Fetcher/Fetcher.h"
-#include "src/Simulator/SPU/Executor/Executor.h"
+#include "Simulator/Memory/Memory.h"
+#include "Simulator/SPU/Fetcher/Fetcher.h"
+#include "Simulator/SPU/Executor/Executor.h"
 
 namespace r1scoviy {
 

@@ -3,10 +3,10 @@
 
 #include <memory>
 
-#include "src/Simulator/Memory/Memory.h"
-#include "src/Simulator/SPU/ISA/InstructionRegistry.h"
-#include "src/Simulator/SPU/RegisterFile/RegisterFile.h"
-#include "src/Simulator/SPU/ISA/InstructionTypes.h"
+#include "Simulator/Memory/Memory.h"
+#include "Simulator/SPU/ISA/InstructionRegistry.h"
+#include "Simulator/SPU/RegisterFile/RegisterFile.h"
+#include "Simulator/SPU/ISA/InstructionTypes.h"
 
 namespace r1scoviy {
 

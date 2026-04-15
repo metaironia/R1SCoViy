@@ -4,7 +4,7 @@
 #include <string_view>
 #include <memory>
 
-#include "src/Simulator/SPU/RegisterFile/RegisterFile.h"
+#include "Simulator/SPU/RegisterFile/RegisterFile.h"
 #include "InstructionTypes.h"
 
 namespace r1scoviy {

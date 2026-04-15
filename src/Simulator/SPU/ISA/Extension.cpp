@@ -1,6 +1,6 @@
 #include <cstdio>
 
-#include "src/Simulator/SPU/RegisterFile/RegisterFile.h"
+#include "Simulator/SPU/RegisterFile/RegisterFile.h"
 #include "Extension.h"
 
 namespace r1scoviy {

@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-#include "src/Simulator/SPU/ISA/InstructionTypes.h"
+#include "Simulator/SPU/ISA/InstructionTypes.h"
 
 namespace r1scoviy {
 

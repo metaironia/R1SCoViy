@@ -1,4 +1,4 @@
-# Install script for directory: /home/parshigov/Github/R1SCoViy/src/LogHelper
+# Install script for directory: /home/sergey/R1SCoViy/src/LogHelper
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,7 +44,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/parshigov/Github/R1SCoViy/_deps/quill-build/cmake_install.cmake")
+  include("/home/sergey/R1SCoViy/_deps/quill-build/cmake_install.cmake")
 
 endif()
 

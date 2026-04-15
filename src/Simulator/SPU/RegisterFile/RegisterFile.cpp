@@ -4,8 +4,8 @@
 #include <array>
 
 #include "RegisterFile.h"
-#include "src/Simulator/SPU/ISA/ExtensionRegistry.h"
-#include "src/LogHelper/OverwriteMacros.h"
+#include "Simulator/SPU/ISA/ExtensionRegistry.h"
+#include "LogHelper/OverwriteMacros.h"
 
 namespace r1scoviy {
 

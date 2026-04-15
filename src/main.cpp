@@ -1,10 +1,10 @@
 #include <memory>
 
-#include "src/Simulator/SPU/SPU.h"
-#include "src/Simulator/Memory/Memory.h"
-#include "src/Simulator/SPU/ISA/ExtensionRegistry.h"
-#include "src/LogHelper/QuillLogHelper.h"
-#include "src/LogHelper/OverwriteMacros.h"
+#include "Simulator/SPU/SPU.h"
+#include "Simulator/Memory/Memory.h"
+#include "Simulator/SPU/ISA/ExtensionRegistry.h"
+#include "LogHelper/QuillLogHelper.h"
+#include "LogHelper/OverwriteMacros.h"
 
 int main() {
     SetupQuill("simulator.log");

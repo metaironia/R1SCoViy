@@ -2,7 +2,7 @@
 #include <cassert>
 
 #include "Memory.h"
-#include "src/LogHelper/OverwriteMacros.h"
+#include "LogHelper/OverwriteMacros.h"
 
 namespace r1scoviy {
 

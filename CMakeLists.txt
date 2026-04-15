@@ -12,6 +12,10 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/src/LogHelper)
 
+target_include_directories(QuillLogHelper SYSTEM INTERFACE
+    ${quill_SOURCE_DIR}/include
+)
+
 include(CommonOptions)
 
 set(EXECUTABLE_NAME r1scoviy)
@@ -26,7 +30,7 @@ add_executable(${EXECUTABLE_NAME} ${SIMULATOR_SRC_FILES} "${CMAKE_SOURCE_DIR}/sr
 
 target_include_directories(${EXECUTABLE_NAME}
     PRIVATE
-        "${CMAKE_SOURCE_DIR}"
+        "${CMAKE_SOURCE_DIR}/src"
 )
 
 set_common_compile_options(${EXECUTABLE_NAME})

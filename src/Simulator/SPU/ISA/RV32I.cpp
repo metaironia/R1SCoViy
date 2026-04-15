@@ -1,8 +1,8 @@
 #include <unistd.h>
 
 #include "RV32I.h"
-#include "src/Simulator/SPU/Executor/InstructionDispatcher.h"
-#include "src/Simulator/SPU/Executor/Executor.h"
+#include "Simulator/SPU/Executor/InstructionDispatcher.h"
+#include "Simulator/SPU/Executor/Executor.h"
 #include <memory>
 
 namespace r1scoviy {

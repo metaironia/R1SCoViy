@@ -1,6 +1,6 @@
 #include "SPU.h"
-#include "src/Simulator/SPU/Fetcher/Fetcher.h"
-#include "src/LogHelper/OverwriteMacros.h"
+#include "Simulator/SPU/Fetcher/Fetcher.h"
+#include "LogHelper/OverwriteMacros.h"
 
 namespace r1scoviy {
 

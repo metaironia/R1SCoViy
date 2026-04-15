@@ -1,6 +1,6 @@
 #include "Executor.h"
-#include "src/Simulator/SPU/Executor/InstructionDispatcher.h"
-#include "src/LogHelper/OverwriteMacros.h"
+#include "Simulator/SPU/Executor/InstructionDispatcher.h"
+#include "LogHelper/OverwriteMacros.h"
 
 namespace r1scoviy {
 

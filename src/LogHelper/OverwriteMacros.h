@@ -8,7 +8,7 @@
 
 extern quill::Logger* GlobalLogger;
 
-#define LOG_TRACE_(Fmt, ...)    QUILL_LOG_TRACE(GlobalLogger, Fmt, ##__VA_ARGS__)
+#define LOG_TRACE_(Fmt, ...)    QUILL_LOG_BACKTRACE(GlobalLogger, Fmt, ##__VA_ARGS__)
 #define LOG_DEBUG_(Fmt, ...)    QUILL_LOG_DEBUG(GlobalLogger, Fmt, ##__VA_ARGS__)
 #define LOG_INFO_(Fmt, ...)     QUILL_LOG_INFO(GlobalLogger, Fmt, ##__VA_ARGS__)
 #define LOG_WARNING_(Fmt, ...)  QUILL_LOG_WARNING(GlobalLogger, Fmt, ##__VA_ARGS__)

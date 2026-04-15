@@ -380,8 +380,7 @@ public:
     ~ECALLInstruction() = default;
 
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
-}
-
+};
 
 } // namespace r1scoviy
 

@@ -24,4 +24,6 @@ target_include_directories(${LIB_NAME} PUBLIC
 
 set_common_compile_options(${LIB_NAME})
 
+add_compile_options(-w)
+
 target_link_libraries(${LIB_NAME} PUBLIC quill::quill)

@@ -273,7 +273,7 @@ void ECALLInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     
     if (SyscallNum == 93) {
         
-        TargetExecutor.getSpuStatus = STOP;
+        // TODO: TargetExecutor.getSpuStatus = STOP;
         return;
     }
 

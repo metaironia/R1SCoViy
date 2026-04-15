@@ -5,11 +5,14 @@
 
 #include "RegisterFile.h"
 #include "src/Simulator/SPU/ISA/ExtensionRegistry.h"
+#include "src/LogHelper/OverwriteMacros.h"
 
 namespace r1scoviy {
 
 RegisterFileUnit::RegisterFileUnit(r1scoviy::ExtensionRegistry &TargetExtesionRegistry)
     : RegistersGroups() {
+
+    LOG_DEBUG_("RegisterFileUnit constructor called");
 
     const std::vector<std::string_view> &ExtensionNames = TargetExtesionRegistry.getRegisteredExtensionsNames();
 
@@ -20,8 +23,10 @@ RegisterFileUnit::RegisterFileUnit(r1scoviy::ExtensionRegistry &TargetExtesionRe
         
         RegistersType CurrentExtensionRegisterTypes = CurrentExtension->getExtensionRegistersType();
 
-        if (RegistersGroups.find(CurrentExtensionRegisterTypes) == RegistersGroups.end())
+        if (RegistersGroups.find(CurrentExtensionRegisterTypes) == RegistersGroups.end()) {
+            LOG_TRACE_("RegisterFileUnit: initializing register group for extension {}", std::string(CurrentExtensionName));
             RegistersGroups[CurrentExtension->getExtensionRegistersType()].fill(0);
+        }
     }
 }
 
@@ -29,14 +34,18 @@ void RegisterFileUnit::writeRegister(RegistersType CurrentRegistersType, uint32_
 
     assert(RegisterID < REGISTERS_NUMBER);
 
-    if (RegisterID == 0)
+    if (RegisterID == 0) {
+        LOG_TRACE_("RegisterFileUnit: ignoring write to zero register (x0)");
         return;
+    }
 
+    LOG_TRACE_("RegisterFileUnit: writing value 0x{:08X} to register {} of type {}", Value, RegisterID, static_cast<int>(CurrentRegistersType));
     RegistersGroups[CurrentRegistersType][RegisterID] = Value;
 }
 
 uint32_t RegisterFileUnit::readRegister(RegistersType CurrentRegistersType, uint32_t RegisterID) {
 
+    LOG_TRACE_("RegisterFileUnit: reading register {} of type {}", RegisterID, static_cast<int>(CurrentRegistersType));
     return RegistersGroups[CurrentRegistersType][RegisterID];
 }
 

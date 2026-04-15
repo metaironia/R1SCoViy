@@ -1,6 +1,7 @@
 #include <cassert>
 
 #include "QuillLogHelper.h"
+#include "OverwriteMacros.h"
 
 #include "quill/Backend.h"
 #include "quill/Frontend.h"
@@ -26,9 +27,11 @@ void SetupQuill(char const* LogFile) {
         }(),
         quill::FileEventNotifier{});
 
-  GlobalLogger = quill::Frontend::create_or_get_logger(
+    GlobalLogger = quill::Frontend::create_or_get_logger(
         "Simulator.log", std::move(FileSink),
         quill::PatternFormatterOptions{"%(time) [%(thread_id)] %(short_source_location:<28) "
                                        "LOG_%(log_level:<9) %(logger:<12) %(message)",
                                        "%H:%M:%S.%Qns", quill::Timezone::GmtTime});
+    
+    LOG_INFO_("Logging initialized to file: {}", LogFile);
 }

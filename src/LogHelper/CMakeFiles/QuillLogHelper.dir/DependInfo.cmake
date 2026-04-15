@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/parshigov/Github/R1SCoViy/src/LogHelper/QuillLogHelper.cpp" "src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o" "gcc" "src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o.d"
+  "/workspace/src/LogHelper/QuillLogHelper.cpp" "src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o" "gcc" "src/LogHelper/CMakeFiles/QuillLogHelper.dir/QuillLogHelper.cpp.o.d"
   )
 
 # Targets to which this target links.

@@ -1,8 +1,10 @@
 #include "Fetcher.h"
+#include "src/LogHelper/OverwriteMacros.h"
 
 namespace r1scoviy {
 
 uint32_t FetcherUnit::fetchNextInstruction() {
+    LOG_TRACE_("Fetcher: fetching instruction at PC");
     // TODO: Implement instruction fetching logic
     return 0;
 }

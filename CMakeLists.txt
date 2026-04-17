@@ -16,6 +16,9 @@ target_include_directories(QuillLogHelper SYSTEM INTERFACE
     ${quill_SOURCE_DIR}/include
 )
 
+# Add ELFParser library
+add_subdirectory(${CMAKE_SOURCE_DIR}/src/ELFParser)
+
 include(CommonOptions)
 
 set(EXECUTABLE_NAME r1scoviy)
@@ -35,4 +38,4 @@ target_include_directories(${EXECUTABLE_NAME}
 
 set_common_compile_options(${EXECUTABLE_NAME})
 
-target_link_libraries(${EXECUTABLE_NAME} PRIVATE QuillLogHelper quill::quill)
+target_link_libraries(${EXECUTABLE_NAME} PRIVATE QuillLogHelper quill::quill ELFParser)

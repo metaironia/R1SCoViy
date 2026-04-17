@@ -1,21 +1,39 @@
 ```
-# CMake build artifacts
-_deps/
-*.cmake
-*/CMakeFiles/*
-src/LogHelper/CMakeFiles/*
-*/CMakeCache.txt
-*/cmake_install.cmake
-*/Makefile
-
-# Build directories
+# Build artifacts
 build/
 dist/
 
-# Temporary files
-*.tmp
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Compiled objects
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
 *.log
 
-# Generated files
-r1scoviy
+# Environment
+.env
+.env.local
+*.env.*
+
+# Temporary files
+*.tmp
+*.swp
+*~
 ```

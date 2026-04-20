@@ -4,8 +4,10 @@
 
 namespace r1scoviy {
 
-ExecutorUnit::ExecutorUnit(ExtensionRegistry &TargetExtensionRegistry, uint32_t &_PC)
-    : Instructions(), RAMController(), Registers(TargetExtensionRegistry), CurrInstructionParams{}, PC(_PC) {
+ExecutorUnit::ExecutorUnit(ExtensionRegistry &TargetExtensionRegistry, RAMControllerUnit &_RAMController, uint32_t &_PC)
+    : Instructions(), RAMController(_RAMController),
+      Registers(TargetExtensionRegistry), CurrInstructionParams{}, PC(_PC) {
+        
     LOG_DEBUG_("ExecutorUnit constructor called");
 }
 

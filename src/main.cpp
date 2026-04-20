@@ -1,7 +1,6 @@
 #include <memory>
 
-#include "Simulator/SPU/SPU.h"
-#include "Simulator/Memory/Memory.h"
+#include "Simulator/Simulator.h"
 #include "Simulator/SPU/ISA/ExtensionRegistry.h"
 #include "LogHelper/QuillLogHelper.h"
 #include "LogHelper/OverwriteMacros.h"
@@ -13,7 +12,7 @@ int main() {
     
     r1scoviy::ExtensionRegistry ExtensionRegistry;
     
-    auto Spu = std::make_unique<r1scoviy::SPU>(ExtensionRegistry);
+    auto Sim = std::make_unique<r1scoviy::Simulator>(ExtensionRegistry);
     
     LOG_INFO_("SPU initialized, starting execution from address 0");
     

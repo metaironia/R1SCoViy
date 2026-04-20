@@ -18,7 +18,7 @@ private:
     ExecutorUnit Executor;
 
 public:
-    SPU(ExtensionRegistry &ExtensionRegistry);
+    SPU(ExtensionRegistry &ExtensionRegistry, RAMControllerUnit &RAMController);
 
     ~SPU();
 

@@ -1,12 +1,15 @@
-#include "Fetcher.h"
+#include <cassert>
+
 #include "LogHelper/OverwriteMacros.h"
+
+#include "Fetcher.h"
+#include "ELFParser.h"
 
 namespace r1scoviy {
 
-uint32_t FetcherUnit::fetchNextInstruction() {
-    LOG_TRACE_("Fetcher: fetching instruction at PC");
-    // TODO: Implement instruction fetching logic
-    return 0;
+uint32_t FetcherUnit::fetchInstruction() {
+
+    return RAMController.getWord(PC);
 }
 
 } // namespace r1scoviy

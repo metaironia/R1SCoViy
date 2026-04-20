@@ -14,7 +14,7 @@ class ExecutorUnit {
 private:
     InstructionRegistry Instructions;
 
-    RAMControllerUnit RAMController;
+    RAMControllerUnit &RAMController;
     RegisterFileUnit Registers;
 
     InstrParams CurrInstructionParams;
@@ -22,7 +22,7 @@ private:
     uint32_t &PC;
 
 public:
-    ExecutorUnit(ExtensionRegistry &TargetExtensionRegistry, uint32_t &PC);
+    ExecutorUnit(ExtensionRegistry &TargetExtensionRegistry, RAMControllerUnit &_RAMController, uint32_t &_PC);
 
     RegisterFileUnit &getRegisterFile() { return Registers; }
 

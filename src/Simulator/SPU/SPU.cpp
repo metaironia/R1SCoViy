@@ -4,9 +4,10 @@
 
 namespace r1scoviy {
 
-SPU::SPU(ExtensionRegistry &ExtensionRegistry)
-    :  PC(0), Fetcher(PC), Executor(ExtensionRegistry, PC) {
-    LOG_DEBUG_("SPU constructor called");
+SPU::SPU(ExtensionRegistry &ExtensionRegistry, RAMControllerUnit &RAMController)
+    :  PC(0), Fetcher(RAMController, PC), Executor(ExtensionRegistry, RAMController, PC) {
+
+        LOG_DEBUG_("SPU constructor called");
 }
 
 SPU::~SPU() {

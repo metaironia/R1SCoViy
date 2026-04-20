@@ -105,7 +105,7 @@ uint8_t RAMControllerUnit::getByte(uint32_t Address) {
     return *(static_cast<uint8_t *>(MemoryLocation));
 }
 
-uint16_t RAMControllerUnit::getHalfword(uint32_t Address) {
+uint16_t RAMControllerUnit::getWord(uint32_t Address) {
     
     LOG_TRACE_("RAMController: reading halfword from address 0x{:08X}", Address);
     
@@ -117,7 +117,7 @@ uint16_t RAMControllerUnit::getHalfword(uint32_t Address) {
     return *(static_cast<uint16_t *>(MemoryLocation));
 }
 
-uint32_t RAMControllerUnit::getWord(uint32_t Address) {
+uint32_t RAMControllerUnit::getDoubleWord(uint32_t Address) {
     
     LOG_TRACE_("RAMController: reading word from address 0x{:08X}", Address);
     
@@ -141,28 +141,28 @@ void RAMControllerUnit::storeByte(uint32_t Address, uint8_t ByteToStore) {
     *(static_cast<uint8_t *>(MemoryLocation)) = ByteToStore;
 }
 
-void RAMControllerUnit::storeHalfword(uint32_t Address, uint16_t HalfwordToStore) {
+void RAMControllerUnit::storeWord(uint32_t Address, uint16_t WordToStore) {
 
-    LOG_TRACE_("RAMController: storing halfword 0x{:04X} at address 0x{:08X}", static_cast<unsigned int>(HalfwordToStore), Address);
+    LOG_TRACE_("RAMController: storing halfword 0x{:04X} at address 0x{:08X}", static_cast<unsigned int>(WordToStore), Address);
 
     assert(RAM);
 
     void *MemoryLocation = RAM->getMemoryLocation(Address);
     assert(MemoryLocation);
 
-    *(static_cast<uint16_t *>(MemoryLocation)) = HalfwordToStore;
+    *(static_cast<uint16_t *>(MemoryLocation)) = WordToStore;
 }
 
-void RAMControllerUnit::storeWord(uint32_t Address, uint32_t WordToStore) {
+void RAMControllerUnit::storeDoubleWord(uint32_t Address, uint32_t DoubleWordToStore) {
 
-    LOG_TRACE_("RAMController: storing word 0x{:08X} at address 0x{:08X}", WordToStore, Address);
+    LOG_TRACE_("RAMController: storing word 0x{:08X} at address 0x{:08X}", DoubleWordToStore, Address);
 
     assert(RAM);
 
     void *MemoryLocation = RAM->getMemoryLocation(Address);
     assert(MemoryLocation);
 
-    *(static_cast<uint32_t *>(MemoryLocation)) = WordToStore;
+    *(static_cast<uint32_t *>(MemoryLocation)) = DoubleWordToStore;
 }
 
 } // namespace r1scoviy

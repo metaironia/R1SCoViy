@@ -219,8 +219,8 @@ LHInstruction::LHInstruction() : ITypeInstruction(0x3, 0x1) {}
 void LHInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs1)) + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
-    uint16_t Halfword = TargetExecutor.getRAMController().getHalfword(Addr);
-    int16_t SignExtended = static_cast<int16_t>(Halfword);
+    uint16_t Word = TargetExecutor.getRAMController().getWord(Addr);
+    int16_t SignExtended = static_cast<int16_t>(Word);
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), static_cast<uint32_t>(SignExtended));
 }
 
@@ -229,8 +229,8 @@ LWInstruction::LWInstruction() : ITypeInstruction(0x3, 0x2) {}
 void LWInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs1)) + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
-    uint32_t Word = TargetExecutor.getRAMController().getWord(Addr);
-    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), Word);
+    uint32_t DoubleWord = TargetExecutor.getRAMController().getDoubleWord(Addr);
+    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), DoubleWord);
 }
 
 LBUInstruction::LBUInstruction() : ITypeInstruction(0x3, 0x4) {}
@@ -247,8 +247,8 @@ LHUInstruction::LHUInstruction() : ITypeInstruction(0x3, 0x5) {}
 void LHUInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs1)) + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
-    uint16_t Halfword = TargetExecutor.getRAMController().getHalfword(Addr);
-    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), static_cast<uint32_t>(Halfword));
+    uint16_t Word = TargetExecutor.getRAMController().getWord(Addr);
+    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rd), static_cast<uint32_t>(Word));
 }
 
 JALRInstruction::JALRInstruction() : ITypeInstruction(0x67, 0x0) {}
@@ -315,8 +315,8 @@ void SHInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     uint32_t Rs1Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs1));
     uint32_t Rs2Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs2));
     uint32_t Addr = Rs1Val + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
-    uint16_t Halfword = static_cast<uint16_t>(Rs2Val & 0xFFFF);
-    TargetExecutor.getRAMController().storeHalfword(Addr, Halfword);
+    uint16_t Word = static_cast<uint16_t>(Rs2Val & 0xFFFF);
+    TargetExecutor.getRAMController().storeWord(Addr, Word);
 }
 
 SWInstruction::SWInstruction() : STypeInstruction(0x23, 0x2) {}
@@ -326,7 +326,7 @@ void SWInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     uint32_t Rs1Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs1));
     uint32_t Rs2Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, static_cast<uint32_t>(Params.Rs2));
     uint32_t Addr = Rs1Val + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
-    TargetExecutor.getRAMController().storeWord(Addr, Rs2Val);
+    TargetExecutor.getRAMController().storeDoubleWord(Addr, Rs2Val);
 }
 
 // B-Type Instructions Implementation

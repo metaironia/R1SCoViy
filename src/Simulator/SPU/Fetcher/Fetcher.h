@@ -2,11 +2,7 @@
 #define SRC_SIMULATOR_SPU_FETCHER_H
 
 #include <cstdint>
-#include <optional>
-#include <memory>
-#include <string>
 
-#include "ELFParser/ELFParser.h"
 #include "Simulator/Memory/Memory.h"
 
 namespace r1scoviy {

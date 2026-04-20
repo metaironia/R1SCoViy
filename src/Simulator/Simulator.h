@@ -1,10 +1,9 @@
 #ifndef SRC_SIMULATOR_SIMULATOR_H
 #define SRC_SIMULATOR_SIMULATOR_H
 
-#include <cstdint>
-#include <memory>
+#include <string_view>
 
-#include "elfio/elfio.hpp"
+#include <elfio/elfio.hpp>
 
 #include "Simulator/Memory/Memory.h"
 #include "Simulator/SPU/SPU.h"
@@ -22,9 +21,11 @@ public:
 
     ~Simulator();
 
-    bool loadFile(const std::string &Filepath);
+    void start(const std::string_view Filepath);
 
 private:
+    bool loadFile(const std::string_view Filepath);
+
     void initRAM(const ELFIO::elfio &Reader);
 };
 

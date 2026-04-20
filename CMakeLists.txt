@@ -16,8 +16,14 @@ target_include_directories(QuillLogHelper SYSTEM INTERFACE
     ${quill_SOURCE_DIR}/include
 )
 
-# Add ELFParser library
-add_subdirectory(${CMAKE_SOURCE_DIR}/src/ELFParser)
+include(FetchContent)
+FetchContent_Declare(
+    elfio
+    GIT_REPOSITORY https://github.com/serge1/ELFIO.git
+    GIT_TAG Release_3.12
+    GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(elfio)
 
 include(CommonOptions)
 
@@ -38,4 +44,6 @@ target_include_directories(${EXECUTABLE_NAME}
 
 set_common_compile_options(${EXECUTABLE_NAME})
 
-target_link_libraries(${EXECUTABLE_NAME} PRIVATE QuillLogHelper quill::quill ELFParser)
+message(STATUS "elfio_SOURCE_DIR: ${elfio_SOURCE_DIR}")
+
+target_link_libraries_system(${EXECUTABLE_NAME} QuillLogHelper elfio)

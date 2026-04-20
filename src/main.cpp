@@ -13,11 +13,8 @@ int main() {
     r1scoviy::ExtensionRegistry ExtensionRegistry;
     
     auto Sim = std::make_unique<r1scoviy::Simulator>(ExtensionRegistry);
-    
-    LOG_INFO_("SPU initialized, starting execution from address 0");
-    
-    // Start execution from address 0
-    Spu->start(0);
+
+    Sim->start("test.txt");
     
     return 0;
 }

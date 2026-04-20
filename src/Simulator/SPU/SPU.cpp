@@ -18,11 +18,9 @@ void SPU::start(uint32_t StartInstructionAddress) {
 
     LOG_INFO_("SPU starting execution from address: 0x{:08X}", StartInstructionAddress);
     
-    PC = StartInstructionAddress;
-
     for (;;) {
 
-        uint32_t CurrInstr = Fetcher.fetchNextInstruction();
+        uint32_t CurrInstr = Fetcher.fetchInstruction();
         
         LOG_TRACE_("Fetched instruction: 0x{:08X} at PC: 0x{:08X}", CurrInstr, PC);
                 

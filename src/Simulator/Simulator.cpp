@@ -1,13 +1,27 @@
-#include "elfio/elfio.hpp"
+#include <string_view>
+
+#include <elfio/elfio.hpp>
 
 #include "LogHelper/OverwriteMacros.h"
 #include "Simulator/Simulator.h"
 
 namespace r1scoviy {
 
-bool Simulator::loadFile(const std::string &Filepath) {
+
+void Simulator::start(const std::string_view Filepath) {
 
     ELFIO::elfio Reader;
+
+    loadFile(Reader, Filepath);
+
+    initRAM(Reader);
+
+    uint32_t EntryAddress = Reader->get_entry();
+
+    Processor.start(EntryAddress);
+}
+
+bool Simulator::loadFile(ELFIO::elfio &Reader, const std::string_view Filepath) {
 
     if (!Reader.load(Filepath)) {
        
@@ -27,8 +41,6 @@ bool Simulator::loadFile(const std::string &Filepath) {
         LOG_ERROR_("ELF is not 64-bit.\n");
         return false;
     }
-
-    initRAM(Reader)
 
     return true;
 }

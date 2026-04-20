@@ -16,14 +16,14 @@ void Simulator::start(const std::string_view Filepath) {
 
     initRAM(Reader);
 
-    uint32_t EntryAddress = Reader->get_entry();
+    uint32_t EntryAddress = Reader.get_entry();
 
     Processor.start(EntryAddress);
 }
 
 bool Simulator::loadFile(ELFIO::elfio &Reader, const std::string_view Filepath) {
 
-    if (!Reader.load(Filepath)) {
+    if (!Reader.load(std::string(Filepath))) {
        
         LOG_ERROR_("Failed to load ELF: {}\n", Filepath);
         return false;
@@ -57,9 +57,9 @@ void Simulator::initRAM(const ELFIO::elfio &Reader) {
 
         const char* SegmentRawData = CurrSegment->get_data();
         size_t SegmentRawSize = CurrSegment->get_memory_size();
-        size_t SegmentVirtualAddress = CurrSegment->get_virtual_address();  
+        uint32_t SegmentVirtualAddress = CurrSegment->get_virtual_address();  
 
-        for (size_t j = 0; j < SegmentRawSize; j++)
+        for (uint32_t j = 0; j < SegmentRawSize; j++)
             RAMController.storeByte(SegmentVirtualAddress + j, SegmentRawData[j]);
     }
 }

@@ -44,6 +44,4 @@ target_include_directories(${EXECUTABLE_NAME}
 
 set_common_compile_options(${EXECUTABLE_NAME})
 
-message(STATUS "elfio_SOURCE_DIR: ${elfio_SOURCE_DIR}")
-
 target_link_libraries_system(${EXECUTABLE_NAME} QuillLogHelper elfio)

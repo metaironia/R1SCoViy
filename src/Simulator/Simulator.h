@@ -19,12 +19,12 @@ public:
     Simulator(ExtensionRegistry &ExtensionRegistry)
         : RAMController(), Processor(ExtensionRegistry, RAMController) {}
 
-    ~Simulator();
+    ~Simulator() = default;
 
     void start(const std::string_view Filepath);
 
 private:
-    bool loadFile(const std::string_view Filepath);
+    bool loadFile(ELFIO::elfio &Reader, const std::string_view Filepath);
 
     void initRAM(const ELFIO::elfio &Reader);
 };

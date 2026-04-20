@@ -22,7 +22,8 @@ public:
     void dump() const;
 
 protected:
-    Extension() = default;
+    Extension()
+        : Instructions(), ExtensionRegistersType() {}
     
 public:
     virtual ~Extension() = default;

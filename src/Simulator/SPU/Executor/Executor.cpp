@@ -13,11 +13,11 @@ ExecutorUnit::ExecutorUnit(ExtensionRegistry &TargetExtensionRegistry, RAMContro
 
 void ExecutorUnit::executeInstr(uint32_t Instr) {
 
-    LOG_TRACE_("Executor: executing instruction 0x{:08X}", Instr);
+    LOG_INFO_("Executor: executing instruction 0x{:08X}", Instr);
 
     const uint32_t Opcode = InstructionDispatcher::getOpcode(Instr);
 
-    LOG_TRACE_("Executor: opcode is 0x{:X}", Opcode);
+    LOG_INFO_("Executor: opcode is 0x{:X}", Opcode);
 
     const auto &OpcodesDispatchers = Instructions.getOpcodesDispatchers();
     
@@ -30,7 +30,7 @@ void ExecutorUnit::executeInstr(uint32_t Instr) {
 
     const uint32_t InstructionID = Dispatcher->getInstrID(Instr);
 
-    LOG_TRACE_("Executor: instruction ID is 0x{:X}", InstructionID);
+    LOG_INFO_("Executor: instruction ID is 0x{:X}", InstructionID);
 
     const auto &AllInstructions = Instructions.getInstructions();
     auto InstructionIt = AllInstructions.find(InstructionID);

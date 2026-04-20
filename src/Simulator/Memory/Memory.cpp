@@ -9,7 +9,7 @@ namespace r1scoviy {
 void *RAMUnit::Minipage::getMinipageCellAddress(uint32_t Offset) {
 
     if (!MinipageContent.has_value()) {
-        LOG_TRACE_("Minipage: allocating new minipage at offset {}", Offset);
+        LOG_INFO_("Minipage: allocating new minipage at offset {}", Offset);
         MinipageContent.emplace(std::make_unique<char[]>(MINIPAGE_MAX_OFFSET));
     }
 
@@ -18,7 +18,7 @@ void *RAMUnit::Minipage::getMinipageCellAddress(uint32_t Offset) {
 
 void *RAMUnit::getMemoryLocation(uint32_t Address) {
 
-    LOG_TRACE_("RAM: getting memory location at address 0x{:08X}", Address);
+    LOG_INFO_("RAM: getting memory location at address 0x{:08X}", Address);
 
     Minipage &FoundMinipage = findMinipage(Address);
 
@@ -32,7 +32,7 @@ void *RAMUnit::getMemoryLocation(uint32_t Address) {
 
 RAMUnit::Minipage &RAMUnit::findMinipage(uint32_t Address) {
 
-    LOG_TRACE_("RAM: finding minipage for address 0x{:08X}", Address);
+    LOG_INFO_("RAM: finding minipage for address 0x{:08X}", Address);
 
     MemoryLevel1 &MemoryLevel1HashMap = 
             findNextMemoryHashMap<MemoryLevel1>(Memory, 
@@ -46,8 +46,8 @@ RAMUnit::Minipage &RAMUnit::findMinipage(uint32_t Address) {
 
     auto MinipageIt = MemoryLevel0HashMap.find(MemoryLevel0Offset);
     if (MinipageIt == MemoryLevel0HashMap.end()) {
-        LOG_TRACE_("RAM: creating new minipage at level 0 offset {}", MemoryLevel0Offset);
-        MemoryLevel0HashMap[MemoryLevel0Offset] = Minipage();
+        LOG_INFO_("RAM: creating new minipage at level 0 offset {}", MemoryLevel0Offset);
+        MinipageIt = MemoryLevel0HashMap.try_emplace(MemoryLevel0Offset).first;
     }
 
     return MinipageIt->second;
@@ -95,7 +95,7 @@ uint32_t RAMUnit::getMemoryLevel2Offset(uint32_t Address) {
 
 uint8_t RAMControllerUnit::getByte(uint32_t Address) {
     
-    LOG_TRACE_("RAMController: reading byte from address 0x{:08X}", Address);
+    LOG_INFO_("RAMController: reading byte from address 0x{:08X}", Address);
     
     assert(RAM);
 
@@ -107,7 +107,7 @@ uint8_t RAMControllerUnit::getByte(uint32_t Address) {
 
 uint16_t RAMControllerUnit::getWord(uint32_t Address) {
     
-    LOG_TRACE_("RAMController: reading halfword from address 0x{:08X}", Address);
+    LOG_INFO_("RAMController: reading halfword from address 0x{:08X}", Address);
     
     assert(RAM);
 
@@ -119,7 +119,7 @@ uint16_t RAMControllerUnit::getWord(uint32_t Address) {
 
 uint32_t RAMControllerUnit::getDoubleWord(uint32_t Address) {
     
-    LOG_TRACE_("RAMController: reading word from address 0x{:08X}", Address);
+    LOG_INFO_("RAMController: reading word from address 0x{:08X}", Address);
     
     assert(RAM);
 
@@ -131,7 +131,7 @@ uint32_t RAMControllerUnit::getDoubleWord(uint32_t Address) {
     
 void RAMControllerUnit::storeByte(uint32_t Address, uint8_t ByteToStore) {
 
-    LOG_TRACE_("RAMController: storing byte 0x{:02X} at address 0x{:08X}", static_cast<unsigned int>(ByteToStore), Address);
+    LOG_INFO_("RAMController: storing byte 0x{:02X} at address 0x{:08X}", static_cast<unsigned int>(ByteToStore), Address);
 
     assert(RAM);
 
@@ -143,7 +143,7 @@ void RAMControllerUnit::storeByte(uint32_t Address, uint8_t ByteToStore) {
 
 void RAMControllerUnit::storeWord(uint32_t Address, uint16_t WordToStore) {
 
-    LOG_TRACE_("RAMController: storing halfword 0x{:04X} at address 0x{:08X}", static_cast<unsigned int>(WordToStore), Address);
+    LOG_INFO_("RAMController: storing halfword 0x{:04X} at address 0x{:08X}", static_cast<unsigned int>(WordToStore), Address);
 
     assert(RAM);
 
@@ -155,7 +155,7 @@ void RAMControllerUnit::storeWord(uint32_t Address, uint16_t WordToStore) {
 
 void RAMControllerUnit::storeDoubleWord(uint32_t Address, uint32_t DoubleWordToStore) {
 
-    LOG_TRACE_("RAMController: storing word 0x{:08X} at address 0x{:08X}", DoubleWordToStore, Address);
+    LOG_INFO_("RAMController: storing word 0x{:08X} at address 0x{:08X}", DoubleWordToStore, Address);
 
     assert(RAM);
 

@@ -23,7 +23,7 @@ void SPU::start(uint32_t StartInstructionAddress) {
 
     State = SpuState::Run;
 
-    for (; State != SpuState::Stop ;) {
+    for (; State != SpuState::Stop;) {
 
         uint32_t CurrInstr = Fetcher.fetchInstruction();
         

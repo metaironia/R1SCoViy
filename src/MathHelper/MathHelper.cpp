@@ -27,4 +27,14 @@ int32_t GetSignExtImm(uint32_t Imm, int SignBitPos) {
     return ((static_cast<int32_t>(Imm) ^ Mask) - Mask);
 }
 
+uint32_t GetNextAlignedImm(uint32_t Imm, uint32_t Alignment) {
+
+    uint32_t Offset = Imm % Alignment;
+
+    if (Offset == 0)
+        return Imm;
+
+    return Imm + Alignment - Offset;
+}
+
 } // namespace r1scoviy

@@ -10,6 +10,8 @@
 
 namespace r1scoviy {
 
+const uint32_t CmdArgvVirtualAddress = 0x100;
+
 class Simulator {
 private:
     RAMControllerUnit RAMController;
@@ -21,12 +23,16 @@ public:
 
     ~Simulator() = default;
 
-    void start(const std::string_view Filepath);
+    void start(int Argc, const char *Argv[]);
 
 private:
     bool loadFile(ELFIO::elfio &Reader, const std::string_view Filepath);
 
-    void initRAM(const ELFIO::elfio &Reader);
+    void initCmdArgs(int Argc, const char *Argv[]);
+
+    void initSegments(const ELFIO::elfio &Reader);
+
+    void initRAM(const ELFIO::elfio &Reader, int Argc, const char *Argv[]);
 };
 
 } // namespace r1scoviy

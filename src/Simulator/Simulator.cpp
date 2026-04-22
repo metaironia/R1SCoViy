@@ -1,20 +1,24 @@
 #include <string_view>
+#include <queue>
 
 #include <elfio/elfio.hpp>
 
 #include "LogHelper/OverwriteMacros.h"
+#include "MathHelper/MathHelper.h"
 #include "Simulator/Simulator.h"
 
 namespace r1scoviy {
 
 
-void Simulator::start(const std::string_view Filepath) {
+void Simulator::start(int Argc, const char *Argv[]) {
+
+    assert(Argv);
 
     ELFIO::elfio Reader;
 
-    loadFile(Reader, Filepath);
+    loadFile(Reader, Argv[0]);
 
-    initRAM(Reader);
+    initRAM(Reader, Argc, Argv);
 
     uint32_t EntryAddress = Reader.get_entry();
 
@@ -45,7 +49,46 @@ bool Simulator::loadFile(ELFIO::elfio &Reader, const std::string_view Filepath) 
     return true;
 }
 
-void Simulator::initRAM(const ELFIO::elfio &Reader) {
+void Simulator::initRAM(const ELFIO::elfio &Reader, int Argc, const char *Argv[]) {
+
+    assert(Argv);
+
+    initCmdArgs(Argc, Argv);
+
+    initSegments(Reader);
+}
+
+void Simulator::initCmdArgs(int Argc, const char *Argv[]) {
+
+    assert(Argv);
+
+    uint32_t CurrentCmdArgvByteVirtualAddress = CmdArgvVirtualAddress;
+
+    // TODO: sp
+
+    std::queue<uint32_t> AddressesOfArgvString;
+
+    for (size_t i = 0; i < Argc; i++) {
+
+        AddressesOfArgvString.push(CurrentCmdArgvByteVirtualAddress);
+
+        for (uint32_t j = 0; Argv[i][j] != '\0'; CurrentCmdArgvByteVirtualAddress++)
+            RAMController.storeByte(CurrentCmdArgvByteVirtualAddress, static_cast<uint8_t>(Argv[i][j]));
+            
+        RAMController.storeByte(CurrentCmdArgvByteVirtualAddress++, '\0');
+    }
+
+    CurrentCmdArgvByteVirtualAddress = GetNextAlignedImm(CurrentCmdArgvByteVirtualAddress, sizeof(uint32_t));
+
+    for (size_t i = 0; i < Argc; i++) {
+
+        RAMController.storeDoubleWord(CurrentCmdArgvByteVirtualAddress, AddressesOfArgvString.front());
+
+        AddressesOfArgvString.pop();
+    }
+}
+
+void Simulator::initSegments(const ELFIO::elfio &Reader) {
 
     size_t NumOfSegments = Reader.segments.size();
 

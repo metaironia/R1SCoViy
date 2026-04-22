@@ -22,7 +22,10 @@ int main(const int argc, const char *argv[]) {
     
     auto Sim = std::make_unique<r1scoviy::Simulator>(ExtensionRegistry);
 
-    Sim->start(argv[1]);
+    int SimArgc = argc - 1;
+    const char **SimArgv = argv + 1;
+
+    Sim->start(SimArgc, SimArgv);
     
     return 0;
 }

@@ -9,14 +9,25 @@
 
 namespace r1scoviy {
 
-void InstructionRegistry::registerInstrs(ExtensionRegistry &CurrentExtensionRegistry,
-                                         std::initializer_list<std::string_view> ExtensionsNames) {
+InstructionRegistry::InstructionRegistry(ExtensionRegistry &CurrentExtensionRegistry)
+    : Instructions(), OpcodesDispatchers() {
 
-    for (const auto &CurrentExtensionName: ExtensionsNames) {
+    const auto &RegisteredExtension = CurrentExtensionRegistry.getRegisteredExtensions();
 
-        const Extension *CurrentExtension = CurrentExtensionRegistry.getExtensionByName(CurrentExtensionName);
-        if (!CurrentExtension) {
-            continue; // TODO: log this
+    for (const auto &CurrentExtensionIt: RegisteredExtension) {
+
+        const auto &CurrentExtension = CurrentExtensionIt.second;
+
+        assert(CurrentExtension);
+
+        const auto &InstructionsMap = CurrentExtension->getInstructions();
+
+        for (const auto &CurrInstrIt: InstructionsMap) {
+
+            assert(CurrInstrIt.second);
+
+            Instructions.try_emplace(CurrInstrIt.first, CurrInstrIt.second);
+            OpcodesDispatchers.try_emplace(CurrInstrIt.second->getOpcode(), CurrInstrIt.second->getDispatcher());
         }
     }
 }

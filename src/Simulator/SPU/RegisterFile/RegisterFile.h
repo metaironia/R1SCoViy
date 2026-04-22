@@ -19,16 +19,16 @@ const int REGISTERS_NUMBER = 32;
 
 class RegisterFileUnit {
 private:
-    using Registers = std::array<uint32_t, REGISTERS_NUMBER>;     
+    using Registers = std::array<int32_t, REGISTERS_NUMBER>;     
 
     std::unordered_map<RegistersType, Registers> RegistersGroups;
 
 public:
     RegisterFileUnit(r1scoviy::ExtensionRegistry &TargetExtesionRegistry);
 
-    void writeRegister(RegistersType CurrentRegistersType, uint32_t RegisterID, uint32_t Value);
+    void writeRegister(RegistersType CurrentRegistersType, int RegisterID, int32_t Value);
 
-    uint32_t readRegister(RegistersType CurrentRegistersType, uint32_t RegisterID);
+    int32_t readRegister(RegistersType CurrentRegistersType, int RegisterID);
 };
 
 } // namespace r1scoviy

@@ -14,23 +14,25 @@ RegisterFileUnit::RegisterFileUnit(r1scoviy::ExtensionRegistry &TargetExtesionRe
 
     LOG_DEBUG_("RegisterFileUnit constructor called");
 
-    const std::vector<std::string_view> &ExtensionNames = TargetExtesionRegistry.getRegisteredExtensionsNames();
+    const auto &RegisteredExtensions = TargetExtesionRegistry.getRegisteredExtensions();
 
-    for (const auto &CurrentExtensionName: ExtensionNames) {
+    for (const auto &CurrentExtensionIt: RegisteredExtensions) {
 
-        const r1scoviy::Extension *CurrentExtension = TargetExtesionRegistry.getExtensionByName(CurrentExtensionName);
+        const auto &CurrentExtension = CurrentExtensionIt.second;
+
         assert(CurrentExtension);
         
         RegistersType CurrentExtensionRegisterTypes = CurrentExtension->getExtensionRegistersType();
 
         if (RegistersGroups.find(CurrentExtensionRegisterTypes) == RegistersGroups.end()) {
-            LOG_INFO_("RegisterFileUnit: initializing register group for extension {}", std::string(CurrentExtensionName));
+            
+            LOG_INFO_("RegisterFileUnit: initializing register group for extension {}", std::string(CurrentExtension->getName()));
             RegistersGroups[CurrentExtension->getExtensionRegistersType()].fill(0);
         }
     }
 }
 
-void RegisterFileUnit::writeRegister(RegistersType CurrentRegistersType, uint32_t RegisterID, uint32_t Value) {
+void RegisterFileUnit::writeRegister(RegistersType CurrentRegistersType, int RegisterID, int32_t Value) {
 
     assert(RegisterID < REGISTERS_NUMBER);
 
@@ -43,7 +45,7 @@ void RegisterFileUnit::writeRegister(RegistersType CurrentRegistersType, uint32_
     RegistersGroups[CurrentRegistersType][RegisterID] = Value;
 }
 
-uint32_t RegisterFileUnit::readRegister(RegistersType CurrentRegistersType, uint32_t RegisterID) {
+int32_t RegisterFileUnit::readRegister(RegistersType CurrentRegistersType, int RegisterID) {
 
     LOG_INFO_("RegisterFileUnit: reading register {} of type {}", RegisterID, static_cast<int>(CurrentRegistersType));
     return RegistersGroups[CurrentRegistersType][RegisterID];

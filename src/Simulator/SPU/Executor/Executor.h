@@ -3,7 +3,9 @@
 
 #include <memory>
 
+
 #include "Simulator/Memory/Memory.h"
+#include "Simulator/SPU/SPUState.h"
 #include "Simulator/SPU/ISA/InstructionRegistry.h"
 #include "Simulator/SPU/RegisterFile/RegisterFile.h"
 #include "Simulator/SPU/ISA/InstructionTypes.h"
@@ -32,7 +34,7 @@ public:
 
     uint32_t &getPC() { return PC; }
 
-    void executeInstr(uint32_t Instr);
+    SpuState executeInstr(uint32_t Instr);
 };
 
 } // namespace r1scoviy

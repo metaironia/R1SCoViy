@@ -5,7 +5,8 @@
 namespace r1scoviy {
 
 SPU::SPU(ExtensionRegistry &ExtensionRegistry, RAMControllerUnit &RAMController)
-    :  PC(0), Fetcher(RAMController, PC), Executor(ExtensionRegistry, RAMController, PC) {
+    :  PC(0), Fetcher(RAMController, PC), 
+       Executor(ExtensionRegistry, RAMController, PC), State(SpuState::Stop) {
 
         LOG_DEBUG_("SPU constructor called");
 }
@@ -20,13 +21,15 @@ void SPU::start(uint32_t StartInstructionAddress) {
     
     PC = StartInstructionAddress;
 
-    for (;;) {
+    State = SpuState::Run;
+
+    for (; State != SpuState::Stop ;) {
 
         uint32_t CurrInstr = Fetcher.fetchInstruction();
         
         LOG_INFO_("Fetched instruction: 0x{:08X} at PC: 0x{:08X}", CurrInstr, PC);
                 
-        Executor.executeInstr(CurrInstr);
+        State = Executor.executeInstr(CurrInstr);
     }
 }
 

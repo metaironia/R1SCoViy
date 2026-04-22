@@ -17,7 +17,9 @@ private:
 public:
     virtual const std::string_view getName() const = 0;
 
-    RegistersType getExtensionRegistersType() const;
+    const std::unordered_map<uint32_t, std::shared_ptr<Instruction>> &getInstructions() const;
+    
+    const RegistersType &getExtensionRegistersType() const;
 
     void dump() const;
 
@@ -25,12 +27,12 @@ protected:
     Extension()
         : Instructions(), ExtensionRegistersType() {}
     
+    void addNewInstr(std::shared_ptr<Instruction> NewInstruction);
+
 public:
     virtual ~Extension() = default;
 
     virtual void registerInstructions() = 0;
-
-    void addNewInstr(std::shared_ptr<Instruction> NewInstruction);
 };
 
 } // namespace r1scoviy

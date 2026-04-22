@@ -107,7 +107,7 @@ uint8_t RAMControllerUnit::getByte(uint32_t Address) {
 
 uint16_t RAMControllerUnit::getWord(uint32_t Address) {
     
-    LOG_INFO_("RAMController: reading halfword from address 0x{:08X}", Address);
+    LOG_INFO_("RAMController: reading word from address 0x{:08X}", Address);
     
     assert(RAM);
 
@@ -119,7 +119,7 @@ uint16_t RAMControllerUnit::getWord(uint32_t Address) {
 
 uint32_t RAMControllerUnit::getDoubleWord(uint32_t Address) {
     
-    LOG_INFO_("RAMController: reading word from address 0x{:08X}", Address);
+    LOG_INFO_("RAMController: reading double word from address 0x{:08X}", Address);
     
     assert(RAM);
 
@@ -143,7 +143,7 @@ void RAMControllerUnit::storeByte(uint32_t Address, uint8_t ByteToStore) {
 
 void RAMControllerUnit::storeWord(uint32_t Address, uint16_t WordToStore) {
 
-    LOG_INFO_("RAMController: storing halfword 0x{:04X} at address 0x{:08X}", static_cast<unsigned int>(WordToStore), Address);
+    LOG_INFO_("RAMController: storing word 0x{:04X} at address 0x{:08X}", static_cast<unsigned int>(WordToStore), Address);
 
     assert(RAM);
 
@@ -155,7 +155,7 @@ void RAMControllerUnit::storeWord(uint32_t Address, uint16_t WordToStore) {
 
 void RAMControllerUnit::storeDoubleWord(uint32_t Address, uint32_t DoubleWordToStore) {
 
-    LOG_INFO_("RAMController: storing word 0x{:08X} at address 0x{:08X}", DoubleWordToStore, Address);
+    LOG_INFO_("RAMController: storing double word 0x{:08X} at address 0x{:08X}", DoubleWordToStore, Address);
 
     assert(RAM);
 

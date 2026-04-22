@@ -30,9 +30,11 @@ include(CommonOptions)
 set(EXECUTABLE_NAME r1scoviy)
 
 set(SIMULATOR_DIR "${CMAKE_SOURCE_DIR}/src/Simulator")
+set(MATHHELPER_DIR "${CMAKE_SOURCE_DIR}/src/MathHelper")
 
 file(GLOB_RECURSE SIMULATOR_SRC_FILES
     "${SIMULATOR_DIR}/*.cpp"
+    "${MATHHELPER_DIR}/*.cpp"
 )
 
 add_executable(${EXECUTABLE_NAME} ${SIMULATOR_SRC_FILES} "${CMAKE_SOURCE_DIR}/src/main.cpp")

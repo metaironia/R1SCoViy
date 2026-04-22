@@ -23,6 +23,8 @@ public:
     void registerExtension(std::shared_ptr<Extension> NewExtension);
 
     const std::vector<std::string_view> &getRegisteredExtensionsNames() const;
+    
+    const std::unordered_map<std::string_view, std::shared_ptr<Extension>> &getRegisteredExtensions() const;
     const Extension *getExtensionByName(const std::string_view ExtensionName) const;
 };
 

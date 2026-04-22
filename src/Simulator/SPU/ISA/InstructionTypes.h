@@ -2,6 +2,10 @@
 #define SRC_SIMULATOR_SPU_ISA_INSTRUCTIONTYPES_H
 
 #include <cstdint>
+#include <memory>
+
+#include "MathHelper/MathHelper.h"
+#include "Simulator/SPU/Executor/InstructionDispatcher.h"
 
 namespace r1scoviy {
 
@@ -13,9 +17,9 @@ const int BITWISE_FIXED_IMM = 25;
 
 struct InstrParams {
     uint32_t Imm;
-    uint32_t Rs1;
-    uint32_t Rs2;
-    uint32_t Rd;
+    int Rs1;
+    int Rs2;
+    int Rd;
 };
 
 class Instruction {
@@ -29,6 +33,8 @@ public:
     virtual void executeInstr(ExecutorUnit &TargetExecutor) const = 0;
 
     virtual uint32_t getInstrID() const = 0;
+
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() = 0;
 
     uint32_t getOpcode() const { return Opcode; }
 
@@ -44,6 +50,8 @@ public:
     RTypeInstruction(uint32_t _Opcode, uint32_t _Funct3, uint32_t _Funct7) 
         : Instruction(_Opcode), Funct3(_Funct3), Funct7(_Funct7) {}
 
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<RTypeInstructionDispatcher>(); }
+
     uint32_t getInstrID() const override { return (Funct7 << FUNCT7_STARTBIT) | (Funct3 << FUNCT3_STARTBIT) | Opcode; }
 };
 
@@ -55,7 +63,10 @@ public:
     ITypeInstruction(uint32_t _Opcode, uint32_t _Funct3) 
         : Instruction(_Opcode), Funct3(_Funct3) {}
 
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<ITypeInstructionDispatcher>(); }
     uint32_t getInstrID() const override { return (Funct3 << FUNCT3_STARTBIT) | Opcode; }
+
+    int32_t getSignExtImm(uint32_t Imm) const { return GetSignExtImm(Imm, 11); }
 };
 
 class BitwiseITypeInstruction : public ITypeInstruction {
@@ -66,7 +77,10 @@ public:
     BitwiseITypeInstruction(uint32_t _Opcode, uint32_t _Funct3, uint32_t _Imm5_11) 
         : ITypeInstruction(_Opcode, _Funct3), Imm5_11(_Imm5_11) {}
 
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<BitwiseITypeInstructionDispatcher>(); }
     uint32_t getInstrID() const override { return (Imm5_11 << BITWISE_FIXED_IMM) | (Funct3 << FUNCT3_STARTBIT) | Opcode; }
+
+    int32_t getSignExtImm(uint32_t Imm) const { return GetSignExtImm(Imm, 4); }
 };
 
 class STypeInstruction : public Instruction {
@@ -77,7 +91,10 @@ public:
     STypeInstruction(uint32_t _Opcode, uint32_t _Funct3) 
         : Instruction(_Opcode), Funct3(_Funct3) {}
 
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<STypeInstructionDispatcher>(); }
     uint32_t getInstrID() const override { return (Funct3 << FUNCT3_STARTBIT) | Opcode; }
+
+    int32_t getSignExtImm(uint32_t Imm) const { return GetSignExtImm(Imm, 11); }
 };
 
 class BTypeInstruction : public Instruction {
@@ -88,7 +105,10 @@ public:
     BTypeInstruction(uint32_t _Opcode, uint32_t _Funct3) 
         : Instruction(_Opcode), Funct3(_Funct3) {}
 
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<BTypeInstructionDispatcher>(); }
     uint32_t getInstrID() const override { return (Funct3 << FUNCT3_STARTBIT) | Opcode; }
+
+    int32_t getSignExtImm(uint32_t Imm) const { return GetSignExtImm(Imm, 12); }
 };
 
 class UTypeInstruction : public Instruction {
@@ -96,6 +116,7 @@ public:
     UTypeInstruction(uint32_t _Opcode) 
         : Instruction(_Opcode) {}
 
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<UTypeInstructionDispatcher>(); }
     uint32_t getInstrID() const override { return Opcode; }
 };
 
@@ -104,7 +125,10 @@ public:
     JTypeInstruction(uint32_t _Opcode) 
         : Instruction(_Opcode) {}
 
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<JTypeInstructionDispatcher>(); }
     uint32_t getInstrID() const override { return Opcode; }
+
+    int32_t getSignExtImm(uint32_t Imm) const { return GetSignExtImm(Imm, 20); }
 };
 
 } // namespace r1scoviy

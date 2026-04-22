@@ -8,6 +8,8 @@
 #include "Simulator/SPU/Fetcher/Fetcher.h"
 #include "Simulator/SPU/Executor/Executor.h"
 
+#include "SPUState.h"
+
 namespace r1scoviy {
 
 class SPU {
@@ -16,6 +18,8 @@ private:
 
     FetcherUnit Fetcher;
     ExecutorUnit Executor;
+
+    SpuState State;
 
 public:
     SPU(ExtensionRegistry &ExtensionRegistry, RAMControllerUnit &RAMController);

@@ -312,14 +312,21 @@ void ECALLInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
 
     if (SyscallNum == 63) {
 
+        ssize_t ReadBytes = 0;
+
         for(uint32_t i = 0; i < A2Val; i++) {
 
             uint8_t Tmp = 0;
-            read(static_cast<int>(A0Val), reinterpret_cast<void *>(&Tmp), 1);
+            ssize_t ReadStatus = read(static_cast<int>(A0Val), reinterpret_cast<void *>(&Tmp), 1);
+
+            if (ReadStatus == 0)
+                break;
+
             TargetExecutor.getRAMController().storeByte(A1Val + i, Tmp);
+            ReadBytes++;
         }
 
-        TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, A0Num, A2Val);
+        TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, A0Num, static_cast<int32_t>(ReadBytes));
     }
     if (SyscallNum == 64) {
         

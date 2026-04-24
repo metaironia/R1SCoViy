@@ -17,7 +17,7 @@ SPU::~SPU() {
 
 void SPU::start(uint32_t StartInstructionAddress) {
 
-    LOG_INFO_("SPU starting execution from address: 0x{:08X}", StartInstructionAddress);
+    LOG_DEBUG_("SPU starting execution from address: 0x{:08X}", StartInstructionAddress);
     
     PC = StartInstructionAddress;
 
@@ -27,7 +27,7 @@ void SPU::start(uint32_t StartInstructionAddress) {
 
         uint32_t CurrInstr = Fetcher.fetchInstruction();
         
-        LOG_INFO_("Fetched instruction: 0x{:08X} at PC: 0x{:08X}", CurrInstr, PC);
+        LOG_DEBUG_("Fetched instruction: 0x{:08X} at PC: 0x{:08X}", CurrInstr, PC);
                 
         State = Executor.executeInstr(CurrInstr);
     }

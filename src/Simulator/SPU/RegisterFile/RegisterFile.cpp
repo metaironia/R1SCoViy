@@ -27,7 +27,7 @@ RegisterFileUnit::RegisterFileUnit(r1scoviy::ExtensionRegistry &TargetExtesionRe
 
         if (RegistersGroups.find(CurrentExtensionRegisterTypes) == RegistersGroups.end()) {
             
-            LOG_INFO_("RegisterFileUnit: initializing register group for extension {}", std::string(CurrentExtension->getName()));
+            LOG_DEBUG_("RegisterFileUnit: initializing register group for extension {}", std::string(CurrentExtension->getName()));
             RegistersGroups[CurrentExtensionRegisterTypes].fill(0);
         
             if (CurrentExtensionRegisterTypes == RegistersType::INTEGER_REGS) 
@@ -41,17 +41,17 @@ void RegisterFileUnit::writeRegister(RegistersType CurrentRegistersType, int Reg
     assert(RegisterID < REGISTERS_NUMBER);
 
     if (RegisterID == 0) {
-        LOG_INFO_("RegisterFileUnit: ignoring write to zero register (x0)");
+        LOG_DEBUG_("RegisterFileUnit: ignoring write to zero register (x0)");
         return;
     }
 
-    LOG_INFO_("RegisterFileUnit: writing value 0x{:08X} to register {} of type {}", Value, RegisterID, static_cast<int>(CurrentRegistersType));
+    LOG_DEBUG_("RegisterFileUnit: writing value 0x{:08X} to register {} of type {}", Value, RegisterID, static_cast<int>(CurrentRegistersType));
     RegistersGroups[CurrentRegistersType][RegisterID] = Value;
 }
 
 int32_t RegisterFileUnit::readRegister(RegistersType CurrentRegistersType, int RegisterID) {
 
-    LOG_INFO_("RegisterFileUnit: reading register {} of type {}", RegisterID, static_cast<int>(CurrentRegistersType));
+    LOG_DEBUG_("RegisterFileUnit: reading register {} of type {}", RegisterID, static_cast<int>(CurrentRegistersType));
     return RegistersGroups[CurrentRegistersType][RegisterID];
 }
 

@@ -14,11 +14,11 @@ ExecutorUnit::ExecutorUnit(ExtensionRegistry &TargetExtensionRegistry, RAMContro
 
 SpuState ExecutorUnit::executeInstr(uint32_t Instr) {
 
-    LOG_INFO_("Executor: executing instruction 0x{:08X}", Instr);
+    LOG_DEBUG_("Executor: executing instruction 0x{:08X}", Instr);
 
     const uint32_t Opcode = InstructionDispatcher::getOpcode(Instr);
 
-    LOG_INFO_("Executor: opcode is 0x{:X}", Opcode);
+    LOG_DEBUG_("Executor: opcode is 0x{:X}", Opcode);
 
     const auto &OpcodesDispatchers = Instructions.getOpcodesDispatchers();
     
@@ -34,7 +34,7 @@ SpuState ExecutorUnit::executeInstr(uint32_t Instr) {
 
     const uint32_t InstructionID = Dispatcher->getInstrID(Instr);
 
-    LOG_INFO_("Executor: instruction ID is 0x{:X}", InstructionID);
+    LOG_DEBUG_("Executor: instruction ID is 0x{:X}", InstructionID);
 
     const auto &AllInstructions = Instructions.getInstructions();
     auto InstructionIt = AllInstructions.find(InstructionID);
@@ -46,12 +46,12 @@ SpuState ExecutorUnit::executeInstr(uint32_t Instr) {
     }
 
     Dispatcher->setInstrParams(Instr, CurrInstructionParams);
-    LOG_INFO_("Executor: Curr instruction params: Imm = {}(hex 0x{:08X}), Rs1 = {}, Rs2 = {}, Rd = {}",
+    LOG_DEBUG_("Executor: Curr instruction params: Imm = {}(hex 0x{:08X}), Rs1 = {}, Rs2 = {}, Rd = {}",
               CurrInstructionParams.Imm, CurrInstructionParams.Imm,
               CurrInstructionParams.Rs1, CurrInstructionParams.Rs2, 
               CurrInstructionParams.Rd);
 
-    LOG_INFO_("Executor: executing instruction");
+    LOG_DEBUG_("Executor: executing instruction");
     InstructionIt->second->executeInstr(*this);
 
     return SpuState::Run;

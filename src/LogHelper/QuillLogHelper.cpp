@@ -31,4 +31,6 @@ void SetupQuill(char const* LogFile) {
         quill::PatternFormatterOptions{"%(time) [%(thread_id)] %(short_source_location:<28) "
                                        "LOG_%(log_level:<9) %(logger:<12) %(message)",
                                        "%H:%M:%S.%Qns", quill::Timezone::GmtTime});
+
+    GlobalLogger->set_log_level(quill::LogLevel::Debug);
 }

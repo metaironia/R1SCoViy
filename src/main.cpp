@@ -21,5 +21,5 @@ int main(const int argc, const char *argv[]) {
 
     Sim->start(SimArgc, SimArgv);
     
-    return 0;
+    return 666;
 }

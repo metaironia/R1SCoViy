@@ -83,13 +83,13 @@ public:
     RAMControllerUnit()
         : RAM(std::make_unique<RAMUnit>()) {};
 
-    uint8_t  getByte      (uint32_t Address);
-    uint16_t getWord      (uint32_t Address);
-    uint32_t getDoubleWord(uint32_t Address);
+    uint8_t  loadByte    (uint32_t Address);
+    uint16_t loadHalfWord(uint32_t Address);
+    uint32_t loadWord    (uint32_t Address);
     
-    void storeByte      (uint32_t Address, uint8_t  ByteToStore);
-    void storeWord      (uint32_t Address, uint16_t WordToStore);
-    void storeDoubleWord(uint32_t Address, uint32_t DoubleWordToStore);
+    void storeByte    (uint32_t Address, uint8_t  ByteToStore);
+    void storeHalfWord(uint32_t Address, uint16_t WordToStore);
+    void storeWord    (uint32_t Address, uint32_t DoubleWordToStore);
 };
 
 template <class MemoryHashMapT>

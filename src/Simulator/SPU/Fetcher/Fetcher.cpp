@@ -6,7 +6,7 @@ namespace r1scoviy {
 
 uint32_t FetcherUnit::fetchInstruction() {
 
-    return RAMController.getDoubleWord(PC);
+    return RAMController.loadWord(PC);
 }
 
 } // namespace r1scoviy

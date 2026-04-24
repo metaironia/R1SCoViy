@@ -10,12 +10,6 @@ int main(const int argc, const char *argv[]) {
     SetupQuill("simulator.log");
     
     LOG_INFO_("Simulator starting...");
-    
-    if (argc != 2) {
-
-        LOG_ERROR_("No input file provided!");
-        return 0;
-    }
 
     r1scoviy::ExtensionRegistry ExtensionRegistry;
     ExtensionRegistry.registerExtension(std::make_shared<r1scoviy::RV32IExtension>());

@@ -16,6 +16,7 @@ enum class RegistersType {
 };
 
 const int REGISTERS_NUMBER = 32;
+const int STACK_POINTER_REG_NUM = 2;
 
 class RegisterFileUnit {
 private:

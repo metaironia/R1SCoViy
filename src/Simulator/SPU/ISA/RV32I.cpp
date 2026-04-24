@@ -230,7 +230,7 @@ LBInstruction::LBInstruction() : ITypeInstruction(0x3, 0x0) {}
 void LBInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = static_cast<uint32_t>(TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1) + getSignExtImm(Params.Imm));
-    uint8_t Byte = TargetExecutor.getRAMController().getByte(Addr);
+    uint8_t Byte = TargetExecutor.getRAMController().loadByte(Addr);
     int8_t SignExtended = static_cast<int8_t>(Byte);
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, SignExtended);
     TargetExecutor.getPC() += 4;
@@ -241,7 +241,7 @@ LHInstruction::LHInstruction() : ITypeInstruction(0x3, 0x1) {}
 void LHInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = static_cast<uint32_t>(TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1) + getSignExtImm(Params.Imm));
-    uint16_t Word = TargetExecutor.getRAMController().getWord(Addr);
+    uint16_t Word = TargetExecutor.getRAMController().loadHalfWord(Addr);
     int16_t SignExtended = static_cast<int16_t>(Word);
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, SignExtended);
     TargetExecutor.getPC() += 4;
@@ -252,7 +252,7 @@ LWInstruction::LWInstruction() : ITypeInstruction(0x3, 0x2) {}
 void LWInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = static_cast<uint32_t>(TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1) + getSignExtImm(Params.Imm));
-    uint32_t DoubleWord = TargetExecutor.getRAMController().getDoubleWord(Addr);
+    uint32_t DoubleWord = TargetExecutor.getRAMController().loadWord(Addr);
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, static_cast<int32_t>(DoubleWord));
     TargetExecutor.getPC() += 4;
 }
@@ -262,7 +262,7 @@ LBUInstruction::LBUInstruction() : ITypeInstruction(0x3, 0x4) {}
 void LBUInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = static_cast<uint32_t>(TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1) + getSignExtImm(Params.Imm));
-    uint8_t Byte = TargetExecutor.getRAMController().getByte(Addr);
+    uint8_t Byte = TargetExecutor.getRAMController().loadByte(Addr);
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, static_cast<int32_t>(Byte));
     TargetExecutor.getPC() += 4;
 }
@@ -272,7 +272,7 @@ LHUInstruction::LHUInstruction() : ITypeInstruction(0x3, 0x5) {}
 void LHUInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     uint32_t Addr = static_cast<uint32_t>(TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1) + getSignExtImm(Params.Imm));
-    uint16_t Word = TargetExecutor.getRAMController().getWord(Addr);
+    uint16_t Word = TargetExecutor.getRAMController().loadHalfWord(Addr);
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, static_cast<int32_t>(Word));
     TargetExecutor.getPC() += 4;
 }
@@ -325,7 +325,7 @@ void ECALLInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
         
         for(uint32_t i = 0; i < A2Val; i++) {
 
-            uint8_t Tmp = TargetExecutor.getRAMController().getByte(A1Val + i);
+            uint8_t Tmp = TargetExecutor.getRAMController().loadByte(A1Val + i);
             write(static_cast<int>(A0Val), reinterpret_cast<void *>(&Tmp), 1);
         }
 
@@ -357,7 +357,7 @@ void SHInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     int32_t Rs2Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs2);
     uint32_t Addr = static_cast<uint32_t>(Rs1Val + getSignExtImm(Params.Imm));
     uint16_t Word = static_cast<uint16_t>(Rs2Val & 0xFFFF);
-    TargetExecutor.getRAMController().storeWord(Addr, Word);
+    TargetExecutor.getRAMController().storeHalfWord(Addr, Word);
     TargetExecutor.getPC() += 4;
 }
 
@@ -368,7 +368,7 @@ void SWInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     int32_t Rs1Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1);
     int32_t Rs2Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs2);
     uint32_t Addr = static_cast<uint32_t>(Rs1Val + getSignExtImm(Params.Imm));
-    TargetExecutor.getRAMController().storeDoubleWord(Addr, static_cast<uint32_t>(Rs2Val));
+    TargetExecutor.getRAMController().storeWord(Addr, static_cast<uint32_t>(Rs2Val));
     TargetExecutor.getPC() += 4;
 }
 
@@ -383,7 +383,7 @@ void BEQInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
 
     if (Rs1Val == Rs2Val) {
         uint32_t Pc = TargetExecutor.getPC();
-        uint32_t TargetAddr = Pc + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
+        uint32_t TargetAddr = static_cast<uint32_t>(static_cast<int32_t>(Pc) + getSignExtImm(Params.Imm));
         TargetExecutor.getPC() = TargetAddr;
     } else {
         TargetExecutor.getPC() += 4;
@@ -399,7 +399,7 @@ void BNEInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
 
     if (Rs1Val != Rs2Val) {
         uint32_t Pc = TargetExecutor.getPC();
-        uint32_t TargetAddr = Pc + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
+        uint32_t TargetAddr = static_cast<uint32_t>(static_cast<int32_t>(Pc) + getSignExtImm(Params.Imm));
         TargetExecutor.getPC() = TargetAddr;
     } else {
         TargetExecutor.getPC() += 4;
@@ -415,7 +415,7 @@ void BLTInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
 
     if (Rs1Val < Rs2Val) {
         uint32_t Pc = TargetExecutor.getPC();
-        uint32_t TargetAddr = Pc + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
+        uint32_t TargetAddr = static_cast<uint32_t>(static_cast<int32_t>(Pc) + getSignExtImm(Params.Imm));
         TargetExecutor.getPC() = TargetAddr;
     } else {
         TargetExecutor.getPC() += 4;
@@ -431,7 +431,7 @@ void BGEInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
 
     if (Rs1Val >= Rs2Val) {
         uint32_t Pc = TargetExecutor.getPC();
-        uint32_t TargetAddr = Pc + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
+        uint32_t TargetAddr = static_cast<uint32_t>(static_cast<int32_t>(Pc) + getSignExtImm(Params.Imm));
         TargetExecutor.getPC() = TargetAddr;
     } else {
         TargetExecutor.getPC() += 4;
@@ -447,7 +447,7 @@ void BLTUInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
 
     if (Rs1Val < Rs2Val) {
         uint32_t Pc = TargetExecutor.getPC();
-        uint32_t TargetAddr = Pc + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
+        uint32_t TargetAddr = static_cast<uint32_t>(static_cast<int32_t>(Pc) + getSignExtImm(Params.Imm));
         TargetExecutor.getPC() = TargetAddr;
     } else {
         TargetExecutor.getPC() += 4;
@@ -463,7 +463,7 @@ void BGEUInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
 
     if (Rs1Val >= Rs2Val) {
         uint32_t Pc = TargetExecutor.getPC();
-        uint32_t TargetAddr = Pc + static_cast<uint32_t>(static_cast<int32_t>(Params.Imm));
+        uint32_t TargetAddr = static_cast<uint32_t>(static_cast<int32_t>(Pc) + getSignExtImm(Params.Imm));
         TargetExecutor.getPC() = TargetAddr;
     } else {
         TargetExecutor.getPC() += 4;

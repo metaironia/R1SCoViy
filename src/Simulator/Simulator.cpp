@@ -1,3 +1,4 @@
+#include <cstdint>
 #include <string_view>
 #include <queue>
 
@@ -61,10 +62,9 @@ void Simulator::initRAM(const ELFIO::elfio &Reader, int Argc, const char *Argv[]
 void Simulator::initCmdArgs(int Argc, const char *Argv[]) {
 
     assert(Argv);
+    assert(Argc > 0);
 
     uint32_t CurrentCmdArgvByteVirtualAddress = CmdArgvVirtualAddress;
-
-    // TODO: sp
 
     std::queue<uint32_t> AddressesOfArgvString;
 
@@ -72,17 +72,17 @@ void Simulator::initCmdArgs(int Argc, const char *Argv[]) {
 
         AddressesOfArgvString.push(CurrentCmdArgvByteVirtualAddress);
 
-        for (uint32_t j = 0; Argv[i][j] != '\0'; CurrentCmdArgvByteVirtualAddress++)
+        for (uint32_t j = 0; Argv[i][j] != '\0'; CurrentCmdArgvByteVirtualAddress++, j++)
             RAMController.storeByte(CurrentCmdArgvByteVirtualAddress, static_cast<uint8_t>(Argv[i][j]));
             
         RAMController.storeByte(CurrentCmdArgvByteVirtualAddress++, '\0');
     }
 
-    CurrentCmdArgvByteVirtualAddress = GetNextAlignedImm(CurrentCmdArgvByteVirtualAddress, sizeof(uint32_t));
+    RAMController.storeWord(StackVirtualAddress, Argc);
 
     for (size_t i = 0; i < Argc; i++) {
 
-        RAMController.storeDoubleWord(CurrentCmdArgvByteVirtualAddress, AddressesOfArgvString.front());
+        RAMController.storeWord(StackVirtualAddress + sizeof(uint32_t) + i * 4, AddressesOfArgvString.front());
 
         AddressesOfArgvString.pop();
     }

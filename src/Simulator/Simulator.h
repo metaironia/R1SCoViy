@@ -10,7 +10,9 @@
 
 namespace r1scoviy {
 
-const uint32_t CmdArgvVirtualAddress = 0x100;
+const uint32_t CmdArgvVirtualAddress = 0xC0000000; // 3 gb
+
+const uint32_t StackVirtualAddress = 0xBFFFFFE0;
 
 class Simulator {
 private:

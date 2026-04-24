@@ -6,6 +6,7 @@
 #include "RegisterFile.h"
 #include "Simulator/SPU/ISA/ExtensionRegistry.h"
 #include "LogHelper/OverwriteMacros.h"
+#include "Simulator/Simulator.h"
 
 namespace r1scoviy {
 
@@ -27,7 +28,10 @@ RegisterFileUnit::RegisterFileUnit(r1scoviy::ExtensionRegistry &TargetExtesionRe
         if (RegistersGroups.find(CurrentExtensionRegisterTypes) == RegistersGroups.end()) {
             
             LOG_INFO_("RegisterFileUnit: initializing register group for extension {}", std::string(CurrentExtension->getName()));
-            RegistersGroups[CurrentExtension->getExtensionRegistersType()].fill(0);
+            RegistersGroups[CurrentExtensionRegisterTypes].fill(0);
+        
+            if (CurrentExtensionRegisterTypes == RegistersType::INTEGER_REGS) 
+                RegistersGroups[CurrentExtensionRegisterTypes][STACK_POINTER_REG_NUM] = static_cast<int32_t>(StackVirtualAddress);
         }
     }
 }

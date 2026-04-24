@@ -93,9 +93,9 @@ uint32_t RAMUnit::getMemoryLevel2Offset(uint32_t Address) {
     return extractBitsFromAddress(Address, StartBit, EndBit);
 }
 
-uint8_t RAMControllerUnit::getByte(uint32_t Address) {
+uint8_t RAMControllerUnit::loadByte(uint32_t Address) {
     
-    LOG_INFO_("RAMController: reading byte from address 0x{:08X}", Address);
+    LOG_INFO_("RAMController: loading byte from address 0x{:08X}", Address);
     
     assert(RAM);
 
@@ -105,9 +105,9 @@ uint8_t RAMControllerUnit::getByte(uint32_t Address) {
     return *(static_cast<uint8_t *>(MemoryLocation));
 }
 
-uint16_t RAMControllerUnit::getWord(uint32_t Address) {
+uint16_t RAMControllerUnit::loadHalfWord(uint32_t Address) {
     
-    LOG_INFO_("RAMController: reading word from address 0x{:08X}", Address);
+    LOG_INFO_("RAMController: loading halfword from address 0x{:08X}", Address);
     
     assert(RAM);
 
@@ -117,9 +117,9 @@ uint16_t RAMControllerUnit::getWord(uint32_t Address) {
     return *(static_cast<uint16_t *>(MemoryLocation));
 }
 
-uint32_t RAMControllerUnit::getDoubleWord(uint32_t Address) {
+uint32_t RAMControllerUnit::loadWord(uint32_t Address) {
     
-    LOG_INFO_("RAMController: reading double word from address 0x{:08X}", Address);
+    LOG_INFO_("RAMController: loading word from address 0x{:08X}", Address);
     
     assert(RAM);
 
@@ -141,9 +141,9 @@ void RAMControllerUnit::storeByte(uint32_t Address, uint8_t ByteToStore) {
     *(static_cast<uint8_t *>(MemoryLocation)) = ByteToStore;
 }
 
-void RAMControllerUnit::storeWord(uint32_t Address, uint16_t WordToStore) {
+void RAMControllerUnit::storeHalfWord(uint32_t Address, uint16_t WordToStore) {
 
-    LOG_INFO_("RAMController: storing word 0x{:04X} at address 0x{:08X}", static_cast<unsigned int>(WordToStore), Address);
+    LOG_INFO_("RAMController: storing halfword 0x{:04X} at address 0x{:08X}", static_cast<unsigned int>(WordToStore), Address);
 
     assert(RAM);
 
@@ -153,9 +153,9 @@ void RAMControllerUnit::storeWord(uint32_t Address, uint16_t WordToStore) {
     *(static_cast<uint16_t *>(MemoryLocation)) = WordToStore;
 }
 
-void RAMControllerUnit::storeDoubleWord(uint32_t Address, uint32_t DoubleWordToStore) {
+void RAMControllerUnit::storeWord(uint32_t Address, uint32_t DoubleWordToStore) {
 
-    LOG_INFO_("RAMController: storing double word 0x{:08X} at address 0x{:08X}", DoubleWordToStore, Address);
+    LOG_INFO_("RAMController: storing word 0x{:08X} at address 0x{:08X}", DoubleWordToStore, Address);
 
     assert(RAM);
 

@@ -14,9 +14,9 @@ uint32_t RTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
 
 void RTypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
 
-    CurrInstrParams.Rd = getRdNum(Instr);
-    CurrInstrParams.Rs1 = getRs1Num(Instr);
-    CurrInstrParams.Rs2 = getRs2Num(Instr);
+    CurrInstrParams.Rd = static_cast<int>(getRdNum(Instr));
+    CurrInstrParams.Rs1 = static_cast<int>(getRs1Num(Instr));
+    CurrInstrParams.Rs2 = static_cast<int>(getRs2Num(Instr));
 }
 
 uint32_t ITypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
@@ -29,8 +29,8 @@ uint32_t ITypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
 
 void ITypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
 
-    CurrInstrParams.Rd = getRdNum(Instr);
-    CurrInstrParams.Rs1 = getRs1Num(Instr);
+    CurrInstrParams.Rd = static_cast<int>(getRdNum(Instr));
+    CurrInstrParams.Rs1 = static_cast<int>(getRs1Num(Instr));
     CurrInstrParams.Imm = getImm(Instr);
 }
 
@@ -45,8 +45,8 @@ uint32_t BitwiseITypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
 
 void BitwiseITypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
 
-    CurrInstrParams.Rd = getRdNum(Instr);
-    CurrInstrParams.Rs1 = getRs1Num(Instr);
+    CurrInstrParams.Rd = static_cast<int>(getRdNum(Instr));
+    CurrInstrParams.Rs1 = static_cast<int>(getRs1Num(Instr));
     CurrInstrParams.Imm = getImm(Instr);
 }
 
@@ -60,8 +60,8 @@ uint32_t STypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
 
 void STypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
 
-    CurrInstrParams.Rs1 = getRs1Num(Instr);
-    CurrInstrParams.Rs2 = getRs2Num(Instr);
+    CurrInstrParams.Rs1 = static_cast<int>(getRs1Num(Instr));
+    CurrInstrParams.Rs2 = static_cast<int>(getRs2Num(Instr));
     CurrInstrParams.Imm = getMergedImm(Instr);
 }
 
@@ -75,8 +75,8 @@ uint32_t BTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
 
 void BTypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
 
-    CurrInstrParams.Rs1 = getRs1Num(Instr);
-    CurrInstrParams.Rs2 = getRs2Num(Instr);
+    CurrInstrParams.Rs1 = static_cast<int>(getRs1Num(Instr));
+    CurrInstrParams.Rs2 = static_cast<int>(getRs2Num(Instr));
     CurrInstrParams.Imm = getMergedImm(Instr);
 }
 
@@ -89,7 +89,7 @@ uint32_t UTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
 
 void UTypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
 
-    CurrInstrParams.Rd = getRdNum(Instr);
+    CurrInstrParams.Rd = static_cast<int>(getRdNum(Instr));
     CurrInstrParams.Imm = getImm(Instr);
 }
 
@@ -102,7 +102,7 @@ uint32_t JTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
 
 void JTypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
 
-    CurrInstrParams.Rd = getRdNum(Instr);
+    CurrInstrParams.Rd = static_cast<int>(getRdNum(Instr));
     CurrInstrParams.Imm = getMergedImm(Instr);
 }
 
@@ -131,5 +131,34 @@ uint32_t BTypeInstructionDispatcher::getMergedImm(uint32_t Instr) const {
 
     return (Bit12 << 12) | (Bits10to5 << 5) | (Bits4to1 << 1) | (Bit11 << 11);
 }
+
+uint32_t R4TypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
+
+    return getOpcode(Instr);
+}
+
+void R4TypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
+
+    CurrInstrParams.Rd = static_cast<int>(getRdNum(Instr));
+    CurrInstrParams.Rs1 = static_cast<int>(getRs1Num(Instr));
+    CurrInstrParams.Rs2 = static_cast<int>(getRs2Num(Instr));
+    CurrInstrParams.Rs3 = static_cast<int>(getRs3Num(Instr));
+    CurrInstrParams.Rm = getRm(Instr);
+}
+
+uint32_t FloatTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
+
+    return (getFunct5(Instr) << FUNCT5_STARTBIT) | getOpcode(Instr); 
+}
+
+void FloatTypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
+
+    CurrInstrParams.Rd = static_cast<int>(getRdNum(Instr));
+    CurrInstrParams.Rs1 = static_cast<int>(getRs1Num(Instr));
+    CurrInstrParams.Rs2 = static_cast<int>(getRs2Num(Instr));
+    CurrInstrParams.Rm = getRm(Instr);
+}
+
+};
 
 } // namespace r1scoviy

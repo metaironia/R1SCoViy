@@ -5,7 +5,7 @@
 
 namespace r1scoviy {
 
-uint32_t ExtractBits(uint32_t Instruction, int StartBit, int EndBit);
+uint32_t ExtractBits(uint32_t Imm, int StartBit, int EndBit);
 
 int32_t GetSignExtImm(uint32_t Imm, int SignBitPos);
 

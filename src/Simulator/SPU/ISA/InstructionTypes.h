@@ -13,13 +13,16 @@ class ExecutorUnit;
 
 const int FUNCT3_STARTBIT = 12;
 const int FUNCT7_STARTBIT = 25;
+const int FUNCT5_STARTBIT = 27;
 const int BITWISE_FIXED_IMM = 25;
 
 struct InstrParams {
     uint32_t Imm;
     int Rs1;
     int Rs2;
+    int Rs3;
     int Rd;
+    uint32_t Rm;
 };
 
 class Instruction {
@@ -129,6 +132,27 @@ public:
     uint32_t getInstrID() const override { return Opcode; }
 
     int32_t getSignExtImm(uint32_t Imm) const { return GetSignExtImm(Imm, 20); }
+};
+
+class R4TypeInstruction : public Instruction {
+public:
+    R4TypeInstruction(uint32_t _Opcode) 
+        : Instruction(_Opcode) {}
+
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<R4TypeInstructionDispatcher>(); }
+    uint32_t getInstrID() const override { return Opcode; }
+};
+
+class FloatTypeInstruction : public Instruction {
+private:
+    uint32_t Funct5;
+
+public:
+    FloatTypeInstruction(uint32_t _Opcode, uint32_t _Funct5) 
+        : Instruction(_Opcode), Funct5(_Funct5) {}
+
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<FloatTypeInstructionDispatcher>(); }
+    uint32_t getInstrID() const override { return (Funct5 << FUNCT5_STARTBIT) | Opcode; }
 };
 
 } // namespace r1scoviy

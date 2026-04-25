@@ -41,6 +41,7 @@ void RegisterFileUnit::writeRegister(RegistersType CurrentRegistersType, int Reg
     assert(RegisterID < REGISTERS_NUMBER);
 
     if (RegisterID == 0) {
+        
         LOG_DEBUG_("RegisterFileUnit: ignoring write to zero register (x0)");
         return;
     }

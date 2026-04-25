@@ -101,10 +101,26 @@ public:
 
 class R4TypeInstructionDispatcher : public InstructionDispatcher {
 public:
-    uint32_t getFs3Num(uint32_t Instr) const { return ExtractBits(Instr, 27, 31); }
-    uint32_t getFs2Num(uint32_t Instr) const { return ExtractBits(Instr, 20, 24); }
-    uint32_t getFs1Num(uint32_t Instr) const { return ExtractBits(Instr, 15, 19); }
-    uint32_t getFdNum(uint32_t Instr) const { return ExtractBits(Instr, 7, 11); }
+    uint32_t getInstrID(uint32_t Instr) const override;
+    void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
+
+    uint32_t getRdNum(uint32_t Instr) const { return ExtractBits(Instr, 7, 11); }
+    uint32_t getRm(uint32_t Instr) const { return ExtractBits(Instr, 12, 14); }
+    uint32_t getRs1Num(uint32_t Instr) const { return ExtractBits(Instr, 15, 19); }
+    uint32_t getRs2Num(uint32_t Instr) const { return ExtractBits(Instr, 20, 24); }
+    uint32_t getRs3Num(uint32_t Instr) const { return ExtractBits(Instr, 27, 31); }
+};
+
+class FloatTypeInstructionDispatcher: public InstructionDispatcher {
+public:
+    uint32_t getInstrID(uint32_t Instr) const override;
+    void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
+
+    uint32_t getRdNum(uint32_t Instr) const { return ExtractBits(Instr, 7, 11); }
+    uint32_t getRm(uint32_t Instr) const { return ExtractBits(Instr, 12, 14); }    
+    uint32_t getRs1Num(uint32_t Instr) const { return ExtractBits(Instr, 15, 19); }
+    uint32_t getRs2Num(uint32_t Instr) const { return ExtractBits(Instr, 20, 24); }
+    uint32_t getFunct5(uint32_t Instr) const { return ExtractBits(Instr, 27, 31); }
 };
 
 } // namespace r1scoviy

@@ -6,7 +6,6 @@
 
 namespace r1scoviy {
 
-// Forward declarations for RV32Zbb instructions
 class ANDNInstruction;
 class ORNInstruction;
 class XNORInstruction;
@@ -24,8 +23,9 @@ class ZEXTHInstruction;
 class CLZInstruction;
 class CTZInstruction;
 class CPOPInstruction;
+class ORC_BInstruction;
+class REV8Instruction;
 
-// RV32Zbb Extension class
 class RV32ZbbExtension : public Extension {
 public:
     RV32ZbbExtension() = default;
@@ -40,7 +40,6 @@ private:
     void registerITypeInstructions();
 };
 
-// R-Type Instructions - Basic Bit Manipulation
 class ANDNInstruction : public RTypeInstruction {
 public:
     ANDNInstruction();
@@ -113,7 +112,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class SEXTBInstruction : public RTypeInstruction {
+class SEXTBInstruction : public UltraBitwiseITypeInstruction {
 public:
     SEXTBInstruction();
     ~SEXTBInstruction() = default;
@@ -121,7 +120,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class SEXTHInstruction : public RTypeInstruction {
+class SEXTHInstruction : public UltraBitwiseITypeInstruction {
 public:
     SEXTHInstruction();
     ~SEXTHInstruction() = default;
@@ -129,15 +128,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class ZEXTBInstruction : public RTypeInstruction {
-public:
-    ZEXTBInstruction();
-    ~ZEXTBInstruction() = default;
-    
-    void executeInstr(ExecutorUnit &TargetExecutor) const override;
-};
-
-class ZEXTHInstruction : public RTypeInstruction {
+class ZEXTHInstruction : public UltraBitwiseITypeInstruction {
 public:
     ZEXTHInstruction();
     ~ZEXTHInstruction() = default;
@@ -145,7 +136,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class CLZInstruction : public RTypeInstruction {
+class CLZInstruction : public UltraBitwiseITypeInstruction {
 public:
     CLZInstruction();
     ~CLZInstruction() = default;
@@ -153,7 +144,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class CTZInstruction : public RTypeInstruction {
+class CTZInstruction : public UltraBitwiseITypeInstruction {
 public:
     CTZInstruction();
     ~CTZInstruction() = default;
@@ -161,7 +152,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class CPOPInstruction : public RTypeInstruction {
+class CPOPInstruction : public UltraBitwiseITypeInstruction {
 public:
     CPOPInstruction();
     ~CPOPInstruction() = default;
@@ -169,11 +160,26 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-// I-Type Instructions
 class RORIInstruction : public BitwiseITypeInstruction {
 public:
     RORIInstruction();
     ~RORIInstruction() = default;
+    
+    void executeInstr(ExecutorUnit &TargetExecutor) const override;
+};
+
+class ORC_BInstruction : public UltraBitwiseITypeInstruction {
+public:
+    ORC_BInstruction();
+    ~ORC_BInstruction() = default;
+    
+    void executeInstr(ExecutorUnit &TargetExecutor) const override;
+};
+
+class REV8Instruction : public UltraBitwiseITypeInstruction {
+public:
+    REV8Instruction();
+    ~REV8Instruction() = default;
     
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };

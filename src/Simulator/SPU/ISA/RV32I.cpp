@@ -7,8 +7,6 @@
 
 namespace r1scoviy {
 
-// R-Type Instructions Implementation
-
 ADDInstruction::ADDInstruction() : RTypeInstruction(0x33, 0x0, 0x0) {}
 
 void ADDInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
@@ -122,9 +120,7 @@ void ANDInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// I-Type Instructions Implementation
-
-ADDIInstruction::ADDIInstruction() : ITypeInstruction(0x13, 0x0) {}
+ADDIInstruction::ADDIInstruction() : ITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x0) {}
 
 void ADDIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -135,7 +131,7 @@ void ADDIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-SLTIInstruction::SLTIInstruction() : ITypeInstruction(0x13, 0x2) {}
+SLTIInstruction::SLTIInstruction() : ITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x2) {}
 
 void SLTIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -146,7 +142,7 @@ void SLTIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-SLTIUInstruction::SLTIUInstruction() : ITypeInstruction(0x13, 0x3) {}
+SLTIUInstruction::SLTIUInstruction() : ITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x3) {}
 
 void SLTIUInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -157,7 +153,7 @@ void SLTIUInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-XORIInstruction::XORIInstruction() : ITypeInstruction(0x13, 0x4) {}
+XORIInstruction::XORIInstruction() : ITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x4) {}
 
 void XORIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -168,7 +164,7 @@ void XORIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-ORIInstruction::ORIInstruction() : ITypeInstruction(0x13, 0x6) {}
+ORIInstruction::ORIInstruction() : ITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x6) {}
 
 void ORIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -179,7 +175,7 @@ void ORIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-ANDIInstruction::ANDIInstruction() : ITypeInstruction(0x13, 0x7) {}
+ANDIInstruction::ANDIInstruction() : ITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x7) {}
 
 void ANDIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -190,7 +186,7 @@ void ANDIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-SLLIInstruction::SLLIInstruction() : BitwiseITypeInstruction(0x13, 0x1, 0x0) {}
+SLLIInstruction::SLLIInstruction() : BitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x1, 0x0) {}
 
 void SLLIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -201,7 +197,7 @@ void SLLIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-SRLIInstruction::SRLIInstruction() : BitwiseITypeInstruction(0x13, 0x5, 0x0) {}
+SRLIInstruction::SRLIInstruction() : BitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x5, 0x0) {}
 
 void SRLIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -212,7 +208,7 @@ void SRLIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-SRAIInstruction::SRAIInstruction() : BitwiseITypeInstruction(0x13, 0x5, 0x20) {}
+SRAIInstruction::SRAIInstruction() : BitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x5, 0x20) {}
 
 void SRAIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -340,8 +336,6 @@ void ECALLInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// S-Type Instructions Implementation
-
 SBInstruction::SBInstruction() : STypeInstruction(0x23, 0x0) {}
 
 void SBInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
@@ -376,8 +370,6 @@ void SWInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getRAMController().storeWord(Addr, static_cast<uint32_t>(Rs2Val));
     TargetExecutor.getPC() += 4;
 }
-
-// B-Type Instructions Implementation
 
 BEQInstruction::BEQInstruction() : BTypeInstruction(0x63, 0x0) {}
 
@@ -475,8 +467,6 @@ void BGEUInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     }
 }
 
-// U-Type Instructions Implementation
-
 LUIInstruction::LUIInstruction() : UTypeInstruction(0x37) {}
 
 void LUIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
@@ -495,8 +485,6 @@ void AUIPCInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, static_cast<int32_t>(Result));
     TargetExecutor.getPC() += 4;
 }
-
-// J-Type Instructions Implementation
 
 JALInstruction::JALInstruction() : JTypeInstruction(0x6F) {}
 

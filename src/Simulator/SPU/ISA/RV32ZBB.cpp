@@ -1,14 +1,11 @@
 #include "RV32ZBB.h"
+#include "MathHelper/MathHelper.h"
 #include "Simulator/SPU/Executor/Executor.h"
 #include <memory>
-#include <bit>
 
 namespace r1scoviy {
 
-// R-Type Instructions Implementation - Basic Bit Manipulation
-
-// andn: Rd = Rs1 & ~Rs2
-ANDNInstruction::ANDNInstruction() : RTypeInstruction(0x33, 0x4, 0x20) {}
+ANDNInstruction::ANDNInstruction() : RTypeInstruction(0x33, 0x7, 0x20) {}
 
 void ANDNInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -19,7 +16,6 @@ void ANDNInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// orn: Rd = Rs1 | ~Rs2
 ORNInstruction::ORNInstruction() : RTypeInstruction(0x33, 0x6, 0x20) {}
 
 void ORNInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
@@ -31,7 +27,6 @@ void ORNInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// xnor: Rd = Rs1 ^ ~Rs2 (equivalent to ~(Rs1 ^ Rs2))
 XNORInstruction::XNORInstruction() : RTypeInstruction(0x33, 0x4, 0x21) {}
 
 void XNORInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
@@ -43,8 +38,7 @@ void XNORInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// max: Rd = signed(Rs1) > signed(Rs2) ? Rs1 : Rs2
-MAXInstruction::MAXInstruction() : RTypeInstruction(0x33, 0x5, 0x20) {}
+MAXInstruction::MAXInstruction() : RTypeInstruction(0x33, 0x6, 0x5) {}
 
 void MAXInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -55,8 +49,7 @@ void MAXInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// maxu: Rd = unsigned(Rs1) > unsigned(Rs2) ? Rs1 : Rs2
-MAXUInstruction::MAXUInstruction() : RTypeInstruction(0x33, 0x5, 0x21) {}
+MAXUInstruction::MAXUInstruction() : RTypeInstruction(0x33, 0x7, 0x5) {}
 
 void MAXUInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -67,8 +60,7 @@ void MAXUInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// min: Rd = signed(Rs1) < signed(Rs2) ? Rs1 : Rs2
-MINInstruction::MINInstruction() : RTypeInstruction(0x33, 0x5, 0x22) {}
+MINInstruction::MINInstruction() : RTypeInstruction(0x33, 0x4, 0x5) {}
 
 void MINInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -79,8 +71,7 @@ void MINInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// minu: Rd = unsigned(Rs1) < unsigned(Rs2) ? Rs1 : Rs2
-MINUInstruction::MINUInstruction() : RTypeInstruction(0x33, 0x5, 0x23) {}
+MINUInstruction::MINUInstruction() : RTypeInstruction(0x33, 0x5, 0x5) {}
 
 void MINUInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -91,8 +82,7 @@ void MINUInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// rol: Rd = Rs1 <<< (Rs2 & 0x1F) - Rotate Left
-ROLInstruction::ROLInstruction() : RTypeInstruction(0x33, 0x1, 0x21) {}
+ROLInstruction::ROLInstruction() : RTypeInstruction(0x33, 0x1, 0x30) {}
 
 void ROLInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -104,8 +94,7 @@ void ROLInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// ror: Rd = Rs1 >>> (Rs2 & 0x1F) - Rotate Right
-RORInstruction::RORInstruction() : RTypeInstruction(0x33, 0x5, 0x21) {}
+RORInstruction::RORInstruction() : RTypeInstruction(0x33, 0x5, 0x30) {}
 
 void RORInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -117,8 +106,7 @@ void RORInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// sext.b: Rd = sign_extend(Rs1[7:0])
-SEXTBInstruction::SEXTBInstruction() : RTypeInstruction(0x33, 0x5, 0x24) {}
+SEXTBInstruction::SEXTBInstruction() : UltraBitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x1, 0x604) {}
 
 void SEXTBInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -129,8 +117,7 @@ void SEXTBInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// sext.h: Rd = sign_extend(Rs1[15:0])
-SEXTHInstruction::SEXTHInstruction() : RTypeInstruction(0x33, 0x5, 0x25) {}
+SEXTHInstruction::SEXTHInstruction() : UltraBitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x1, 0x605) {}
 
 void SEXTHInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -141,19 +128,7 @@ void SEXTHInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// zext.b: Rd = zero_extend(Rs1[7:0])
-ZEXTBInstruction::ZEXTBInstruction() : RTypeInstruction(0x33, 0x4, 0x24) {}
-
-void ZEXTBInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
-    const auto &Params = TargetExecutor.getInstructionParams();
-    int32_t Rs1Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1);
-    uint32_t Result = Rs1Val & 0xFF;
-    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, static_cast<int32_t>(Result));
-    TargetExecutor.getPC() += 4;
-}
-
-// zext.h: Rd = zero_extend(Rs1[15:0])
-ZEXTHInstruction::ZEXTHInstruction() : RTypeInstruction(0x33, 0x4, 0x25) {}
+ZEXTHInstruction::ZEXTHInstruction() : UltraBitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x4, 0x80) {}
 
 void ZEXTHInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -163,48 +138,66 @@ void ZEXTHInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// clz: Rd = count leading zeros in Rs1
-CLZInstruction::CLZInstruction() : RTypeInstruction(0x33, 0x1, 0x20) {}
+CLZInstruction::CLZInstruction() : UltraBitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x1, 0x600) {}
 
 void CLZInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     uint32_t Rs1Val = static_cast<uint32_t>(TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1));
-    int32_t Result = std::countl_zero(Rs1Val);
-    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, Result);
+    int32_t LeadingZeros = 0;
+    uint32_t LastBitMask = 0x80000000;
+    Rs1Val = ~Rs1Val;
+    for (size_t i = 0; i < sizeof(uint32_t) * 8; i++) {
+
+        if (!(Rs1Val & LastBitMask))
+            break;
+
+        LeadingZeros++;
+        Rs1Val <<= 1;
+    }
+    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, LeadingZeros);
     TargetExecutor.getPC() += 4;
 }
 
-// ctz: Rd = count trailing zeros in Rs1
-CTZInstruction::CTZInstruction() : RTypeInstruction(0x33, 0x1, 0x22) {}
+CTZInstruction::CTZInstruction() : UltraBitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x1, 0x601) {}
 
 void CTZInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     uint32_t Rs1Val = static_cast<uint32_t>(TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1));
-    int32_t Result = std::countl_zero(static_cast<uint32_t>(std::countr_zero(Rs1Val)));
-    if (Rs1Val == 0) {
-        Result = 32;
-    } else {
-        Result = std::countr_zero(Rs1Val);
+    int32_t TrailingZeros = 0;
+    uint32_t FirstBitMask = 0x1;
+    Rs1Val = ~Rs1Val;
+    for (size_t i = 0; i < sizeof(uint32_t) * 8; i++) {
+
+        if (!(Rs1Val & FirstBitMask))
+            break;
+
+        TrailingZeros++;
+        Rs1Val >>= 1;
     }
-    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, Result);
+    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, TrailingZeros);
     TargetExecutor.getPC() += 4;
 }
 
-// cpop: Rd = population count of Rs1
-CPOPInstruction::CPOPInstruction() : RTypeInstruction(0x33, 0x1, 0x23) {}
+CPOPInstruction::CPOPInstruction() : UltraBitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x1, 0x602) {}
 
 void CPOPInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     uint32_t Rs1Val = static_cast<uint32_t>(TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1));
-    int32_t Result = std::popcount(Rs1Val);
-    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, Result);
+    int32_t SetBits = 0;
+    uint32_t FirstBitMask = 0x1;
+    for (size_t i = 0; i < sizeof(uint32_t) * 8; i++) {
+
+        if (!(Rs1Val & FirstBitMask))
+            continue;
+
+        SetBits++;
+        Rs1Val >>= 1;
+    }
+    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, SetBits);
     TargetExecutor.getPC() += 4;
 }
 
-// I-Type Instructions Implementation
-
-// rori: Rd = Rs1 >>> shamt (rotate right by immediate)
-RORIInstruction::RORIInstruction() : BitwiseITypeInstruction(0x13, 0x5, 0x20) {}
+RORIInstruction::RORIInstruction() : BitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x5, 0x30) {}
 
 void RORIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -215,7 +208,40 @@ void RORIInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-// Extension Registration
+ORC_BInstruction::ORC_BInstruction() : UltraBitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x5, 0x287) {}
+
+void ORC_BInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
+    const auto &Params = TargetExecutor.getInstructionParams();
+    uint32_t Rs1Val = static_cast<uint32_t>(TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1));
+    int32_t Result = 0;
+    for (size_t i = 0; i < sizeof(uint32_t) * 8; i += 8) {
+
+        uint32_t CurrByte = ExtractBits(Rs1Val, i, i + 7);
+
+        if (CurrByte == 0)
+            continue;
+
+        Result |= (0xFFu << i);
+    }
+    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, Result);
+    TargetExecutor.getPC() += 4;
+}
+
+REV8Instruction::REV8Instruction() : UltraBitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x5, 0x698) {}
+
+void REV8Instruction::executeInstr(ExecutorUnit &TargetExecutor) const {
+    const auto &Params = TargetExecutor.getInstructionParams();
+    uint32_t Rs1Val = static_cast<uint32_t>(TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1));
+    int32_t Result = 0;
+    for (size_t i = 0, j = 24; i < sizeof(uint32_t) * 8; i += 8, j -= 8) {
+
+        uint32_t CurrByte = ExtractBits(Rs1Val, i, i + 7);
+
+        Result |= (CurrByte << j);
+    }
+    TargetExecutor.getRegisterFile().writeRegister(RegistersType::INTEGER_REGS, Params.Rd, Result);
+    TargetExecutor.getPC() += 4;
+}
 
 void RV32ZbbExtension::registerInstructions() {
     registerRTypeInstructions();
@@ -232,17 +258,18 @@ void RV32ZbbExtension::registerRTypeInstructions() {
     addNewInstr(std::make_shared<MINUInstruction>());
     addNewInstr(std::make_shared<ROLInstruction>());
     addNewInstr(std::make_shared<RORInstruction>());
-    addNewInstr(std::make_shared<SEXTBInstruction>());
-    addNewInstr(std::make_shared<SEXTHInstruction>());
-    addNewInstr(std::make_shared<ZEXTBInstruction>());
-    addNewInstr(std::make_shared<ZEXTHInstruction>());
-    addNewInstr(std::make_shared<CLZInstruction>());
-    addNewInstr(std::make_shared<CTZInstruction>());
-    addNewInstr(std::make_shared<CPOPInstruction>());
 }
 
 void RV32ZbbExtension::registerITypeInstructions() {
     addNewInstr(std::make_shared<RORIInstruction>());
+    addNewInstr(std::make_shared<SEXTBInstruction>());
+    addNewInstr(std::make_shared<SEXTHInstruction>());
+    addNewInstr(std::make_shared<ZEXTHInstruction>());
+    addNewInstr(std::make_shared<CLZInstruction>());
+    addNewInstr(std::make_shared<CTZInstruction>());
+    addNewInstr(std::make_shared<CPOPInstruction>());
+    addNewInstr(std::make_shared<ORC_BInstruction>());
+    addNewInstr(std::make_shared<REV8Instruction>());
 }
 
 } // namespace r1scoviy

@@ -6,7 +6,6 @@
 
 namespace r1scoviy {
 
-// Forward declarations for RV32I instructions
 class ADDInstruction;
 class SUBInstruction;
 class SLLInstruction;
@@ -52,7 +51,6 @@ class JALInstruction;
 
 class ECALLInstruction;
 
-// RV32I Extension class
 class RV32IExtension : public Extension {
 public:
     RV32IExtension() = default;
@@ -71,7 +69,6 @@ private:
     void registerJTypeInstructions();
 };
 
-// R-Type Instructions
 class ADDInstruction : public RTypeInstruction {
 public:
     ADDInstruction();
@@ -152,7 +149,6 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-// I-Type Instructions
 class ADDIInstruction : public ITypeInstruction {
 public:
     ADDIInstruction();
@@ -273,7 +269,6 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-// S-Type Instructions
 class SBInstruction : public STypeInstruction {
 public:
     SBInstruction();
@@ -298,7 +293,6 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-// B-Type Instructions
 class BEQInstruction : public BTypeInstruction {
 public:
     BEQInstruction();
@@ -347,7 +341,6 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-// U-Type Instructions
 class LUIInstruction : public UTypeInstruction {
 public:
     LUIInstruction();
@@ -364,7 +357,6 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-// J-Type Instructions
 class JALInstruction : public JTypeInstruction {
 public:
     JALInstruction();

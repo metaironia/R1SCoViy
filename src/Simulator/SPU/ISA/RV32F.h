@@ -10,7 +10,6 @@ enum class RV32FRounding {
     RNE = 0, RTZ = 1, RDN = 2, RUP = 3, RMM = 4, DYN = 7
 };
 
-// Forward declarations for RV32F instructions
 class FLWInstruction;
 class FSWInstruction;
 
@@ -185,7 +184,6 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-// Conversion Instructions
 class FCVT_I2FInstruction : public FloatTypeRoundingInstruction {
 public:
     FCVT_I2FInstruction();
@@ -218,7 +216,6 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-// Comparison Instructions
 class FEQ_SInstruction : public FloatTypeNoRoundingInstruction {
 public:
     FEQ_SInstruction();

@@ -68,6 +68,65 @@ static void WriteFloatReg(RegisterFileUnit &RegisterFile, int RegNum, float32_t 
     RegisterFile.writeRegister(RegistersType::FLOAT_REGS, RegNum, Value.v);
 }
 
+FMADD_SInstruction::FMADD_SInstruction() : R4TypeInstruction(0x43) {}
+
+void FMADD_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
+    const auto &Params = TargetExecutor.getInstructionParams();
+    float32_t Rs1Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs1);
+    float32_t Rs2Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs2);
+    float32_t Rs3Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs2);
+    softfloat_roundingMode = RiscvToSoftfloatRm(Params.Rm);
+    float32_t Result = f32_mulAdd(Rs1Val, Rs2Val, Rs3Val);
+    WriteFloatReg(TargetExecutor.getRegisterFile(), Params.Rd, Result);
+    TargetExecutor.getPC() += 4;
+}
+
+FMSUB_SInstruction::FMSUB_SInstruction() : R4TypeInstruction(0x47) {}
+
+void FMSUB_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
+    const auto &Params = TargetExecutor.getInstructionParams();
+    float32_t Rs1Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs1);
+    float32_t Rs2Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs2);
+    float32_t Rs3Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs2);
+    uint32_t SignMask = 0x80000000;
+    Rs3Val.v = Rs3Val.v ^ SignMask;
+    softfloat_roundingMode = RiscvToSoftfloatRm(Params.Rm);
+    float32_t Result = f32_mulAdd(Rs1Val, Rs2Val, Rs3Val);
+    WriteFloatReg(TargetExecutor.getRegisterFile(), Params.Rd, Result);
+    TargetExecutor.getPC() += 4;
+}
+
+FNMSUB_SInstruction::FNMSUB_SInstruction() : R4TypeInstruction(0x4B) {}
+
+void FNMSUB_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
+    const auto &Params = TargetExecutor.getInstructionParams();
+    float32_t Rs1Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs1);
+    float32_t Rs2Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs2);
+    float32_t Rs3Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs2);
+    uint32_t SignMask = 0x80000000;
+    Rs1Val.v = Rs1Val.v ^ SignMask;
+    softfloat_roundingMode = RiscvToSoftfloatRm(Params.Rm);
+    float32_t Result = f32_mulAdd(Rs1Val, Rs2Val, Rs3Val);
+    WriteFloatReg(TargetExecutor.getRegisterFile(), Params.Rd, Result);
+    TargetExecutor.getPC() += 4;
+}
+
+FNMADD_SInstruction::FNMADD_SInstruction() : R4TypeInstruction(0x4F) {}
+
+void FNMADD_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
+    const auto &Params = TargetExecutor.getInstructionParams();
+    float32_t Rs1Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs1);
+    float32_t Rs2Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs2);
+    float32_t Rs3Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs2);
+    uint32_t SignMask = 0x80000000;
+    Rs1Val.v = Rs1Val.v ^ SignMask;
+    Rs3Val.v = Rs3Val.v ^ SignMask;
+    softfloat_roundingMode = RiscvToSoftfloatRm(Params.Rm);
+    float32_t Result = f32_mulAdd(Rs1Val, Rs2Val, Rs3Val);
+    WriteFloatReg(TargetExecutor.getRegisterFile(), Params.Rd, Result);
+    TargetExecutor.getPC() += 4;
+}
+
 FLWInstruction::FLWInstruction() : ITypeInstruction(0x7, 0x2) {}
 
 void FLWInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
@@ -366,6 +425,10 @@ void RV32FExtension::registerLoadStoreInstructions() {
 }
 
 void RV32FExtension::registerArithmeticInstructions() {
+    addNewInstr(std::make_shared<FMADD_SInstruction>());
+    addNewInstr(std::make_shared<FMSUB_SInstruction>());
+    addNewInstr(std::make_shared<FNMSUB_SInstruction>());
+    addNewInstr(std::make_shared<FNMADD_SInstruction>());
     addNewInstr(std::make_shared<FADD_SInstruction>());
     addNewInstr(std::make_shared<FSUB_SInstruction>());
     addNewInstr(std::make_shared<FMUL_SInstruction>());

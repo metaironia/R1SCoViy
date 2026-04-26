@@ -57,6 +57,38 @@ private:
     void registerComparisonInstructions();
 };
 
+class FMADD_SInstruction : public R4TypeInstruction {
+public:
+    FMADD_SInstruction();
+    ~FMADD_SInstruction() = default;
+
+    void executeInstr(ExecutorUnit &TargetExecutor) const override;
+};
+
+class FMSUB_SInstruction : public R4TypeInstruction {
+public:
+    FMSUB_SInstruction();
+    ~FMSUB_SInstruction() = default;
+
+    void executeInstr(ExecutorUnit &TargetExecutor) const override;
+};
+
+class FNMSUB_SInstruction : public R4TypeInstruction {
+public:
+    FNMSUB_SInstruction();
+    ~FNMSUB_SInstruction() = default;
+
+    void executeInstr(ExecutorUnit &TargetExecutor) const override;
+};
+
+class FNMADD_SInstruction : public R4TypeInstruction {
+public:
+    FNMADD_SInstruction();
+    ~FNMADD_SInstruction() = default;
+
+    void executeInstr(ExecutorUnit &TargetExecutor) const override;
+};
+
 class FLWInstruction : public ITypeInstruction {
 public:
     FLWInstruction();

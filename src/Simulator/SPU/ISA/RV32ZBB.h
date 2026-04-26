@@ -128,7 +128,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class ZEXTHInstruction : public UltraBitwiseITypeInstruction {
+class ZEXTHInstruction : public RTypeInstruction {
 public:
     ZEXTHInstruction();
     ~ZEXTHInstruction() = default;

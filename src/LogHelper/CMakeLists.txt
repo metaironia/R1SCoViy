@@ -29,9 +29,4 @@ target_compile_options(${LIB_NAME} PRIVATE
     $<$<CONFIG:Release>:-O3 -DNDEBUG>
 )
 
-target_compile_definitions(${LIB_NAME} PRIVATE
-    $<$<CONFIG:Debug>:QUILL_LOG_LEVEL=QUILL_LOG_LEVEL_DEBUG>
-    $<$<CONFIG:Release>:QUILL_LOG_LEVEL=QUILL_LOG_LEVEL_INFO>
-)
-
 target_link_libraries(${LIB_NAME} PUBLIC quill::quill)

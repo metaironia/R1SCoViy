@@ -128,7 +128,7 @@ void SEXTHInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-ZEXTHInstruction::ZEXTHInstruction() : UltraBitwiseITypeInstruction(static_cast<uint32_t>(Opcodes::OP_IMM), 0x4, 0x80) {}
+ZEXTHInstruction::ZEXTHInstruction() : RTypeInstruction(0x33, 0x4, 0x4) {}
 
 void ZEXTHInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();

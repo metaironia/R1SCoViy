@@ -27,10 +27,15 @@ SpuState ExecutorUnit::executeInstr(uint32_t Instr) {
 
     std::shared_ptr<InstructionDispatcher> Dispatcher;
 
-    if (Opcode == static_cast<uint32_t>(Opcodes::OP_IMM))
+    if (Opcode == static_cast<uint32_t>(Opcodes::OP_IMM)) {
+
+        LOG_DEBUG_("Executor: OP_IMM case");
+
         Dispatcher = ITypeInstructionDispatcher::getProperITypeDispatcher(Instr);
-    
+    }
     else {
+
+        LOG_DEBUG_("Executor: not OP_IMM case");
 
         const auto &OpcodesDispatchers = Instructions.getOpcodesDispatchers();
         

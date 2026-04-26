@@ -17,8 +17,8 @@ function(set_common_compile_options target_name)
     )
 
     target_compile_definitions(${target_name} PRIVATE
-        $<$<CONFIG:Debug>:QUILL_LOG_LEVEL=QUILL_LOG_LEVEL_TRACE>
-        $<$<CONFIG:Release>:QUILL_LOG_LEVEL=QUILL_LOG_LEVEL_INFO>
+        $<$<CONFIG:Debug>:-DQUILL_COMPILE_ACTIVE_LOG_LEVEL=QUILL_COMPILE_ACTIVE_LOG_LEVEL_DEBUG>
+        $<$<CONFIG:Release>:-DQUILL_COMPILE_ACTIVE_LOG_LEVEL=QUILL_COMPILE_ACTIVE_LOG_LEVEL_INFO>
     )
 endfunction()
 

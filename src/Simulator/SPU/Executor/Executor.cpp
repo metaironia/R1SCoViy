@@ -18,24 +18,32 @@ SpuState ExecutorUnit::executeInstr(uint32_t Instr) {
 
     uint32_t Opcode = InstructionDispatcher::getOpcode(Instr);
 
+    LOG_DEBUG_("Executor: opcode is 0x{:X}", Opcode);
+    
     if (Opcode == static_cast<uint32_t>(Opcodes::OP_FP)) {
-
+        
         Opcode = FloatTypeRoundingInstructionDispatcher::getOpcode(Instr);
     }
 
-    LOG_DEBUG_("Executor: opcode is 0x{:X}", Opcode);
+    std::shared_ptr<InstructionDispatcher> Dispatcher;
 
-    const auto &OpcodesDispatchers = Instructions.getOpcodesDispatchers();
+    if (Opcode == static_cast<uint32_t>(Opcodes::OP_IMM))
+        Dispatcher = ITypeInstructionDispatcher::getProperITypeDispatcher(Instr);
     
-    auto DispatcherIt = OpcodesDispatchers.find(Opcode);
-    if (DispatcherIt == OpcodesDispatchers.end()) {
+    else {
 
-        LOG_WARNING_("Executor: no dispatcher found for opcode 0x{:X}", Opcode);
+        const auto &OpcodesDispatchers = Instructions.getOpcodesDispatchers();
         
-        return SpuState::Stop;
-    }
+        auto DispatcherIt = OpcodesDispatchers.find(Opcode);
+        if (DispatcherIt == OpcodesDispatchers.end()) {
 
-    const auto &Dispatcher = DispatcherIt->second;
+            LOG_WARNING_("Executor: no dispatcher found for opcode 0x{:X}", Opcode);
+            
+            return SpuState::Stop;
+        }
+        
+        Dispatcher = DispatcherIt->second;
+    }
 
     const uint32_t InstructionID = Dispatcher->getInstrID(Instr);
 

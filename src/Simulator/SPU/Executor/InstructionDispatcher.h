@@ -2,11 +2,14 @@
 #define SRC_SIMULATOR_SPU_EXECUTOR_INSTRUCTIONDISPATCHER_H
 
 #include <cstdint>
+#include <memory>
 
 #include "MathHelper/MathHelper.h"
 #include "Simulator/SPU/ISA/InstructionParams.h"
 
 namespace r1scoviy {
+
+// TODO: all function here should be static
 
 class InstructionDispatcher {
 public:
@@ -39,9 +42,11 @@ public:
     void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
 
     uint32_t getRdNum(uint32_t Instr) const { return ExtractBits(Instr, 7, 11); }
-    uint32_t getFunct3(uint32_t Instr) const { return ExtractBits(Instr, 12, 14); }
+    static uint32_t getFunct3(uint32_t Instr) { return ExtractBits(Instr, 12, 14); }
     uint32_t getRs1Num(uint32_t Instr) const { return ExtractBits(Instr, 15, 19); }
-    uint32_t getImm(uint32_t Instr) const { return ExtractBits(Instr, 20, 31); }
+    static uint32_t getImm(uint32_t Instr) { return ExtractBits(Instr, 20, 31); }
+
+    static std::shared_ptr<InstructionDispatcher> getProperITypeDispatcher(uint32_t Instr);
 };
 
 class BitwiseITypeInstructionDispatcher: public InstructionDispatcher {
@@ -52,8 +57,14 @@ public:
     uint32_t getRdNum(uint32_t Instr) const { return ExtractBits(Instr, 7, 11); }
     uint32_t getFunct3(uint32_t Instr) const { return ExtractBits(Instr, 12, 14); }
     uint32_t getRs1Num(uint32_t Instr) const { return ExtractBits(Instr, 15, 19); }
-    uint32_t getFixedImm(uint32_t Instr) const { return ExtractBits(Instr, 25, 31); }
+    static uint32_t getFixedImm(uint32_t Instr) { return ExtractBits(Instr, 25, 31); }
     uint32_t getImm(uint32_t Instr) const { return ExtractBits(Instr, 20, 24); }
+};
+
+class UltraBitwiseITypeInstructionDispatcher: public BitwiseITypeInstructionDispatcher {
+public:
+    uint32_t getInstrID(uint32_t Instr) const override;
+    void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
 };
 
 class STypeInstructionDispatcher : public InstructionDispatcher {

@@ -67,10 +67,22 @@ public:
     BitwiseITypeInstruction(uint32_t _Opcode, uint32_t _Funct3, uint32_t _Imm5_11) 
         : ITypeInstruction(_Opcode, _Funct3), Imm5_11(_Imm5_11) {}
 
-    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<BitwiseITypeInstructionDispatcher>(); }
-    uint32_t getInstrID() const override { return (Imm5_11 << BITWISE_FIXED_IMM) | (Funct3 << FUNCT3_STARTBIT) | Opcode; }
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<ITypeInstructionDispatcher>(); }
+    uint32_t getInstrID() const override { return (Imm5_11 << BITWISE_FIXED_IMM_STARTBIT) | (Funct3 << FUNCT3_STARTBIT) | Opcode; }
 
     int32_t getSignExtImm(uint32_t Imm) const { return GetSignExtImm(Imm, 4); }
+};
+
+class UltraBitwiseITypeInstruction : public ITypeInstruction {
+private:
+    uint32_t Imm;
+
+public:
+    UltraBitwiseITypeInstruction(uint32_t _Opcode, uint32_t _Funct3, uint32_t _Imm) 
+        : ITypeInstruction(_Opcode, _Funct3), Imm(_Imm) {}
+
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<ITypeInstructionDispatcher>(); }
+    uint32_t getInstrID() const override { return (Imm << ULTRA_BITWISE_IMM_STARTBIT) | (Funct3 << FUNCT3_STARTBIT) | Opcode; }
 };
 
 class STypeInstruction : public Instruction {

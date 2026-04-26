@@ -1,4 +1,5 @@
 #include "Simulator/SPU/ISA/InstructionParams.h"
+#include <memory>
 #include "InstructionDispatcher.h"
 
 namespace r1scoviy {
@@ -17,6 +18,30 @@ void RTypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &Cur
     CurrInstrParams.Rd = static_cast<int>(getRdNum(Instr));
     CurrInstrParams.Rs1 = static_cast<int>(getRs1Num(Instr));
     CurrInstrParams.Rs2 = static_cast<int>(getRs2Num(Instr));
+}
+
+std::shared_ptr<InstructionDispatcher> ITypeInstructionDispatcher::getProperITypeDispatcher(uint32_t Instr) {
+
+    const uint32_t Funct3 = getFunct3(Instr);
+    const uint32_t BitwiseFixedImm = BitwiseITypeInstructionDispatcher::getFixedImm(Instr);
+
+    if (Funct3 == 0x1) {
+
+        if (BitwiseFixedImm == 0x0)
+            return std::make_shared<BitwiseITypeInstructionDispatcher>();
+        else
+            return std::make_shared<UltraBitwiseITypeInstructionDispatcher>();
+    }
+
+    if (Funct3 == 0x5) {
+
+        if (BitwiseFixedImm == 0x0 || BitwiseFixedImm == 0x20)
+            return std::make_shared<BitwiseITypeInstructionDispatcher>();
+        else
+            return std::make_shared<UltraBitwiseITypeInstructionDispatcher>();
+    }
+
+    return std::make_shared<ITypeInstructionDispatcher>();
 }
 
 uint32_t ITypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
@@ -40,7 +65,7 @@ uint32_t BitwiseITypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
     const uint32_t Funct3 = getFunct3(Instr);
     const uint32_t FixedImm = getFixedImm(Instr);
 
-    return (FixedImm << BITWISE_FIXED_IMM) | (Funct3 << FUNCT3_STARTBIT) | Opcode;
+    return (FixedImm << BITWISE_FIXED_IMM_STARTBIT) | (Funct3 << FUNCT3_STARTBIT) | Opcode;
 }
 
 void BitwiseITypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
@@ -48,6 +73,21 @@ void BitwiseITypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrPara
     CurrInstrParams.Rd = static_cast<int>(getRdNum(Instr));
     CurrInstrParams.Rs1 = static_cast<int>(getRs1Num(Instr));
     CurrInstrParams.Imm = getImm(Instr);
+}
+
+uint32_t UltraBitwiseITypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
+   
+    const uint32_t Opcode = getOpcode(Instr);
+    const uint32_t Funct3 = getFunct3(Instr);
+    const uint32_t Imm = ITypeInstructionDispatcher::getImm(Instr);
+
+    return (Imm << ULTRA_BITWISE_IMM_STARTBIT) | (Funct3 << FUNCT3_STARTBIT) | Opcode;
+}
+
+void UltraBitwiseITypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
+
+    CurrInstrParams.Rd = static_cast<int>(getRdNum(Instr));
+    CurrInstrParams.Rs1 = static_cast<int>(getRs1Num(Instr));
 }
 
 uint32_t STypeInstructionDispatcher::getInstrID(uint32_t Instr) const {

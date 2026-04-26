@@ -2,6 +2,7 @@
 
 #include "Simulator/SPU/ISA/RV32I.h"
 #include "Simulator/SPU/ISA/RV32M.h"
+#include "Simulator/SPU/ISA/RV32F.h"
 #include "Simulator/Simulator.h"
 #include "Simulator/SPU/ISA/ExtensionRegistry.h"
 #include "LogHelper/QuillLogHelper.h"
@@ -15,6 +16,7 @@ int main(const int argc, const char *argv[]) {
     r1scoviy::ExtensionRegistry ExtensionRegistry;
     ExtensionRegistry.registerExtension(std::make_shared<r1scoviy::RV32IExtension>());
     ExtensionRegistry.registerExtension(std::make_shared<r1scoviy::RV32MExtension>());
+    ExtensionRegistry.registerExtension(std::make_shared<r1scoviy::RV32FExtension>());
     
     auto Sim = std::make_unique<r1scoviy::Simulator>(ExtensionRegistry);
 

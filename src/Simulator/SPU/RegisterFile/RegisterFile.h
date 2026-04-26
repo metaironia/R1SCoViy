@@ -2,7 +2,6 @@
 #define SRC_SIMULATOR_SPU_REGISTERFILE_REGISTERFILE_H
 
 #include <unordered_map>
-#include <string_view>
 #include <cstdint>
 #include <array>
 

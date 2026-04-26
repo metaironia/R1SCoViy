@@ -1,7 +1,7 @@
 #include "Executor.h"
 #include "Simulator/SPU/Executor/InstructionDispatcher.h"
 #include "LogHelper/OverwriteMacros.h"
-#include "Simulator/SPU/SPU.h"
+#include "Simulator/SPU/ISA/InstructionTypes.h"
 
 namespace r1scoviy {
 
@@ -16,7 +16,12 @@ SpuState ExecutorUnit::executeInstr(uint32_t Instr) {
 
     LOG_DEBUG_("Executor: executing instruction 0x{:08X}", Instr);
 
-    const uint32_t Opcode = InstructionDispatcher::getOpcode(Instr);
+    uint32_t Opcode = InstructionDispatcher::getOpcode(Instr);
+
+    if (Opcode == static_cast<uint32_t>(Opcodes::OP_FP)) {
+
+        Opcode = FloatTypeRoundingInstructionDispatcher::getOpcode(Instr);
+    }
 
     LOG_DEBUG_("Executor: opcode is 0x{:X}", Opcode);
 

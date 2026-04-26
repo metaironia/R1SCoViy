@@ -3,7 +3,6 @@
 
 #include "InstructionTypes.h"
 #include "Extension.h"
-#include "Simulator/SPU/Executor/InstructionDispatcher.h"
 
 namespace r1scoviy {
 
@@ -74,7 +73,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FADD_SInstruction : public FloatTypeInstruction {
+class FADD_SInstruction : public FloatTypeRoundingInstruction {
 public:
     FADD_SInstruction();
     ~FADD_SInstruction() = default;
@@ -82,7 +81,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FSUB_SInstruction : public FloatTypeInstruction {
+class FSUB_SInstruction : public FloatTypeRoundingInstruction {
 public:
     FSUB_SInstruction();
     ~FSUB_SInstruction() = default;
@@ -90,7 +89,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FMUL_SInstruction : public FloatTypeInstruction {
+class FMUL_SInstruction : public FloatTypeRoundingInstruction {
 public:
     FMUL_SInstruction();
     ~FMUL_SInstruction() = default;
@@ -98,7 +97,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FDIV_SInstruction : public FloatTypeInstruction {
+class FDIV_SInstruction : public FloatTypeRoundingInstruction {
 public:
     FDIV_SInstruction();
     ~FDIV_SInstruction() = default;
@@ -106,7 +105,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FSQRT_SInstruction : public FloatTypeInstruction {
+class FSQRT_SInstruction : public FloatTypeRoundingInstruction {
 public:
     FSQRT_SInstruction();
     ~FSQRT_SInstruction() = default;
@@ -114,7 +113,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FSGNJ_SInstruction : public RTypeInstruction {
+class FSGNJ_SInstruction : public FloatTypeNoRoundingInstruction {
 public:
     FSGNJ_SInstruction();
     ~FSGNJ_SInstruction() = default;
@@ -122,7 +121,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FSGNJN_SInstruction : public RTypeInstruction {
+class FSGNJN_SInstruction : public FloatTypeNoRoundingInstruction {
 public:
     FSGNJN_SInstruction();
     ~FSGNJN_SInstruction() = default;
@@ -130,7 +129,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FSGNJX_SInstruction : public RTypeInstruction {
+class FSGNJX_SInstruction : public FloatTypeNoRoundingInstruction {
 public:
     FSGNJX_SInstruction();
     ~FSGNJX_SInstruction() = default;
@@ -138,7 +137,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FMIN_SInstruction : public RTypeInstruction {
+class FMIN_SInstruction : public FloatTypeNoRoundingInstruction {
 public:
     FMIN_SInstruction();
     ~FMIN_SInstruction() = default;
@@ -146,7 +145,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FMAX_SInstruction : public RTypeInstruction {
+class FMAX_SInstruction : public FloatTypeNoRoundingInstruction {
 public:
     FMAX_SInstruction();
     ~FMAX_SInstruction() = default;
@@ -155,7 +154,7 @@ public:
 };
 
 // Conversion Instructions
-class FCVT_I2FInstruction : public FloatTypeInstruction {
+class FCVT_I2FInstruction : public FloatTypeRoundingInstruction {
 public:
     FCVT_I2FInstruction();
     ~FCVT_I2FInstruction() = default;
@@ -163,7 +162,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FCVT_F2IInstruction : public FloatTypeInstruction {
+class FCVT_F2IInstruction : public FloatTypeRoundingInstruction {
 public:
     FCVT_F2IInstruction();
     ~FCVT_F2IInstruction() = default;
@@ -171,7 +170,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FMV_X_WInstruction : public RTypeInstruction {
+class FMV_X_WInstruction : public FloatTypeNoRoundingInstruction {
 public:
     FMV_X_WInstruction();
     ~FMV_X_WInstruction() = default;
@@ -179,7 +178,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FMV_W_XInstruction : public RTypeInstruction {
+class FMV_W_XInstruction : public FloatTypeNoRoundingInstruction {
 public:
     FMV_W_XInstruction();
     ~FMV_W_XInstruction() = default;
@@ -188,7 +187,7 @@ public:
 };
 
 // Comparison Instructions
-class FEQ_SInstruction : public RTypeInstruction {
+class FEQ_SInstruction : public FloatTypeNoRoundingInstruction {
 public:
     FEQ_SInstruction();
     ~FEQ_SInstruction() = default;
@@ -196,7 +195,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FLT_SInstruction : public RTypeInstruction {
+class FLT_SInstruction : public FloatTypeNoRoundingInstruction {
 public:
     FLT_SInstruction();
     ~FLT_SInstruction() = default;
@@ -204,7 +203,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FLE_SInstruction : public RTypeInstruction {
+class FLE_SInstruction : public FloatTypeNoRoundingInstruction {
 public:
     FLE_SInstruction();
     ~FLE_SInstruction() = default;
@@ -212,7 +211,7 @@ public:
     void executeInstr(ExecutorUnit &TargetExecutor) const override;
 };
 
-class FCLASS_SInstruction : public RTypeInstruction {
+class FCLASS_SInstruction : public FloatTypeNoRoundingInstruction {
 public:
     FCLASS_SInstruction();
     ~FCLASS_SInstruction() = default;

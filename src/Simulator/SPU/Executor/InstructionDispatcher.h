@@ -4,10 +4,9 @@
 #include <cstdint>
 
 #include "MathHelper/MathHelper.h"
+#include "Simulator/SPU/ISA/InstructionParams.h"
 
 namespace r1scoviy {
-
-struct InstrParams;
 
 class InstructionDispatcher {
 public:
@@ -111,8 +110,10 @@ public:
     uint32_t getRs3Num(uint32_t Instr) const { return ExtractBits(Instr, 27, 31); }
 };
 
-class FloatTypeInstructionDispatcher: public InstructionDispatcher {
+class FloatTypeRoundingInstructionDispatcher: public InstructionDispatcher {
 public:
+    static uint32_t getOpcode(uint32_t Instr) { return (ExtractBits(Instr, 27, 31) << FUNCT5_STARTBIT) | InstructionDispatcher::getOpcode(Instr); }
+
     uint32_t getInstrID(uint32_t Instr) const override;
     void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
 
@@ -120,7 +121,19 @@ public:
     uint32_t getRm(uint32_t Instr) const { return ExtractBits(Instr, 12, 14); }    
     uint32_t getRs1Num(uint32_t Instr) const { return ExtractBits(Instr, 15, 19); }
     uint32_t getRs2Num(uint32_t Instr) const { return ExtractBits(Instr, 20, 24); }
-    uint32_t getFunct5(uint32_t Instr) const { return ExtractBits(Instr, 27, 31); }
+};
+
+class FloatTypeNoRoundingInstructionDispatcher: public InstructionDispatcher {
+public:
+    static uint32_t getOpcode(uint32_t Instr) { return (ExtractBits(Instr, 27, 31) << FUNCT5_STARTBIT) | InstructionDispatcher::getOpcode(Instr); }
+
+    uint32_t getInstrID(uint32_t Instr) const override;
+    void setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const override;
+
+    uint32_t getRdNum(uint32_t Instr) const { return ExtractBits(Instr, 7, 11); }
+    uint32_t getFunct3(uint32_t Instr) const { return ExtractBits(Instr, 12, 14); }
+    uint32_t getRs1Num(uint32_t Instr) const { return ExtractBits(Instr, 15, 19); }
+    uint32_t getRs2Num(uint32_t Instr) const { return ExtractBits(Instr, 20, 24); }
 };
 
 } // namespace r1scoviy

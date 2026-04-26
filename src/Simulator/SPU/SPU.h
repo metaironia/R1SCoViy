@@ -2,7 +2,6 @@
 #define SRC_SIMULATOR_SPU_SPU_H
 
 #include <cstdint>
-#include <memory>
 
 #include "Simulator/Memory/Memory.h"
 #include "Simulator/SPU/Fetcher/Fetcher.h"

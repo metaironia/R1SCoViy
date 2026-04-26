@@ -7,7 +7,6 @@
 #include <string_view>
 
 #include "Extension.h"
-#include "Simulator/SPU/RegisterFile/RegisterFile.h"
 
 namespace r1scoviy {
 

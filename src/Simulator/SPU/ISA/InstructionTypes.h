@@ -6,24 +6,11 @@
 
 #include "MathHelper/MathHelper.h"
 #include "Simulator/SPU/Executor/InstructionDispatcher.h"
+#include "InstructionParams.h"
 
 namespace r1scoviy {
 
 class ExecutorUnit;
-
-const int FUNCT3_STARTBIT = 12;
-const int FUNCT7_STARTBIT = 25;
-const int FUNCT5_STARTBIT = 27;
-const int BITWISE_FIXED_IMM = 25;
-
-struct InstrParams {
-    uint32_t Imm;
-    int Rs1;
-    int Rs2;
-    int Rs3;
-    int Rd;
-    uint32_t Rm;
-};
 
 class Instruction {
 protected:
@@ -39,7 +26,7 @@ public:
 
     virtual std::shared_ptr<InstructionDispatcher> getDispatcher() = 0;
 
-    uint32_t getOpcode() const { return Opcode; }
+    virtual uint32_t getOpcode() const { return Opcode; }
 
     virtual ~Instruction() = default;
 };
@@ -143,16 +130,33 @@ public:
     uint32_t getInstrID() const override { return Opcode; }
 };
 
-class FloatTypeInstruction : public Instruction {
+class FloatTypeRoundingInstruction : public Instruction {
 private:
     uint32_t Funct5;
 
 public:
-    FloatTypeInstruction(uint32_t _Opcode, uint32_t _Funct5) 
+    FloatTypeRoundingInstruction(uint32_t _Opcode, uint32_t _Funct5) 
         : Instruction(_Opcode), Funct5(_Funct5) {}
 
-    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<FloatTypeInstructionDispatcher>(); }
-    uint32_t getInstrID() const override { return (Funct5 << FUNCT5_STARTBIT) | Opcode; }
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<FloatTypeRoundingInstructionDispatcher>(); }
+    uint32_t getInstrID() const override { return getOpcode(); }
+
+    virtual uint32_t getOpcode() const override { return (Funct5 << FUNCT5_STARTBIT) | Opcode; }
+};
+
+class FloatTypeNoRoundingInstruction : public Instruction {
+private:
+    uint32_t Funct3;
+    uint32_t Funct5;
+
+public:
+    FloatTypeNoRoundingInstruction(uint32_t _Opcode, uint32_t _Funct3, uint32_t _Funct5) 
+        : Instruction(_Opcode), Funct3(_Funct3), Funct5(_Funct5) {}
+
+    virtual std::shared_ptr<InstructionDispatcher> getDispatcher() override { return std::make_shared<FloatTypeNoRoundingInstructionDispatcher>(); }
+    uint32_t getInstrID() const override { return (Funct3 << FUNCT3_STARTBIT) | getOpcode(); }
+
+    virtual uint32_t getOpcode() const override { return (Funct5 << FUNCT5_STARTBIT) | Opcode; }
 };
 
 } // namespace r1scoviy

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 
-project(R1SCOVIY LANGUAGES CXX)
+project(R1SCOVIY LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -40,27 +40,37 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(softfloat)
 if(NOT softfloat_POPULATED)
-  FetchContent_Populate(softfloat)
+    FetchContent_Populate(softfloat)
 
-  if(NOT EXISTS "${softfloat_SOURCE_DIR}/build/${SOFTFLOAT_ARCH}")
-    message(FATAL_ERROR "SoftFloat architecture '${SOFTFLOAT_ARCH}' not found. Check SOFTFLOAT_ARCH cache variable.")
-  endif()
+    if(NOT EXISTS "${softfloat_SOURCE_DIR}/build/${SOFTFLOAT_ARCH}")
+        message(FATAL_ERROR "SoftFloat architecture '${SOFTFLOAT_ARCH}' not found. Check SOFTFLOAT_ARCH cache variable.")
+    endif()
 
-  file(GLOB SOFTFLOAT_SRCS CONFIGURE_DEPENDS "${softfloat_SOURCE_DIR}/source/*.c")
+    set(SOFTFLOAT_BUILD_DIR "${softfloat_SOURCE_DIR}/build/${SOFTFLOAT_ARCH}")
+    set(SOFTFLOAT_LIBRARY "${SOFTFLOAT_BUILD_DIR}/softfloat.a")
 
-  add_library(softfloat STATIC ${SOFTFLOAT_SRCS})
+    add_custom_command(
+        OUTPUT "${SOFTFLOAT_LIBRARY}"
+        COMMAND make
+        WORKING_DIRECTORY "${SOFTFLOAT_BUILD_DIR}"
+        COMMENT "Building SoftFloat with make..."
+        VERBATIM
+    )
 
-  target_include_directories(softfloat
-    PUBLIC
-      ${softfloat_SOURCE_DIR}/source/include
-      ${softfloat_SOURCE_DIR}/build/${SOFTFLOAT_ARCH}
-  )
+    add_custom_target(softfloat_build DEPENDS "${SOFTFLOAT_LIBRARY}")
 
-  set_target_properties(softfloat PROPERTIES
-    C_STANDARD 99
-    C_STANDARD_REQUIRED ON
-    C_EXTENSIONS OFF
-  )
+    add_library(softfloat STATIC IMPORTED GLOBAL)
+    set_target_properties(softfloat PROPERTIES
+        IMPORTED_LOCATION "${SOFTFLOAT_LIBRARY}"
+    )
+    add_dependencies(softfloat softfloat_build)
+
+    target_include_directories(softfloat
+        INTERFACE
+            ${softfloat_SOURCE_DIR}/source/include
+            ${softfloat_SOURCE_DIR}/source/8086-SSE
+            ${softfloat_SOURCE_DIR}/build/${SOFTFLOAT_ARCH}
+    )
 endif()
 
 include(CommonOptions)

@@ -1,7 +1,4 @@
-#include <vector>
-#include <string_view>
 #include <cassert>
-#include <array>
 
 #include "RegisterFile.h"
 #include "Simulator/SPU/ISA/ExtensionRegistry.h"

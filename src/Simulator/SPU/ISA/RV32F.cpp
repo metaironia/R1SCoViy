@@ -2,13 +2,17 @@
 #include <cmath>
 #include <cstdint>
 #include <cstring>
-#include <limits>
 #include <memory>
 #include <cassert>
 
+extern "C" {
+    #include "softfloat.h"
+    #include "internals.h"
+    #include "specialize.h"
+}
+
 #include "RV32F.h"
 #include "MathHelper/MathHelper.h"
-#include "Simulator/SPU/Executor/InstructionDispatcher.h"
 #include "Simulator/SPU/Executor/Executor.h"
 #include "Simulator/SPU/ISA/InstructionTypes.h"
 
@@ -33,13 +37,13 @@ static uint32_t RiscvToSoftfloatRm(uint32_t RmBits) {
         case RV32FRounding::RMM: return softfloat_round_near_maxMag; // RMM (handled separately)
         case RV32FRounding::DYN: {
 
-            LOG_ERROR_("RiscvToSoftfloatRm: DYN rounding mode inside switch-case!", Rm);
+            LOG_ERROR_("RiscvToSoftfloatRm: DYN rounding mode inside switch-case!");
 
             assert(0);
         }
         default: {
             
-            LOG_ERROR_("RiscvToSoftfloatRm: wrong risc-v rounding mode ({})!", Rm);
+            LOG_ERROR_("RiscvToSoftfloatRm: wrong risc-v rounding mode ({})!", static_cast<int32_t>(Rm));
             
             assert(0);
         }
@@ -53,12 +57,15 @@ static float32_t ReadFloatReg(RegisterFileUnit &RegisterFile, int RegNum) {
 
     int32_t Value = RegisterFile.readRegister(RegistersType::FLOAT_REGS, RegNum);
     
-    return static_cast<float32_t>(Value);
+    float32_t FloatVal = {};
+    FloatVal.v = Value;
+
+    return FloatVal;
 }
 
 static void WriteFloatReg(RegisterFileUnit &RegisterFile, int RegNum, float32_t Value) {
 
-    RegisterFile.writeRegister(RegistersType::FLOAT_REGS, RegNum, static_cast<int32_t>(Value));
+    RegisterFile.writeRegister(RegistersType::FLOAT_REGS, RegNum, Value.v);
 }
 
 FLWInstruction::FLWInstruction() : ITypeInstruction(0x7, 0x2) {}
@@ -83,7 +90,7 @@ void FSWInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FADD_SInstruction::FADD_SInstruction() : FloatTypeInstruction(0x53, 0x0) {}
+FADD_SInstruction::FADD_SInstruction() : FloatTypeRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x0) {}
 
 void FADD_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -95,7 +102,7 @@ void FADD_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FSUB_SInstruction::FSUB_SInstruction() : FloatTypeInstruction(0x53, 0x1) {}
+FSUB_SInstruction::FSUB_SInstruction() : FloatTypeRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x1) {}
 
 void FSUB_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -107,7 +114,7 @@ void FSUB_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FMUL_SInstruction::FMUL_SInstruction() : FloatTypeInstruction(0x53, 0x2) {}
+FMUL_SInstruction::FMUL_SInstruction() : FloatTypeRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x2) {}
 
 void FMUL_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -119,7 +126,7 @@ void FMUL_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FDIV_SInstruction::FDIV_SInstruction() : FloatTypeInstruction(0x53, 0x3) {}
+FDIV_SInstruction::FDIV_SInstruction() : FloatTypeRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x3) {}
 
 void FDIV_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -131,7 +138,7 @@ void FDIV_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FSQRT_SInstruction::FSQRT_SInstruction() : FloatTypeInstruction(0x53, 0xB) {}
+FSQRT_SInstruction::FSQRT_SInstruction() : FloatTypeRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0xB) {}
 
 void FSQRT_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -142,7 +149,7 @@ void FSQRT_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FSGNJ_SInstruction::FSGNJ_SInstruction() : RTypeInstruction(0x53, 0x0, 0x10) {}
+FSGNJ_SInstruction::FSGNJ_SInstruction() : FloatTypeNoRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x0, 0x4) {}
 
 void FSGNJ_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -155,7 +162,7 @@ void FSGNJ_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FSGNJN_SInstruction::FSGNJN_SInstruction() : RTypeInstruction(0x53, 0x1, 0x10) {}
+FSGNJN_SInstruction::FSGNJN_SInstruction() : FloatTypeNoRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x1, 0x4) {}
 
 void FSGNJN_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -168,7 +175,7 @@ void FSGNJN_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FSGNJX_SInstruction::FSGNJX_SInstruction() : RTypeInstruction(0x53, 0x2, 0x10) {}
+FSGNJX_SInstruction::FSGNJX_SInstruction() : FloatTypeNoRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x2, 0x4) {}
 
 void FSGNJX_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -181,7 +188,7 @@ void FSGNJX_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FMIN_SInstruction::FMIN_SInstruction() : RTypeInstruction(0x53, 0x0, 0x14) {}
+FMIN_SInstruction::FMIN_SInstruction() : FloatTypeNoRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x0, 0x5) {}
 
 void FMIN_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -192,13 +199,13 @@ void FMIN_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     float Val2 = 0;
     std::memcpy(&Val2, &Rs2Val, sizeof(float));
     float Result = std::fmin(Val1, Val2);
-    float32_t ResultBits = 0;
+    float32_t ResultBits = {};
     std::memcpy(&ResultBits, &Result, sizeof(float32_t));
     WriteFloatReg(TargetExecutor.getRegisterFile(), Params.Rd, ResultBits);
     TargetExecutor.getPC() += 4;
 }
 
-FMAX_SInstruction::FMAX_SInstruction() : RTypeInstruction(0x53, 0x1, 0x14) {}
+FMAX_SInstruction::FMAX_SInstruction() : FloatTypeNoRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x1, 0x5) {}
 
 void FMAX_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -209,20 +216,20 @@ void FMAX_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     float Val2 = 0;
     std::memcpy(&Val2, &Rs2Val, sizeof(float));
     float Result = std::fmax(Val1, Val2);
-    float32_t ResultBits = 0;
+    float32_t ResultBits = {};
     std::memcpy(&ResultBits, &Result, sizeof(float32_t));
-    WriteFloatReg(TargetExecutor.getRegisterFile(), Params.Rd, Result);
+    WriteFloatReg(TargetExecutor.getRegisterFile(), Params.Rd, ResultBits);
     TargetExecutor.getPC() += 4;
 }
 
-FCVT_I2FInstruction::FCVT_I2FInstruction() : FloatTypeInstruction(0x53, 0x1A) {}
+FCVT_I2FInstruction::FCVT_I2FInstruction() : FloatTypeRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x1A) {}
 
 void FCVT_I2FInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     int32_t Rs1Val = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs1);
-    float32_t Result = 0;
+    float32_t Result = {};
     softfloat_roundingMode = RiscvToSoftfloatRm(Params.Rm);
-    int ConversionType = getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs2);
+    int ConversionType = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs2);
     if (ConversionType == 0)
         Result = i32_to_f32(Rs1Val);
     else
@@ -231,13 +238,13 @@ void FCVT_I2FInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FCVT_F2IInstruction::FCVT_F2IInstruction() : FloatTypeInstruction(0x53, 0x18) {}
+FCVT_F2IInstruction::FCVT_F2IInstruction() : FloatTypeRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x18) {}
 
 void FCVT_F2IInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
     float32_t Rs1Val = ReadFloatReg(TargetExecutor.getRegisterFile(), Params.Rs1);
-    uint32_t Result = 0;
-    int ConversionType = getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs2);
+    uint32_t Result = {};
+    int ConversionType = TargetExecutor.getRegisterFile().readRegister(RegistersType::INTEGER_REGS, Params.Rs2);
     if (ConversionType == 0)
         Result = f32_to_i32(Rs1Val, RiscvToSoftfloatRm(Params.Rm), false);
     else
@@ -246,7 +253,7 @@ void FCVT_F2IInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FMV_X_WInstruction::FMV_X_WInstruction() : RTypeInstruction(0x53, 0x0, 0x70) {}
+FMV_X_WInstruction::FMV_X_WInstruction() : FloatTypeNoRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x0, 0x1C) {}
 
 void FMV_X_WInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -255,7 +262,7 @@ void FMV_X_WInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FMV_W_XInstruction::FMV_W_XInstruction() : RTypeInstruction(0x53, 0x0, 0x78) {}
+FMV_W_XInstruction::FMV_W_XInstruction() : FloatTypeNoRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x0, 0x1E) {}
 
 void FMV_W_XInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -264,7 +271,7 @@ void FMV_W_XInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FEQ_SInstruction::FEQ_SInstruction() : RTypeInstruction(0x53, 0x3, 0x50) {}
+FEQ_SInstruction::FEQ_SInstruction() : FloatTypeNoRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x2, 0x14) {}
 
 void FEQ_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -276,7 +283,7 @@ void FEQ_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FLT_SInstruction::FLT_SInstruction() : RTypeInstruction(0x53, 0x1, 0x50) {}
+FLT_SInstruction::FLT_SInstruction() : FloatTypeNoRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x1, 0x14) {}
 
 void FLT_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -288,7 +295,7 @@ void FLT_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FLE_SInstruction::FLE_SInstruction() : RTypeInstruction(0x53, 0x0, 0x50) {}
+FLE_SInstruction::FLE_SInstruction() : FloatTypeNoRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x0, 0x14) {}
 
 void FLE_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();
@@ -300,7 +307,7 @@ void FLE_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     TargetExecutor.getPC() += 4;
 }
 
-FCLASS_SInstruction::FCLASS_SInstruction() : RTypeInstruction(0x53, 0x1, 0x70) {}
+FCLASS_SInstruction::FCLASS_SInstruction() : FloatTypeNoRoundingInstruction(static_cast<uint32_t>(Opcodes::OP_FP), 0x1, 0x1C) {}
 
 void FCLASS_SInstruction::executeInstr(ExecutorUnit &TargetExecutor) const {
     const auto &Params = TargetExecutor.getInstructionParams();

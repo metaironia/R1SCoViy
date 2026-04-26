@@ -1,4 +1,4 @@
-#include "Simulator/SPU/ISA/InstructionTypes.h"
+#include "Simulator/SPU/ISA/InstructionParams.h"
 #include "InstructionDispatcher.h"
 
 namespace r1scoviy {
@@ -146,12 +146,12 @@ void R4TypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &Cu
     CurrInstrParams.Rm = getRm(Instr);
 }
 
-uint32_t FloatTypeInstructionDispatcher::getInstrID(uint32_t Instr) const {
+uint32_t FloatTypeRoundingInstructionDispatcher::getInstrID(uint32_t Instr) const {
 
-    return (getFunct5(Instr) << FUNCT5_STARTBIT) | getOpcode(Instr); 
+    return FloatTypeRoundingInstructionDispatcher::getOpcode(Instr); 
 }
 
-void FloatTypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
+void FloatTypeRoundingInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
 
     CurrInstrParams.Rd = static_cast<int>(getRdNum(Instr));
     CurrInstrParams.Rs1 = static_cast<int>(getRs1Num(Instr));
@@ -159,6 +159,18 @@ void FloatTypeInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams 
     CurrInstrParams.Rm = getRm(Instr);
 }
 
-};
+uint32_t FloatTypeNoRoundingInstructionDispatcher::getInstrID(uint32_t Instr) const {
+
+    uint32_t FpOpcode = FloatTypeNoRoundingInstructionDispatcher::getOpcode(Instr);
+
+    return (getFunct3(Instr) << FUNCT3_STARTBIT) | FpOpcode; 
+}
+
+void FloatTypeNoRoundingInstructionDispatcher::setInstrParams(uint32_t Instr, InstrParams &CurrInstrParams) const {
+
+    CurrInstrParams.Rd = static_cast<int>(getRdNum(Instr));
+    CurrInstrParams.Rs1 = static_cast<int>(getRs1Num(Instr));
+    CurrInstrParams.Rs2 = static_cast<int>(getRs2Num(Instr));
+}
 
 } // namespace r1scoviy

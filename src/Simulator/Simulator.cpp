@@ -10,7 +10,6 @@
 
 namespace r1scoviy {
 
-
 void Simulator::start(int Argc, const char *Argv[]) {
 
     assert(Argv);

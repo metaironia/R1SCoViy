@@ -1,9 +1,6 @@
 #ifndef SRC_SIMULATOR_SPU_EXECUTOR_EXECUTOR_H
 #define SRC_SIMULATOR_SPU_EXECUTOR_EXECUTOR_H
 
-#include <memory>
-
-
 #include "Simulator/Memory/Memory.h"
 #include "Simulator/SPU/SPUState.h"
 #include "Simulator/SPU/ISA/InstructionRegistry.h"

@@ -3,7 +3,6 @@
 
 #include "InstructionTypes.h"
 #include "Extension.h"
-#include "Simulator/SPU/Executor/InstructionDispatcher.h"
 
 namespace r1scoviy {
 

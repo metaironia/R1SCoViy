@@ -2,8 +2,6 @@
 #include <limits>
 #include <memory>
 
-#include "MathHelper/MathHelper.h"
-#include "Simulator/SPU/Executor/InstructionDispatcher.h"
 #include "Simulator/SPU/Executor/Executor.h"
 
 #include "RV32M.h"
